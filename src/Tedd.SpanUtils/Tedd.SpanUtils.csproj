@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!--<TargetFrameworks>net461;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netstandard2.1;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>-->
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>net461;netstandard2.1;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <!--<TargetFramework>netcoreapp3.1</TargetFramework>-->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Tedd Hansen</Authors>
     <Company>Tedd Hansen</Company>
