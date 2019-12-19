@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tedd.SpanUtils", "Tedd.SpanUtils\Tedd.SpanUtils.csproj", "{B5619F38-A84E-41B8-830E-38C287CAEFD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tedd.SpanUtils.Tests", "Tedd.SpanUtils.Tests\Tedd.SpanUtils.Tests.csproj", "{28525CD6-517B-4A06-962B-520FF8CDA0BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5619F38-A84E-41B8-830E-38C287CAEFD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5619F38-A84E-41B8-830E-38C287CAEFD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5619F38-A84E-41B8-830E-38C287CAEFD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5619F38-A84E-41B8-830E-38C287CAEFD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28525CD6-517B-4A06-962B-520FF8CDA0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28525CD6-517B-4A06-962B-520FF8CDA0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28525CD6-517B-4A06-962B-520FF8CDA0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28525CD6-517B-4A06-962B-520FF8CDA0BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E9A053CF-CCF2-44E3-B0C7-9AB45C5A28CE}
+	EndGlobalSection
+EndGlobal
