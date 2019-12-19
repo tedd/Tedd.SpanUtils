@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--<TargetFrameworks>net461;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netstandard2.1;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>-->
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Tedd Hansen</Authors>
+    <Company>Tedd Hansen</Company>
+    <Description>Adds extension methods to read/write to Span&lt;byte&gt;</Description>
+    <PackageTags>Span Read Write SByte Byte Int16 UInt16 Int32 UInt32 Int64  UInt64</PackageTags>
+    <Copyright>Tedd Hansen</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/tedd/Tedd.SpanUtils</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tedd/Tedd.SpanUtils</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <Version>1.0.0</Version>
+    <PackageLicenseExpression></PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+      <PackageReference Include="System.Memory" Version="4.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\Tedd.BitUtils\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
