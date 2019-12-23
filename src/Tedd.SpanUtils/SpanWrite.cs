@@ -25,7 +25,7 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(ref this Span<byte> span, Int24 value)
+        public static void Write(ref this Span<byte> span, UInt24 value)
         {
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[0] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);

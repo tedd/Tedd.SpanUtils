@@ -94,22 +94,22 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
         }
 
         [Fact]
-        public void TestInt24()
+        public void TestUInt24()
         {
             var rnd = new System.Random();
-            var mem = new byte[sizeof(Int24)];
+            var mem = new byte[sizeof(UInt24)];
             var span = new Span<byte>(mem);
             var roSpan = new ReadOnlySpan<byte>(mem);
             for (var c = 0; c < count; c++)
             {
                 span.Fill(rnd.NextByte());
-                Int24 a = 0;
+                UInt24 a = 0;
                 // Pick any number except zero
-                while ((a = rnd.NextInt32().ToInt24()) == 0) { }
+                while ((a = rnd.NextUInt32().ToUInt24()) == 0) { }
                 span.Write(a);
                 // Ensure span is not zero
                 Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
-                var r = roSpan.ReadInt24();
+                var r = roSpan.ReadUInt24();
                 Assert.Equal(a, r);
             }
         }
