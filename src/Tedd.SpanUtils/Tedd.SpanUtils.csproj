@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/tedd/Tedd.SpanUtils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tedd/Tedd.SpanUtils</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageLicenseExpression></PackageLicenseExpression>
   </PropertyGroup>
 

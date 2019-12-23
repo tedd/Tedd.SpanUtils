@@ -7,6 +7,12 @@ namespace Tedd
     public static class ReadOnlySpanMoveRead
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Move(ref this ReadOnlySpan<byte> span, int length)
+        {
+            span.Slice(length);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MoveReadByte(ref this ReadOnlySpan<byte> span)
         {
             var b = span[0];
