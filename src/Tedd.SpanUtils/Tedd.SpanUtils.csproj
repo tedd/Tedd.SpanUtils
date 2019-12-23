@@ -7,7 +7,7 @@
     <Authors>Tedd Hansen</Authors>
     <Company>Tedd Hansen</Company>
     <Description>Adds extension methods to read/write to Span&lt;byte&gt;</Description>
-    <PackageTags>Span Read Write SByte Byte Int16 UInt16 Int32 UInt32 Int64  UInt64</PackageTags>
+    <PackageTags>Span ReadOnlySpan Read Write SByte Byte Int16 UInt16 UInt24 Int32 UInt32 Int64 UInt64</PackageTags>
     <Copyright>Tedd Hansen</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/tedd/Tedd.SpanUtils</PackageProjectUrl>

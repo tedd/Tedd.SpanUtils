@@ -1,6 +1,8 @@
 # Tedd.SpanUtils
 Utilities for reading/writing to span.
 
+Available on NuGet: https://www.nuget.org/packages/Tedd.SpanUtils
+
 Span<byte> extension methods to read or write SByte, Byte, Int16, UInt16, Int32, UInt32, Int64, UInt64.
 There is also an UInt24 type which can be cast to/from UInt32 and used for reading/writing 3-byte numbers.
 
