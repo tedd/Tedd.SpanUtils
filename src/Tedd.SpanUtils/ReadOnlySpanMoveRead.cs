@@ -9,7 +9,7 @@ namespace Tedd
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Move(ref this ReadOnlySpan<byte> span, int length)
         {
-            span.Slice(length);
+            span = span.Slice(length);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
