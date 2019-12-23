@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Tedd.SpanUtils;
 
 namespace Tedd
 {
@@ -21,6 +22,16 @@ namespace Tedd
             return (UInt16)(
                 ((UInt16)span[0] << (8 * 1))
                 | ((UInt16)span[1]));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int24 ReadInt24(ref this ReadOnlySpan<byte> span)
+        {
+            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            return (Int24)(Int32)(
+                  ((UInt32)span[0] << (8 * 2))
+                | ((UInt32)span[1] << (8 * 1))
+                | ((UInt32)span[2]));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

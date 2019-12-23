@@ -36,7 +36,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             var rnd = new System.Random();
             var mem = new byte[sizeof(SByte)];
             var span = new Span<byte>(mem);
-        var roSpan = new ReadOnlySpan<byte>(mem);
+            var roSpan = new ReadOnlySpan<byte>(mem);
             for (var c = 0; c < count; c++)
             {
                 span.Fill(rnd.NextByte());
@@ -57,7 +57,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             var rnd = new System.Random();
             var mem = new byte[sizeof(Int16)];
             var span = new Span<byte>(mem);
-        var roSpan = new ReadOnlySpan<byte>(mem);
+            var roSpan = new ReadOnlySpan<byte>(mem);
             for (var c = 0; c < count; c++)
             {
                 span.Fill(rnd.NextByte());
@@ -78,7 +78,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             var rnd = new System.Random();
             var mem = new byte[sizeof(UInt16)];
             var span = new Span<byte>(mem);
-        var roSpan = new ReadOnlySpan<byte>(mem);
+            var roSpan = new ReadOnlySpan<byte>(mem);
             for (var c = 0; c < count; c++)
             {
                 span.Fill(rnd.NextByte());
@@ -93,6 +93,26 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             }
         }
 
+        [Fact]
+        public void TestInt24()
+        {
+            var rnd = new System.Random();
+            var mem = new byte[sizeof(Int24)];
+            var span = new Span<byte>(mem);
+            var roSpan = new ReadOnlySpan<byte>(mem);
+            for (var c = 0; c < count; c++)
+            {
+                span.Fill(rnd.NextByte());
+                Int24 a = 0;
+                // Pick any number except zero
+                while ((a = rnd.NextInt32().ToInt24()) == 0) { }
+                span.Write(a);
+                // Ensure span is not zero
+                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                var r = roSpan.ReadInt24();
+                Assert.Equal(a, r);
+            }
+        }
         [Fact]
         public void TestInt32()
         {
@@ -122,7 +142,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             var span = new Span<byte>(mem);
             var roSpan = new ReadOnlySpan<byte>(mem);
 
-        for (var c = 0; c < count; c++)
+            for (var c = 0; c < count; c++)
             {
                 span.Fill(rnd.NextByte());
                 UInt32 a = 0;
@@ -139,11 +159,11 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
         public void TestInt64()
         {
             var rnd = new System.Random();
-        var mem = new byte[sizeof(Int64)];
-        var span = new Span<byte>(mem);
-        var roSpan = new ReadOnlySpan<byte>(mem);
+            var mem = new byte[sizeof(Int64)];
+            var span = new Span<byte>(mem);
+            var roSpan = new ReadOnlySpan<byte>(mem);
 
-        for (var c = 0; c < count; c++)
+            for (var c = 0; c < count; c++)
             {
                 span.Fill(rnd.NextByte());
                 Int64 a = 0;
@@ -151,21 +171,21 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 while ((a = rnd.NextInt64()) == 0) { }
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum()); 
+                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
                 var r = roSpan.ReadInt64();
                 Assert.Equal(a, r);
             }
-        }    
+        }
 
         [Fact]
         public void TestUInt64()
         {
             var rnd = new System.Random();
-        var mem = new byte[sizeof(UInt64)];
-        var span = new Span<byte>(mem);
-        var roSpan = new ReadOnlySpan<byte>(mem);
+            var mem = new byte[sizeof(UInt64)];
+            var span = new Span<byte>(mem);
+            var roSpan = new ReadOnlySpan<byte>(mem);
 
-        for (var c = 0; c < count; c++)
+            for (var c = 0; c < count; c++)
             {
                 span.Fill(rnd.NextByte());
                 UInt64 a = 0;
@@ -173,7 +193,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 while ((a = rnd.NextUInt64()) == 0) { }
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum()); 
+                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
                 var r = roSpan.ReadUInt64();
                 Assert.Equal(a, r);
             }

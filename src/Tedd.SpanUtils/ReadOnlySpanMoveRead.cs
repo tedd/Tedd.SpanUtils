@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Tedd.SpanUtils;
 
 namespace Tedd
 {
@@ -33,6 +34,14 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int24 MoveReadInt24(ref this ReadOnlySpan<byte> span)
+        {
+            var i = span.ReadInt24();
+            span = span.Slice(3);
+            return i;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int32 MoveReadInt32(ref this ReadOnlySpan<byte> span) => (Int32)span.MoveReadUInt32();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -42,6 +51,7 @@ namespace Tedd
             span = span.Slice(4);
             return i;
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int64 MoveReadInt64(ref this ReadOnlySpan<byte> span) => (Int64)span.MoveReadUInt64();
