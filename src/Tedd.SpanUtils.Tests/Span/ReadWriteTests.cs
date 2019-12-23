@@ -94,6 +94,27 @@ namespace Tedd.SpanUtils.Tests.Span
         }
 
         [Fact]
+        public void TestInt24()
+        {
+            var rnd = new System.Random();
+            var mem = new byte[sizeof(Int24)];
+            var span = new Span<byte>(mem);
+            var roSpan = new Span<byte>(mem);
+            for (var c = 0; c < count; c++)
+            {
+                span.Fill(rnd.NextByte());
+                Int24 a = 0;
+                // Pick any number except zero
+                while ((a = rnd.NextInt32().ToInt24()) == 0) { }
+                span.Write(a);
+                // Ensure span is not zero
+                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                var r = roSpan.ReadInt24();
+                Assert.Equal(a, r);
+            }
+        }
+
+        [Fact]
         public void TestInt32()
         {
             var rnd = new System.Random();

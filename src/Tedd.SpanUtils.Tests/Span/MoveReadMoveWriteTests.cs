@@ -122,6 +122,34 @@ namespace Tedd.SpanUtils.Tests.Span
         }
 
         [Fact]
+        public void TestInt24()
+        {
+            var rnd = new System.Random();
+            for (var c = 0; c < count; c++)
+            {
+                var mem = new byte[sizeof(Int24) * writeRepeatCount];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+                var a = new Int24[writeRepeatCount];
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var n = rnd.NextInt32().ToInt24();
+                    a[i] = n;
+                    span1.MoveWrite(n);
+                }
+
+                // Ensure span is not zero
+                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var r = span2.MoveReadInt24();
+                    Assert.Equal(a[i], r);
+                }
+            }
+        }
+
+        [Fact]
         public void TestInt32()
         {
             var rnd = new System.Random();

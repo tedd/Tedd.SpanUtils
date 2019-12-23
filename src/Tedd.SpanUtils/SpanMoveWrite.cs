@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Tedd.SpanUtils;
 
 namespace Tedd
 {
@@ -29,6 +30,13 @@ namespace Tedd
         {
             span.Write(value);
             span = span.Slice(2);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWrite(ref this Span<byte> span, Int24 value)
+        {
+            span.Write(value);
+            span = span.Slice(3);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
