@@ -34,9 +34,9 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int24 MoveReadInt24(ref this ReadOnlySpan<byte> span)
+        public static UInt24 MoveReadUInt24(ref this ReadOnlySpan<byte> span)
         {
-            var i = span.ReadInt24();
+            var i = span.ReadUInt24();
             span = span.Slice(3);
             return i;
         }

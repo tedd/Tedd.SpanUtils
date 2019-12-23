@@ -33,7 +33,7 @@ namespace Tedd
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, Int24 value)
+        public static void MoveWrite(ref this Span<byte> span, UInt24 value)
         {
             span.Write(value);
             span = span.Slice(3);

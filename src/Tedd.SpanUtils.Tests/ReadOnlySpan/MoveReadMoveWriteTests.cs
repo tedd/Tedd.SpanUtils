@@ -122,19 +122,19 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
         }
 
         [Fact]
-        public void TestInt24()
+        public void TestUInt24()
         {
             var rnd = new System.Random();
             for (var c = 0; c < count; c++)
             {
-                var mem = new byte[sizeof(Int24) * writeRepeatCount];
+                var mem = new byte[sizeof(UInt24) * writeRepeatCount];
                 var span1 = new Span<byte>(mem);
                 var span2 = new ReadOnlySpan<byte>(mem);
-                var a = new Int24[writeRepeatCount];
+                var a = new UInt24[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var n =rnd.NextInt32().ToInt24();
+                    var n =rnd.NextUInt32().ToUInt24();
                     a[i] = n;
                     span1.MoveWrite(n);
                 }
@@ -143,7 +143,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadInt24();
+                    var r = span2.MoveReadUInt24();
                     Assert.Equal(a[i], r);
                 }
             }
