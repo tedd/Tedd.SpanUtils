@@ -262,5 +262,32 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 }
             }
         }
+
+        [Fact]
+        public void TestGuid()
+        {
+            for (var c = 0; c < count; c++)
+            {
+                var mem = new byte[16 * writeRepeatCount];
+                var span1 = new Span<byte>(mem);
+                var span2 = new ReadOnlySpan<byte>(mem);
+                var a = new Guid[writeRepeatCount];
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var n = Guid.NewGuid();
+                    a[i] = n;
+                    span1.MoveWrite(n);
+                }
+
+                // Ensure span is not zero
+                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var r = span2.MoveReadGuid();
+                    Assert.Equal(a[i], r);
+                }
+            }
+        }
     }
 }

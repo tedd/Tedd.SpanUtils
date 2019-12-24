@@ -58,5 +58,12 @@ namespace Tedd
             span.Write(value);
             span = span.Slice(8);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWrite(ref this Span<byte> span, Guid value)
+        {
+            span.Write(value);
+            span = span.Slice(16);
+        }
     }
 }

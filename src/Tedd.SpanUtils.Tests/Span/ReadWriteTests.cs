@@ -199,5 +199,25 @@ namespace Tedd.SpanUtils.Tests.Span
                 Assert.Equal(a, r);
             }
         }
+
+        [Fact]
+        public void TestGuid()
+        {
+            for (var c = 0; c < count; c++)
+            {
+                var mem = new byte[16];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                var n = Guid.NewGuid();
+                span1.Write(n);
+
+                // Ensure span is not zero
+                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                var r = span2.ReadGuid();
+                Assert.Equal(n, r);
+            }
+
+        }
     }
 }

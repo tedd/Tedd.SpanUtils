@@ -66,5 +66,13 @@ namespace Tedd
                 | ((UInt64)span[7]));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Guid ReadGuid(ref this ReadOnlySpan<byte> span)
+        {
+            var s = span.Slice(0, 16);
+            return new Guid(s.ToArray());
+        }
+
+
     }
 }
