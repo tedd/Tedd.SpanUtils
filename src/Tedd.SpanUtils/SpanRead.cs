@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 using Tedd.SpanUtils;
 
 namespace Tedd
@@ -69,6 +70,44 @@ namespace Tedd
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Guid ReadGuid(ref this Span<byte> span) => new Guid(span.Slice(0, 16).ToArray());
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadSize(ref this Span<byte> span)
+        {
+            var b1 = span.ReadByte();
+            var s = b1 >> 6;
+
+#pragma warning disable 8509
+            return s switch
+#pragma warning restore 8509
+            {
+                0 => (UInt32)b1 & 0b00111111,
+                1 => (UInt32)span.ReadUInt16() & 0b00111111_11111111,
+                2 => (UInt32)span.ReadUInt24() & 0b00111111_11111111_11111111,
+                3 => (UInt32)span.ReadUInt32() & 0b00111111_11111111_11111111_11111111
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte[] ReadBytes(ref this Span<byte> span)
+        {
+            var size = span.ReadSize();
+            return span.Slice(0, (int)size).ToArray();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string ReadString(ref this Span<byte> span)
+        {
+            var size = span.ReadSize();
+#if NETCOREAPP || NETSTANDARD
+            var ros = (ReadOnlySpan<byte>)span.Slice(0, (int) size);
+            return Encoding.UTF8.GetString(ros);
+#else
+            var bytes = span.Slice(0, (int) size).ToArray();
+            return Encoding.UTF8.GetString(bytes);
+#endif
+        }
+
 
     }
 }
