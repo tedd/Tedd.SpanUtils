@@ -62,5 +62,14 @@ namespace Tedd
             span[6] = (byte)((value >> (8 * 1)) & 0xFF);
             span[7] = (byte)(value & 0xFF);
         }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Write(ref this Span<byte> span, Guid value)
+        {
+            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            var bytes = new Span<byte>(value.ToByteArray());
+            bytes.CopyTo(span);
+        }
     }
 }

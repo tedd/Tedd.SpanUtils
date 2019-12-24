@@ -21,10 +21,13 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 span.Fill(rnd.NextByte());
                 SByte a = 0;
                 // Pick any number except zero
-                while ((a = rnd.NextSByte()) == 0) { }
+                while ((a = rnd.NextSByte()) == 0)
+                {
+                }
+
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                Assert.NotEqual(0, span.ToArray().Select(b => (int) b).Sum());
                 var r = roSpan.ReadSByte();
                 Assert.Equal(a, r);
             }
@@ -42,10 +45,13 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 span.Fill(rnd.NextByte());
                 Byte a = 0;
                 // Pick any number except zero
-                while ((a = rnd.NextByte()) == 0) { }
+                while ((a = rnd.NextByte()) == 0)
+                {
+                }
+
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                Assert.NotEqual(0, span.ToArray().Select(b => (int) b).Sum());
                 var r = roSpan.ReadByte();
                 Assert.Equal(a, r);
             }
@@ -63,10 +69,13 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 span.Fill(rnd.NextByte());
                 Int16 a = 0;
                 // Pick any number except zero
-                while ((a = rnd.NextInt16()) == 0) { }
+                while ((a = rnd.NextInt16()) == 0)
+                {
+                }
+
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                Assert.NotEqual(0, span.ToArray().Select(b => (int) b).Sum());
                 var r = roSpan.ReadInt16();
                 Assert.Equal(a, r);
             }
@@ -84,10 +93,13 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 span.Fill(rnd.NextByte());
                 UInt16 a = 0;
                 // Pick any number except zero
-                while ((a = rnd.NextUInt16()) == 0) { }
+                while ((a = rnd.NextUInt16()) == 0)
+                {
+                }
+
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                Assert.NotEqual(0, span.ToArray().Select(b => (int) b).Sum());
                 var r = roSpan.ReadUInt16();
                 Assert.Equal(a, r);
             }
@@ -105,14 +117,18 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 span.Fill(rnd.NextByte());
                 UInt24 a = 0;
                 // Pick any number except zero
-                while ((a = rnd.NextUInt32().ToUInt24()) == 0) { }
+                while ((a = rnd.NextUInt32().ToUInt24()) == 0)
+                {
+                }
+
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                Assert.NotEqual(0, span.ToArray().Select(b => (int) b).Sum());
                 var r = roSpan.ReadUInt24();
                 Assert.Equal(a, r);
             }
         }
+
         [Fact]
         public void TestInt32()
         {
@@ -125,10 +141,13 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 span.Fill(rnd.NextByte());
                 Int32 a = 0;
                 // Pick any number except zero
-                while ((a = rnd.NextInt32()) == 0) { }
+                while ((a = rnd.NextInt32()) == 0)
+                {
+                }
+
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                Assert.NotEqual(0, span.ToArray().Select(b => (int) b).Sum());
                 var r = roSpan.ReadInt32();
                 Assert.Equal(a, r);
             }
@@ -147,14 +166,18 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 span.Fill(rnd.NextByte());
                 UInt32 a = 0;
                 // Pick any number except zero
-                while ((a = rnd.NextUInt32()) == 0) { }
+                while ((a = rnd.NextUInt32()) == 0)
+                {
+                }
+
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                Assert.NotEqual(0, span.ToArray().Select(b => (int) b).Sum());
                 var r = roSpan.ReadUInt32();
                 Assert.Equal(a, r);
             }
         }
+
         [Fact]
         public void TestInt64()
         {
@@ -168,10 +191,13 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 span.Fill(rnd.NextByte());
                 Int64 a = 0;
                 // Pick any number except zero
-                while ((a = rnd.NextInt64()) == 0) { }
+                while ((a = rnd.NextInt64()) == 0)
+                {
+                }
+
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                Assert.NotEqual(0, span.ToArray().Select(b => (int) b).Sum());
                 var r = roSpan.ReadInt64();
                 Assert.Equal(a, r);
             }
@@ -190,13 +216,37 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 span.Fill(rnd.NextByte());
                 UInt64 a = 0;
                 // Pick any number except zero
-                while ((a = rnd.NextUInt64()) == 0) { }
+                while ((a = rnd.NextUInt64()) == 0)
+                {
+                }
+
                 span.Write(a);
                 // Ensure span is not zero
-                Assert.NotEqual(0, span.ToArray().Select(b => (int)b).Sum());
+                Assert.NotEqual(0, span.ToArray().Select(b => (int) b).Sum());
                 var r = roSpan.ReadUInt64();
                 Assert.Equal(a, r);
             }
         }
+
+        [Fact]
+        public void TestGuid()
+        {
+            for (var c = 0; c < count; c++)
+            {
+                var mem = new byte[16];
+                var span1 = new Span<byte>(mem);
+                var span2 = new ReadOnlySpan<byte>(mem);
+
+                var n = Guid.NewGuid();
+                span1.Write(n);
+
+                // Ensure span is not zero
+                Assert.NotEqual(0, span2.ToArray().Select(b => (int) b).Sum());
+                var r = span2.ReadGuid();
+                Assert.Equal(n, r);
+            }
+
+        }
     }
+
 }
