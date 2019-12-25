@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Xunit;
 using Tedd;
@@ -282,7 +282,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 }
 
                 // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var r = span2.MoveReadGuid();
@@ -291,5 +291,159 @@ namespace Tedd.SpanUtils.Tests.Span
             }
 
         }
+
+
+        [Fact]
+        public void TestBytes()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(0, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var a = new Span<byte>(answer).Slice(memSize * i, memSize).ToArray();
+                    span1.MoveWrite(a);
+                }
+
+                // Ensure span is not zero
+                if (memSize > 0 && answer[0] != 0)
+                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                var ac = 0;
+                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
+                {
+                    var r = span2.MoveReadBytes(memSize);
+
+                    for (var i = 0; i < r.Length; i++)
+                        Assert.Equal(answer[ac++], r[i]);
+                }
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new Span<byte>(mem);
+                    s.MoveWrite(new byte[mem.Length + 1]);
+                });
+            }
+
+        }
+
+        [Fact]
+        public void TestSpan()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(0, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var a = new Span<byte>(answer).Slice(memSize * i, memSize);
+                    span1.MoveWrite(a);
+                }
+
+                // Ensure span is not zero
+                if (memSize > 0 && answer[0] != 0)
+                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                var ac = 0;
+                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
+                {
+                    var r = span2.MoveReadBytes(memSize);
+
+                    for (var i = 0; i < r.Length; i++)
+                        Assert.Equal(answer[ac++], r[i]);
+                }
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new Span<byte>(mem);
+                    s.Write(new Span<byte>(new byte[mem.Length + 1]));
+                });
+            }
+        }
+
+        [Fact]
+        public void TestReadOnlySpan()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(0, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var a = new ReadOnlySpan<byte>(answer).Slice(memSize * i, memSize);
+                    span1.MoveWrite(a);
+                }
+
+                // Ensure span is not zero
+                if (memSize > 0 && answer[0] != 0)
+                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                var ac = 0;
+                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
+                {
+                    var r = span2.MoveReadBytes(memSize);
+
+                    for (var i = 0; i < r.Length; i++)
+                        Assert.Equal(answer[ac++], r[i]);
+                }
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new Span<byte>(mem);
+                    s.MoveWrite(new ReadOnlySpan<byte>(new byte[mem.Length + 1]));
+                });
+            }
+
+        }
+
+
+        [Fact]
+        public void TestReadStringWithHeader()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(0, 1024);
+                var mem = new byte[(memSize + 4) * writeRepeatCount * 2];
+                var answer = new string[writeRepeatCount];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var str = rnd.NextString("abcæøå诶	比西αβγ", memSize);
+                    answer[i] = str;
+                    span1.MoveWriteWithHeader(str);
+                }
+
+                // Ensure span is not zero
+                if (memSize > 0 && answer[0][0] != 0)
+                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var r = span2.MoveReadStringWithHeader(out var len);
+                    Assert.Equal(answer[i], r);
+                }
+            }
+
+        }
+
+
     }
 }
