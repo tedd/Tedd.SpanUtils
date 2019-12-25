@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Text;
 using Tedd.SpanUtils;
 
 namespace Tedd
@@ -77,6 +78,48 @@ namespace Tedd
             var i = span.ReadGuid();
             span = span.Slice(16);
             return i;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadSize(ref this ReadOnlySpan<byte> span, out int totalLength)
+        {
+            var size = span.ReadSize(out totalLength);
+            span = span.Slice(totalLength);
+            return size;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte[] MoveReadBytes(ref this ReadOnlySpan<byte> span, int length)
+        {
+            var ret = span.Slice(0, length).ToArray();
+            span = span.Slice(length);
+            return ret;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string MoveReadStringWithHeader(ref this ReadOnlySpan<byte> span, out int totalLength)
+        {
+            var size = span.ReadSize(out var len);
+            totalLength = (int)size + len;
+#if NETCOREAPP || NETSTANDARD
+            var ros = (ReadOnlySpan<byte>)span.Slice(len, (int)size);
+            var ret = Encoding.UTF8.GetString(ros);
+#else
+            var bytes = span.Slice(len, (int)size).ToArray();
+            var ret = Encoding.UTF8.GetString(bytes);
+#endif
+            span = span.Slice((int)totalLength);
+            return ret;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte[] MoveReadBytesWithHeader(ref this ReadOnlySpan<byte> span, out int totalLength)
+        {
+            var size = span.ReadSize(out var len);
+            totalLength = (int)size + len;
+            var ret = span.Slice(len, (int)size).ToArray();
+            span = span.Slice((int)totalLength);
+            return ret;
         }
 
 

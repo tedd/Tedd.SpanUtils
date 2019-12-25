@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Text;
 using Tedd.SpanUtils;
 
 namespace Tedd
@@ -67,10 +68,51 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Guid ReadGuid(ref this ReadOnlySpan<byte> span)
+        public static Guid ReadGuid(ref this ReadOnlySpan<byte> span) => new Guid(span.Slice(0, 16).ToArray());
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadSize(ref this ReadOnlySpan<byte> span, out int totalLength)
         {
-            var s = span.Slice(0, 16);
-            return new Guid(s.ToArray());
+            var b1 = span[0];
+            var s = b1 >> 6;
+            totalLength = s + 1;
+#pragma warning disable 8509
+            return s switch
+#pragma warning restore 8509
+            {
+                0b00 => (UInt32)b1 & 0b00111111,
+                0b01 => (UInt32)span.ReadUInt16() & 0b00111111_11111111,
+                0b10 => (UInt32)span.ReadUInt24() & 0b00111111_11111111_11111111,
+                0b11 => (UInt32)span.ReadUInt32() & 0b00111111_11111111_11111111_11111111
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte[] ReadBytesWithHeader(ref this ReadOnlySpan<byte> span, int length)
+        {
+            return span.Slice(0, length).ToArray();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte[] ReadBytesWithHeader(ref this ReadOnlySpan<byte> span, out int totalLength)
+        {
+            var size = span.ReadSize(out var len);
+            totalLength = len + (int)size;
+            return span.Slice(len, (int)size).ToArray();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string ReadStringWithHeader(ref this ReadOnlySpan<byte> span, out int totalLength)
+        {
+            var size = span.ReadSize(out var len);
+            totalLength = len + (int)size;
+#if NETCOREAPP || NETSTANDARD
+            var ros = (ReadOnlySpan<byte>)span.Slice(len, (int)size);
+            return Encoding.UTF8.GetString(ros);
+#else
+            var bytes = span.Slice(len, (int)size).ToArray();
+            return Encoding.UTF8.GetString(bytes);
+#endif
         }
 
 

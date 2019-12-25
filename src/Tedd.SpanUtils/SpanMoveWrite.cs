@@ -6,64 +6,138 @@ namespace Tedd
 {
     public static class SpanMoveWrite
     {
-
-
+        #region Primitives
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, byte value)
+        public static int MoveWrite(ref this Span<byte> span, byte value)
         {
             span[0] = value;
             span = span.Slice(1);
+            return 1;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, sbyte value)
+        public static int MoveWrite(ref this Span<byte> span, sbyte value)
         {
             span[0] = (byte)value;
             span = span.Slice(1);
+            return 1;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, Int16 value) => span.MoveWrite((UInt16)value);
+        public static int MoveWrite(ref this Span<byte> span, Int16 value) => span.MoveWrite((UInt16)value);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, UInt16 value)
+        public static int MoveWrite(ref this Span<byte> span, UInt16 value)
         {
-            span.Write(value);
-            span = span.Slice(2);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, UInt24 value)
-        {
-            span.Write(value);
-            span = span.Slice(3);
+            var len = span.Write(value);
+            span = span.Slice(len);
+            return len;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, Int32 value) => span.MoveWrite((UInt32)value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, UInt32 value)
+        public static int MoveWrite(ref this Span<byte> span, UInt24 value)
         {
-            span.Write(value);
-            span = span.Slice(4);
+            var len = span.Write(value);
+            span = span.Slice(len);
+            return len;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, Int64 value) => span.MoveWrite((UInt64)value);
+        public static int MoveWrite(ref this Span<byte> span, Int32 value) => span.MoveWrite((UInt32)value);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, UInt64 value)
+        public static int MoveWrite(ref this Span<byte> span, UInt32 value)
         {
-            span.Write(value);
-            span = span.Slice(8);
+            var len = span.Write(value);
+            span = span.Slice(len);
+            return len;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref this Span<byte> span, Guid value)
+        public static int MoveWrite(ref this Span<byte> span, Int64 value) => span.MoveWrite((UInt64)value);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWrite(ref this Span<byte> span, UInt64 value)
         {
-            span.Write(value);
-            span = span.Slice(16);
+            var len = span.Write(value);
+            span = span.Slice(len);
+            return len;
+        }
+        #endregion
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWrite(ref this Span<byte> span, Guid value)
+        {
+            var len = span.Write(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        #region Arrays
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWrite(ref this Span<byte> span, Span<byte> value)
+        {
+            var len = span.Write(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWrite(ref this Span<byte> span, ReadOnlySpan<byte> value)
+        {
+            var len = span.Write(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWrite(ref this Span<byte> span, byte[] value)
+        {
+            var len = span.Write(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWriteWithHeader(ref this Span<byte> span, Span<byte> value)
+        {
+            var len = span.WriteWithHeader(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWriteWithHeader(ref this Span<byte> span, ReadOnlySpan<byte> value)
+        {
+            var len = span.WriteWithHeader(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWriteWithHeader(ref this Span<byte> span, byte[] value)
+        {
+            var len = span.WriteWithHeader(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWriteWithHeader(ref this Span<byte> span, string value)
+        {
+            var len = span.WriteWithHeader(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        #endregion
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWriteSize(ref this Span<byte> span, UInt32 value)
+        {
+            var len = span.WriteSize(value);
+            span = span.Slice(len);
+            return len;
         }
     }
 }
