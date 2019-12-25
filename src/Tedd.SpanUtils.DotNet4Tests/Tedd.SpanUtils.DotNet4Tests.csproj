@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Tedd.SpanUtils.Tests\ReadOnlySpan\MoveReadMoveWriteTests.cs" Link="ReadOnlySpan\MoveReadMoveWriteTests.cs" />
+    <Compile Include="..\Tedd.SpanUtils.Tests\ReadOnlySpan\ReadWriteTests.cs" Link="ReadOnlySpan\ReadWriteTests.cs" />
+    <Compile Include="..\Tedd.SpanUtils.Tests\Span\MoveReadMoveWriteTests.cs" Link="Span\MoveReadMoveWriteTests.cs" />
+    <Compile Include="..\Tedd.SpanUtils.Tests\Span\ReadWriteTests.cs" Link="Span\ReadWriteTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.3" />
+    <PackageReference Include="Tedd.RandomUtils" Version="1.0.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Span\" />
+    <Folder Include="ReadOnlySpan\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tedd.SpanUtils\Tedd.SpanUtils.csproj" />
+  </ItemGroup>
+
+</Project>
