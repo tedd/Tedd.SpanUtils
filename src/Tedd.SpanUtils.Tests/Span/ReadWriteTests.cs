@@ -219,5 +219,47 @@ namespace Tedd.SpanUtils.Tests.Span
             }
 
         }
+
+
+        [Fact]
+        public void TestSize()
+        {
+            var mem = new byte[4];
+            var rnd = new Random();
+            for (var c = 0; c < count * 100; c++)
+            {
+                var a = (UInt32)rnd.Next(0, 0b00111111_11111111_11111111_11111111);
+                var span1 = new Span<byte>(mem);
+                span1.Fill(0);
+                var span2 = new Span<byte>(mem);
+
+                span1.WriteSize(a);
+
+                var r = span2.ReadSize();
+                Assert.Equal(a, r);
+            }
+
+        }
+
+        [Fact]
+        public void TestBytes()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var mem = new byte[rnd.Next(0, 1)];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                var n = Guid.NewGuid();
+                span1.Write(n);
+
+                // Ensure span is not zero
+                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                var r = span2.ReadGuid();
+                Assert.Equal(n, r);
+            }
+
+        }
     }
 }
