@@ -74,17 +74,17 @@ namespace Tedd
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt32 ReadSize(ref this Span<byte> span)
         {
-            var b1 = span.ReadByte();
+            var b1 = span[0];
             var s = b1 >> 6;
 
 #pragma warning disable 8509
             return s switch
 #pragma warning restore 8509
             {
-                0 => (UInt32)b1 & 0b00111111,
-                1 => (UInt32)span.ReadUInt16() & 0b00111111_11111111,
-                2 => (UInt32)span.ReadUInt24() & 0b00111111_11111111_11111111,
-                3 => (UInt32)span.ReadUInt32() & 0b00111111_11111111_11111111_11111111
+                0b00 => (UInt32)b1 & 0b00111111,
+                0b01 => (UInt32)span.ReadUInt16() & 0b00111111_11111111,
+                0b10 => (UInt32)span.ReadUInt24() & 0b00111111_11111111_11111111,
+                0b11 => (UInt32)span.ReadUInt32() & 0b00111111_11111111_11111111_11111111
             };
         }
 
