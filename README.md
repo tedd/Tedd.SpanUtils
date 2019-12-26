@@ -39,7 +39,9 @@ var b3 = span2.MoveReadInt64();
 // a1 == b1
 // a2 == b2
 // a3 == b3
+
 ```
+
 
 # Move read/write
 Move read/write will slice the current span so that it moves forward in memory area.
@@ -60,7 +62,7 @@ If the number is 14 bits or less (less than 16K) then 2 bytes is used.<br />
 If the number is 22 bits or less (less than 4M) then 3 bytes is used.<br />
 If the number is 30 bits or less (less than 1B) then 4 bytes is used.<br />
 
-This means that if you use `SizedWrite("hello")` then 1 byte is used for size header and 4 bytes are used for the string. While if you to `SizedWrite(new byte\[20_000\])` then 3 bytes are used for size header;
+This means that if you use `SizedWrite("hello")` then 1 byte is used for size header and 4 bytes are used for the string. While if you to `SizedWrite(new byte[20_000])` then 3 bytes are used for size header;
 
 # Sized writes
 String, byte\[\], Span<> and ReadOnlySpan<> can be written using `SizedWrite()`. This will put a 1-4 byte size descriptor in front of the actual data, meaning you do not have to know the size when you read it back using `SizedRead*()`;
