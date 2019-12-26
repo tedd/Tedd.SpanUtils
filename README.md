@@ -36,3 +36,35 @@ var b3 = span2.MoveReadInt64();
 // a2 == b2
 // a3 == b3
 ```
+
+# Move read/write
+Move read/write will slice the current span so that it moves forward in memory area.
+## Example
+```csharp
+var mem = new byte[10];
+var span = new Span<byte>(mem);
+// span now points to position 0 of mem. Span is 10 bytes big.
+var i = span.MoveReadInt32();
+// Since Int32 is 4 bytes span was moved ahead 4 bytes. span now points to position 4 of mem. Span is 6 bytes big.
+```
+
+# WriteSize() / ReadSize()
+`WriteSize()` and `ReadSize()` to write and read size to span. These use a simple compression technique where the 2 first bits are used to describe how many bytes are used for size.
+
+If the number is 6 bits or less (less than 64) then 1 byte is used.<br />
+If the number is 14 bits or less (less than 16K) then 2 bytes is used.<br />
+If the number is 22 bits or less (less than 4M) then 3 bytes is used.<br />
+If the number is 30 bits or less (less than 1B) then 4 bytes is used.<br />
+
+This means that if you use `SizedWrite("hello")` then 1 byte is used for size header and 4 bytes are used for the string. While if you to `SizedWrite(new byte\[20_000\])` then 3 bytes are used for size header;
+
+# Sized writes
+String, byte\[\], Span<> and ReadOnlySpan<> can be written using `SizedWrite()`. This will put a 1-4 byte size descriptor in front of the actual data, meaning you do not have to know the size when you read it back using `SizedRead*()`;
+
+
+## String
+Strings are converted to UTF8 before being written to span.
+
+For .Net Core allocation-free copying is used to avoid large GC objects. Since UTF8 has variable size the size is first calculated using `Encoding.UTF8.GetByteCount`. This means two passes are made over the string, first calculating then copying to span.
+
+For .Net 4.x a short-lived byte array is used for buffering UTF8 before writing.
