@@ -254,7 +254,7 @@ namespace Tedd.SpanUtils.Tests.Span
         }
 
         [Fact]
-        public void TestBytesWithHeader()
+        public void TestSizedBytes()
         {
             var rnd = new Random();
             for (var c = 0; c < count; c++)
@@ -266,26 +266,26 @@ namespace Tedd.SpanUtils.Tests.Span
                 var span2 = new Span<byte>(mem);
 
                 rnd.NextBytes(answer);
-                span1.WriteWithHeader(answer);
+                span1.SizedWrite(answer);
 
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var r = span2.ReadBytesWithHeader(out var len);
+                var r = span2.SizedReadBytes(out var len);
                 for (var i = 0; i < answer.Length; i++)
                     Assert.Equal(answer[i], r[i]);
 
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.WriteWithHeader(new byte[mem.Length + 1]);
+                    s.SizedWrite(new byte[mem.Length + 1]);
                 });
             }
 
         }
 
         [Fact]
-        public void TestSpanWithHeader()
+        public void TestSizedSpan()
         {
             var rnd = new Random();
             for (var c = 0; c < count; c++)
@@ -298,24 +298,24 @@ namespace Tedd.SpanUtils.Tests.Span
                 var span2 = new Span<byte>(mem);
 
                 rnd.NextBytes(answer);
-                span1.WriteWithHeader(aSpan);
+                span1.SizedWrite(aSpan);
 
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var r = span2.ReadBytesWithHeader(out var len);
+                var r = span2.SizedReadBytes(out var len);
                 for (var i = 0; i < answer.Length; i++)
                     Assert.Equal(answer[i], r[i]);
 
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.WriteWithHeader(new Span<byte>(new byte[mem.Length + 1]));
+                    s.SizedWrite(new Span<byte>(new byte[mem.Length + 1]));
                 });
             }
         }
         [Fact]
-        public void TestReadOnlySpanWithHeader()
+        public void TestSizedReadOnlySpan()
         {
             var rnd = new Random();
             for (var c = 0; c < count; c++)
@@ -328,25 +328,25 @@ namespace Tedd.SpanUtils.Tests.Span
                 var span2 = new Span<byte>(mem);
 
                 rnd.NextBytes(answer);
-                span1.WriteWithHeader(aSpan);
+                span1.SizedWrite(aSpan);
 
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var r = span2.ReadBytesWithHeader(out var len);
+                var r = span2.SizedReadBytes(out var len);
                 for (var i = 0; i < answer.Length; i++)
                     Assert.Equal(answer[i], r[i]);
 
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.WriteWithHeader(new ReadOnlySpan<byte>(new byte[mem.Length + 1]));
+                    s.SizedWrite(new ReadOnlySpan<byte>(new byte[mem.Length + 1]));
                 });
             }
         }
 
         [Fact]
-        public void TestStringWithHeader()
+        public void TestSizedString()
         {
             var rnd = new Random();
             for (var c = 0; c < count; c++)
@@ -357,20 +357,20 @@ namespace Tedd.SpanUtils.Tests.Span
                 var span2 = new Span<byte>(mem);
 
                 var answer = rnd.NextString("abcæøå诶	比西αβγ", memSize);
-                span1.WriteWithHeader(answer);
+                span1.SizedWrite(answer);
 
 
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var r = span2.ReadStringWithHeader(out var len);
+                var r = span2.SizedReadString(out var len);
                 Assert.Equal(answer, r);
 
 
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.WriteWithHeader(new string('a', mem.Length + 1));
+                    s.SizedWrite(new string('a', mem.Length + 1));
                 });
             }
         }

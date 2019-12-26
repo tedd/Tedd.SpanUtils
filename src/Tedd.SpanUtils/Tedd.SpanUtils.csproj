@@ -9,13 +9,13 @@
     <Authors>Tedd Hansen</Authors>
     <Company>Tedd Hansen</Company>
     <Description>Adds extension methods to read/write to Span&lt;byte&gt;</Description>
-    <PackageTags>Span ReadOnlySpan Read Write SByte Byte Int16 UInt16 UInt24 Int32 UInt32 Int64 UInt64</PackageTags>
+    <PackageTags>Span ReadOnlySpan Read Write SByte Byte Int16 UInt16 UInt24 Int32 UInt32 Int64 UInt64 String Bytes</PackageTags>
     <Copyright>Tedd Hansen</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/tedd/Tedd.SpanUtils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tedd/Tedd.SpanUtils</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <PackageLicenseExpression></PackageLicenseExpression>
   </PropertyGroup>
 
@@ -34,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\Tedd.BitUtils\LICENSE">
+    <None Include="..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
