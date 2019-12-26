@@ -92,7 +92,7 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte[] ReadBytesWithHeader(ref this Span<byte> span, int length)
+        public static byte[] ReadBytes(ref this Span<byte> span, int length)
         {
             return span.Slice(0, length).ToArray();
         }

@@ -6,6 +6,7 @@ namespace Tedd
 {
     public static class SpanMoveWrite
     {
+ 
         #region Primitives
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MoveWrite(ref this Span<byte> span, byte value)

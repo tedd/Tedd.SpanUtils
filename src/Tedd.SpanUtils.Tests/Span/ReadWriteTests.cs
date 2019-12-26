@@ -346,13 +346,13 @@ namespace Tedd.SpanUtils.Tests.Span
         }
 
         [Fact]
-        public void TestReadStringWithHeader()
+        public void TestStringWithHeader()
         {
             var rnd = new Random();
             for (var c = 0; c < count; c++)
             {
                 var memSize = rnd.Next(0, 1024);
-                var mem = new byte[memSize + 4];
+                var mem = new byte[(memSize + 4) * 4];
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
@@ -365,10 +365,45 @@ namespace Tedd.SpanUtils.Tests.Span
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 var r = span2.ReadStringWithHeader(out var len);
                 Assert.Equal(answer, r);
+
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new Span<byte>(mem);
+                    s.WriteWithHeader(new string('a', mem.Length + 1));
+                });
             }
         }
 
+        [Fact]
+        public void TestBytes()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(0, 10_000);
+                var mem = new byte[memSize + 4];
+                var answer = new byte[memSize];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
 
+                rnd.NextBytes(answer);
+                span1.Write(answer);
 
+                // Ensure span is not zero
+                if (memSize > 0 && answer[0] != 0)
+                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                var r = span2.ReadBytes(answer.Length);
+                for (var i = 0; i < answer.Length; i++)
+                    Assert.Equal(answer[i], r[i]);
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new Span<byte>(mem);
+                    s.Write(new byte[mem.Length + 1]);
+                });
+            }
+
+        }
     }
 }

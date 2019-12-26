@@ -27,7 +27,7 @@ namespace Tedd.SpanUtils
             // Largest (up to 1M) we store length as 4 bytes
             if (value <= 0b00111111_11111111_11111111_11111111) return 4;
             // Above that is unsupported. This is intended to be a compact representation of unknown size.
-            throw new Exception("Size too large, use WriteUInt32 or WriteUInt64 instead.");
+            throw new ArgumentException("Size too large, use WriteUInt32 or WriteUInt64 instead.", nameof(value));
         }
     }
 }

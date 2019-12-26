@@ -7,6 +7,7 @@ namespace Tedd
 {
     public static class ReadOnlySpanRead
     {
+     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte ReadByte(ref this ReadOnlySpan<byte> span) => span[0];
 
@@ -88,7 +89,7 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte[] ReadBytesWithHeader(ref this ReadOnlySpan<byte> span, int length)
+        public static byte[] ReadBytes(ref this ReadOnlySpan<byte> span, int length)
         {
             return span.Slice(0, length).ToArray();
         }
