@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <LangVersion>8.0</LangVersion>
 
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\Tedd.SpanUtils.Tests\Common.cs" Link="Common.cs" />
     <Compile Include="..\Tedd.SpanUtils.Tests\ReadOnlySpan\MoveReadMoveWriteTests.cs" Link="ReadOnlySpan\MoveReadMoveWriteTests.cs" />
     <Compile Include="..\Tedd.SpanUtils.Tests\ReadOnlySpan\ReadWriteTests.cs" Link="ReadOnlySpan\ReadWriteTests.cs" />
     <Compile Include="..\Tedd.SpanUtils.Tests\Span\MoveReadMoveWriteTests.cs" Link="Span\MoveReadMoveWriteTests.cs" />

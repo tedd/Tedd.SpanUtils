@@ -412,6 +412,46 @@ namespace Tedd.SpanUtils.Tests.Span
 
         }
 
+        [Fact]
+        public void TestBytesWithHeader()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(0, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var a = new Span<byte>(answer).Slice(memSize * i, memSize).ToArray();
+                    span1.MoveWriteWithHeader(a);
+                }
+
+                // Ensure span is not zero
+                if (memSize > 0 && answer[0] != 0)
+                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                var ac = 0;
+                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
+                {
+                    var r = span2.MoveReadBytesWithHeader(out var len);
+
+                    for (var i = 0; i < r.Length; i++)
+                        Assert.Equal(answer[ac++], r[i]);
+                }
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new Span<byte>(mem);
+                    s.MoveWriteWithHeader(new Span<byte>(new byte[s.Length + 1]));
+                });
+            }
+
+        }
+
 
         [Fact]
         public void TestReadStringWithHeader()
@@ -420,7 +460,7 @@ namespace Tedd.SpanUtils.Tests.Span
             for (var c = 0; c < count; c++)
             {
                 var memSize = rnd.Next(0, 1024);
-                var mem = new byte[(memSize + 4) * writeRepeatCount * 2];
+                var mem = new byte[(memSize + 4) * writeRepeatCount * 4];
                 var answer = new string[writeRepeatCount];
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
@@ -444,6 +484,86 @@ namespace Tedd.SpanUtils.Tests.Span
 
         }
 
+        [Fact]
+        public void TestSize()
+        {
+            var rnd = new System.Random();
+            for (var c = 0; c < count; c++)
+            {
 
+                var mem = new byte[sizeof(UInt32) * writeRepeatCount];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+                var a = new UInt32[writeRepeatCount];
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var sr = rnd.Next(0, 4);
+#pragma warning disable 8509
+                    var n = sr switch
+#pragma warning restore 8509
+                    {
+                        0 => (UInt32)rnd.Next(0, 0b00111111),
+                        1 => (UInt32)rnd.Next(0b01000000, 0b00111111_11111111),
+                        2 => (UInt32)rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111),
+                        3 => (UInt32)rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111)
+                    };
+
+                    a[i] = n;
+                    span1.MoveWriteSize(n);
+                }
+
+                // Ensure span is not zero
+                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var r = span2.MoveReadSize(out var len);
+                    Assert.Equal(span2.MeasureWriteSize(a[i]), len);
+                    Assert.Equal(a[i], r);
+                }
+            }
+        }
+
+        [Fact]
+        public void TestSpanMove()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = 10_000;
+                var mem = new byte[memSize * 10];
+                var answer = new byte[memSize];
+                for (var i = 0; i < memSize; i++)
+                    answer[i] = (byte)rnd.Next(0, 10);
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                for (var i = 0; i < memSize; i++)
+                {
+                    span1.Move(answer[i]);
+                    span1.MoveWrite(answer[i]);
+                }
+
+                // Ensure span is not zero
+                if (memSize > 0 && answer[0] != 0)
+                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                for (var i = 0; i < memSize; i++)
+                {
+                    if (answer[i] > 1)
+                        Assert.Equal(0, span2[1]);
+                    span2.Move(answer[i]);
+                    var r = span2.MoveReadByte();
+                    Assert.Equal(answer[i], r);
+                }
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new Span<byte>(mem);
+                    s.MoveWriteWithHeader(new Span<byte>(new byte[s.Length + 1]));
+                });
+
+            }
+
+        }
     }
 }
