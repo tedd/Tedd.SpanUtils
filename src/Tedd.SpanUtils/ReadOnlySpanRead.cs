@@ -95,7 +95,7 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte[] ReadBytesWithHeader(ref this ReadOnlySpan<byte> span, out int totalLength)
+        public static byte[] SizedReadBytes(ref this ReadOnlySpan<byte> span, out int totalLength)
         {
             var size = span.ReadSize(out var len);
             totalLength = len + (int)size;
@@ -103,7 +103,7 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string ReadStringWithHeader(ref this ReadOnlySpan<byte> span, out int totalLength)
+        public static string SizedReadString(ref this ReadOnlySpan<byte> span, out int totalLength)
         {
             var size = span.ReadSize(out var len);
             totalLength = len + (int)size;

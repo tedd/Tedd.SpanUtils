@@ -114,11 +114,14 @@ namespace Tedd
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int WriteWithHeader(ref this Span<byte> span, byte[] value) => span.WriteWithHeader(new Span<byte>(value));
+        public static int SizedWrite(ref this Span<byte> span, byte[] value) => span.SizedWrite(new Span<byte>(value));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int WriteWithHeader(ref this Span<byte> span, string value)
+        public static int SizedWrite(ref this Span<byte> span, string value)
         {
+#if NETCOREAPP || NETSTANDARD
+            // We use GetByteCount followed by direct copy to avoid creating a byte array (avoid GC).
+            // For larger strings this could cause 
             var strSize = (UInt32)Encoding.UTF8.GetByteCount(value);
             var mbs = span.MeasureWriteSize((UInt32)strSize);
             var len = (int)mbs + (int)strSize;
@@ -126,20 +129,24 @@ namespace Tedd
                 throw new ArgumentException("String is too long.", nameof(value));
 
             _ = span.WriteSize(strSize);
-#if NETCOREAPP || NETSTANDARD
-            // We use GetByteCount followed by direct copy to avoid creating a byte array (avoid GC).
-            // For larger strings this could cause 
+
             Encoding.UTF8.GetBytes(value, span.Slice(mbs));
 #else
-            var s = span.Slice(mbs, (int)strSize);
-            s.Write(Encoding.UTF8.GetBytes(value));
+            var bytes = Encoding.UTF8.GetBytes(value);
+            if (bytes.Length > span.Length)
+                throw new ArgumentException("String is too long.", nameof(value));
+
+            var mbs = span.WriteSize((UInt32)bytes.Length);
+            var len = (int)mbs + bytes.Length;
+            var s = span.Slice(mbs, bytes.Length);
+            s.Write(bytes);
 #endif
 
             return len;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int WriteWithHeader(ref this Span<byte> span, Span<byte> value)
+        public static int SizedWrite(ref this Span<byte> span, Span<byte> value)
         {
             var mbs = span.MeasureWriteSize((UInt32)value.Length);
             var len = mbs + value.Length;
@@ -154,7 +161,7 @@ namespace Tedd
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int WriteWithHeader(ref this Span<byte> span, ReadOnlySpan<byte> value)
+        public static int SizedWrite(ref this Span<byte> span, ReadOnlySpan<byte> value)
         {
             var mbs = span.MeasureWriteSize((UInt32)value.Length);
             var len = mbs + value.Length;

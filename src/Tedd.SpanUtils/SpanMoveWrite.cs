@@ -100,33 +100,33 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int MoveWriteWithHeader(ref this Span<byte> span, Span<byte> value)
+        public static int MoveSizedWrite(ref this Span<byte> span, Span<byte> value)
         {
-            var len = span.WriteWithHeader(value);
+            var len = span.SizedWrite(value);
             span = span.Slice(len);
             return len;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int MoveWriteWithHeader(ref this Span<byte> span, ReadOnlySpan<byte> value)
+        public static int MoveSizedWrite(ref this Span<byte> span, ReadOnlySpan<byte> value)
         {
-            var len = span.WriteWithHeader(value);
+            var len = span.SizedWrite(value);
             span = span.Slice(len);
             return len;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int MoveWriteWithHeader(ref this Span<byte> span, byte[] value)
+        public static int MoveSizedWrite(ref this Span<byte> span, byte[] value)
         {
-            var len = span.WriteWithHeader(value);
+            var len = span.SizedWrite(value);
             span = span.Slice(len);
             return len;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int MoveWriteWithHeader(ref this Span<byte> span, string value)
+        public static int MoveSizedWrite(ref this Span<byte> span, string value)
         {
-            var len = span.WriteWithHeader(value);
+            var len = span.SizedWrite(value);
             span = span.Slice(len);
             return len;
         }

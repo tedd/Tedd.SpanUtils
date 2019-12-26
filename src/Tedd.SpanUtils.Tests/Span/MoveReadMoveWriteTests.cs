@@ -413,7 +413,7 @@ namespace Tedd.SpanUtils.Tests.Span
         }
 
         [Fact]
-        public void TestBytesWithHeader()
+        public void TestSizedBytes()
         {
             var rnd = new Random();
             for (var c = 0; c < count; c++)
@@ -428,7 +428,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var a = new Span<byte>(answer).Slice(memSize * i, memSize).ToArray();
-                    span1.MoveWriteWithHeader(a);
+                    span1.MoveSizedWrite(a);
                 }
 
                 // Ensure span is not zero
@@ -437,7 +437,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 var ac = 0;
                 for (var wrc = 0; wrc < writeRepeatCount; wrc++)
                 {
-                    var r = span2.MoveReadBytesWithHeader(out var len);
+                    var r = span2.MoveSizedReadBytes(out var len);
 
                     for (var i = 0; i < r.Length; i++)
                         Assert.Equal(answer[ac++], r[i]);
@@ -446,7 +446,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.MoveWriteWithHeader(new Span<byte>(new byte[s.Length + 1]));
+                    s.MoveSizedWrite(new Span<byte>(new byte[s.Length + 1]));
                 });
             }
 
@@ -454,7 +454,7 @@ namespace Tedd.SpanUtils.Tests.Span
 
 
         [Fact]
-        public void TestReadStringWithHeader()
+        public void TestSizedReadString()
         {
             var rnd = new Random();
             for (var c = 0; c < count; c++)
@@ -469,7 +469,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 {
                     var str = rnd.NextString("abcæøå诶	比西αβγ", memSize);
                     answer[i] = str;
-                    span1.MoveWriteWithHeader(str);
+                    span1.MoveSizedWrite(str);
                 }
 
                 // Ensure span is not zero
@@ -477,7 +477,7 @@ namespace Tedd.SpanUtils.Tests.Span
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadStringWithHeader(out var len);
+                    var r = span2.MoveSizedReadString(out var len);
                     Assert.Equal(answer[i], r);
                 }
             }
@@ -559,7 +559,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.MoveWriteWithHeader(new Span<byte>(new byte[s.Length + 1]));
+                    s.MoveSizedWrite(new Span<byte>(new byte[s.Length + 1]));
                 });
 
             }
