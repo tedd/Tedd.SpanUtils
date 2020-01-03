@@ -203,7 +203,7 @@ namespace Tedd
         /// <param name="span"></param>
         /// <param name="value"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int MeasureWriteSize(ref this Span<byte> span, UInt32 value) => Utils.MeasureWriteSize(value);
+        public static int MeasureWriteSize(ref this Span<byte> span, UInt32 value) => value.MeasureWriteSize();
         #endregion
 
     }
