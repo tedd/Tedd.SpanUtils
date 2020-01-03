@@ -17,7 +17,6 @@ namespace Tedd.SpanUtils
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MeasureWriteSize(UInt32 value)
         {
-
             // If small (up to 63) we store length as 1 byte
             if (value <= 0b00111111) return 1;
             // Slightly larger (up to 16K) we store length as 2 bytes
