@@ -8,7 +8,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Tedd Hansen</Authors>
     <Company>Tedd Hansen</Company>
-    <Description>Adds extension methods to read/write different datatypes to Span&lt;byte&gt;</Description>
+    <Description>Extension methods to read/write different datatypes to Span&lt;byte&gt;. See documentation on GitHub for examples.</Description>
     <PackageTags>Span ReadOnlySpan Read Write SByte Byte Int16 UInt16 UInt24 Int32 UInt32 Int64 UInt64 String Bytes</PackageTags>
     <Copyright>Tedd Hansen</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
