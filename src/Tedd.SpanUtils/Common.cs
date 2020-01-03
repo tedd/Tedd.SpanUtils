@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tedd.SpanUtils
 {
-    internal static class Common
+    internal static class Utils
     {
         /// <summary>
         /// Counts how many bytes WriteSize will use for a given value.
@@ -15,7 +15,7 @@ namespace Tedd.SpanUtils
         /// <param name="span"></param>
         /// <param name="value"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int MeasureWriteSize(UInt32 value)
+        public static int MeasureWriteSize(UInt32 value)
         {
 
             // If small (up to 63) we store length as 1 byte
