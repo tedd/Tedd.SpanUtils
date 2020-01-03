@@ -49,9 +49,10 @@ Move read/write will slice the current span so that it moves forward in memory a
 ```csharp
 var mem = new byte[10];
 var span = new Span<byte>(mem);
-// span now points to position 0 of mem. Span is 10 bytes big.
+// span now points to position 0 of mem. Span is 10 bytes long.
 var i = span.MoveReadInt32();
-// Since Int32 is 4 bytes span was moved ahead 4 bytes. span now points to position 4 of mem. Span is 6 bytes big.
+// Since Int32 is 4 bytes span was moved ahead 4 bytes.
+// span now points to position 4 of mem and is 6 bytes long.
 ```
 
 # WriteSize() / ReadSize()
