@@ -7,6 +7,28 @@ namespace Tedd
 {
     public static class SpanMoveRead
     {
+        /// <summary>
+        /// Same as MoveReadSize, except doesn't process and return the data.
+        /// </summary>
+        /// <param name="span"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveSize(ref this Span<byte> span)
+        {
+            span = span.Slice((span[0] >> 6) + 1);
+        }
+
+        /// <summary>
+        /// Same as MoveReadSize, except doesn't process and return the data.
+        /// </summary>
+        /// <param name="span"></param>
+        /// <param name="count">Repeat count</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveSize(ref this Span<byte> span, int count)
+        {
+            for (var i = 0; i < count; i++)
+                span = span.Slice((span[0] >> 6) + 1);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Move(ref this Span<byte> span, int length)
         {
@@ -39,7 +61,7 @@ namespace Tedd
             span = span.Slice(2);
             return i;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt24 MoveReadUInt24(ref this Span<byte> span)
         {
@@ -70,7 +92,7 @@ namespace Tedd
             span = span.Slice(8);
             return i;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Guid MoveReadGuid(ref this Span<byte> span)
         {
