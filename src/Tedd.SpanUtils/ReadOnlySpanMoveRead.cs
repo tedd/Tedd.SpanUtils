@@ -18,6 +18,18 @@ namespace Tedd
         }
 
         /// <summary>
+        /// Same as MoveReadSize, except doesn't process and return the data.
+        /// </summary>
+        /// <param name="span"></param>
+        /// <param name="count">Repeat count</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveSize(ref this ReadOnlySpan<byte> span, int count)
+        {
+            for (var i = 0; i < count; i++)
+                span = span.Slice((span[0] >> 6) + 1);
+        }
+
+        /// <summary>
         /// Simply moves span pointer ahead by this number of bytes.
         /// </summary>
         /// <param name="span"></param>
