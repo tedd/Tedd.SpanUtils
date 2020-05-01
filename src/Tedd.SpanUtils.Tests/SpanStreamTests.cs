@@ -1,14 +1,271 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using Xunit;
 using Tedd;
 
-namespace Tedd.SpanUtils.Tests.ReadOnlySpan
+namespace Tedd.SpanUtils.Tests.Span
 {
-    public class MoveReadMoveWriteTests
+    public class SpanStreamTests
     {
         private int count = 100;
         private int writeRepeatCount = 10;
+
+        #region Standard Stream Read Write
+        [Fact]
+        public void TestStreamReadWrite()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+
+                for (var bc = 1; bc < writeRepeatCount; bc++)
+                {
+                    for (var offset = 0; offset < bc; offset++)
+                    {
+                        var span1 = new SpanStream(mem);
+                        var span2 = new SpanStream(mem);
+
+                        span1.Write(answer, offset, bc - offset);
+                        var buffer = new byte[bc + offset];
+                        span2.Read(buffer, offset, bc - offset);
+
+                        Assert.Equal(new Span<byte>(answer).Slice(offset, bc - offset).ToArray(), new Span<byte>(buffer).Slice(offset, bc - offset).ToArray());
+                    }
+                }
+
+                Assert.Throws<ArgumentNullException>(() =>
+                {
+                    var s = new SpanStream(mem);
+                    s.Read(null, 0, 1);
+                });
+            }
+        }
+        #endregion
+
+        [Fact]
+        public void TestSizedReadWriteSpan()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
+                span1.SizedWrite(new Span<byte>(answer));
+                span1.Write(1234);
+
+                var bytes = span2.SizedReadBytes(out var length);
+                Assert.Equal(answer, bytes);
+                Assert.Equal(1234, span2.ReadInt32());
+            }
+        }
+
+        [Fact]
+        public void TestSizedReadWriteReadOnlySpan()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount + 10];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(new ReadOnlySpan<byte>(mem));
+                span1.SizedWrite(new Span<byte>(answer));
+                span1.Write(1234);
+
+                var bytes = span2.SizedReadBytes(out var length);
+                Assert.Equal(answer, bytes);
+                Assert.Equal(1234, span2.ReadInt32());
+            }
+        }
+
+        [Fact]
+        public void TestSizedReadWriteBytes()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
+                span1.SizedWrite(answer);
+                span1.Write(1234);
+
+                var bytes = span2.SizedReadBytes(out var length);
+                Assert.Equal(answer, bytes);
+                Assert.Equal(1234, span2.ReadInt32());
+            }
+        }
+
+
+        [Fact]
+        public void TestCanReadCanWrite()
+        {
+            var mem = new byte[2];
+            var s = new Span<byte>(mem);
+            var ros = new ReadOnlySpan<byte>(mem);
+
+            var ss = new SpanStream(s);
+            Assert.True(ss.CanRead);
+            Assert.True(ss.CanWrite);
+            Assert.True(ss.CanSeek);
+            var ross = new SpanStream(ros);
+            Assert.True(ross.CanRead);
+            Assert.False(ross.CanWrite);
+            Assert.True(ross.CanSeek);
+        }
+
+        [Fact]
+        public void TestReadOnlyCheck()
+        {
+            var mem = new byte[100];
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).WriteSize(1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write((byte)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write((sbyte)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write((Int16)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write((UInt16)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write((UInt24)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write((Int32)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write((UInt32)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write((Int64)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write((UInt64)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).WriteVLQ((byte)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).WriteVLQ((sbyte)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).WriteVLQ((Int16)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).WriteVLQ((UInt16)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).WriteVLQ((UInt24)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).WriteVLQ((Int32)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).WriteVLQ((UInt32)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).WriteVLQ((Int64)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).WriteVLQ((UInt64)1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).SizedWrite("1");
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).SizedWrite(new byte[1] { 1 });
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).SizedWrite(new Span<byte>(new byte[1] { 1 }));
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).SizedWrite(new ReadOnlySpan<byte>(new byte[1] { 1 }));
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                new SpanStream(new ReadOnlySpan<byte>(mem)).Write(new byte[1] { 1 }, 0, 1);
+            });
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                new SpanStream(mem).Write((byte[])null, 0, 1);
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write(new Span<byte>(new byte[1] { 1 }));
+            });
+            Assert.Throws<ReadOnlyException>(() =>
+            {
+                _ = new SpanStream(new ReadOnlySpan<byte>(mem)).Write(Guid.NewGuid());
+            });
+        }
+
+        [Fact]
+        public void TestPosOverflow()
+        {
+            var mem = new byte[2];
+
+            {
+                var s = new Span<byte>(mem);
+                var ss = new SpanStream(s);
+                ss.Position = mem.Length;
+                Assert.Equal(mem.Length, ss.Position);
+                ss.Position = 0;
+                Assert.Equal(0, ss.Position);
+            }
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var s = new Span<byte>(mem);
+                var ss = new SpanStream(s);
+                ss.Position = mem.Length + 1;
+            });
+        }
+
 
         [Fact]
         public void TestSByte()
@@ -17,26 +274,25 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count; c++)
             {
                 var mem = new byte[sizeof(SByte) * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new sbyte[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var n = rnd.NextSByte();
                     a[i] = n;
-                    span1.MoveWrite(n);
+                    span1.Write(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadSByte();
+                    var r = span2.ReadSByte();
                     Assert.Equal(a[i], r);
                 }
             }
         }
+
         [Fact]
         public void TestByte()
         {
@@ -44,22 +300,20 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count; c++)
             {
                 var mem = new byte[sizeof(Byte) * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new Byte[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var n = rnd.NextByte();
                     a[i] = n;
-                    span1.MoveWrite(n);
+                    span1.Write(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadByte();
+                    var r = span2.ReadByte();
                     Assert.Equal(a[i], r);
                 }
             }
@@ -72,22 +326,20 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count; c++)
             {
                 var mem = new byte[sizeof(Int16) * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new Int16[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var n = rnd.NextInt16();
                     a[i] = n;
-                    span1.MoveWrite(n);
+                    span1.Write(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadInt16();
+                    var r = span2.ReadInt16();
                     Assert.Equal(a[i], r);
                 }
             }
@@ -100,22 +352,20 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count; c++)
             {
                 var mem = new byte[sizeof(UInt16) * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new UInt16[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var n = rnd.NextUInt16();
                     a[i] = n;
-                    span1.MoveWrite(n);
+                    span1.Write(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadUInt16();
+                    var r = span2.ReadUInt16();
                     Assert.Equal(a[i], r);
                 }
             }
@@ -128,22 +378,20 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count; c++)
             {
                 var mem = new byte[sizeof(UInt24) * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new UInt24[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var n = rnd.NextUInt32().ToUInt24();
                     a[i] = n;
-                    span1.MoveWrite(n);
+                    span1.Write(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadUInt24();
+                    var r = span2.ReadUInt24();
                     Assert.Equal(a[i], r);
                 }
             }
@@ -156,22 +404,20 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count; c++)
             {
                 var mem = new byte[sizeof(Int32) * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new Int32[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var n = rnd.NextInt32();
                     a[i] = n;
-                    span1.MoveWrite(n);
+                    span1.Write(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadInt32();
+                    var r = span2.ReadInt32();
                     Assert.Equal(a[i], r);
                 }
             }
@@ -184,8 +430,8 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count; c++)
             {
                 var mem = new byte[sizeof(UInt32) * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new UInt32[writeRepeatCount];
 
 
@@ -193,14 +439,12 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 {
                     var n = rnd.NextUInt32();
                     a[i] = n;
-                    span1.MoveWrite(n);
+                    span1.Write(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadUInt32();
+                    var r = span2.ReadUInt32();
                     Assert.Equal(a[i], r);
                 }
             }
@@ -214,22 +458,20 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count; c++)
             {
                 var mem = new byte[sizeof(Int64) * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new Int64[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var n = rnd.NextInt64();
                     a[i] = n;
-                    span1.MoveWrite(n);
+                    span1.Write(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadInt64();
+                    var r = span2.ReadInt64();
                     Assert.Equal(a[i], r);
                 }
             }
@@ -242,22 +484,20 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count; c++)
             {
                 var mem = new byte[sizeof(UInt64) * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new UInt64[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var n = rnd.NextUInt64();
                     a[i] = n;
-                    span1.MoveWrite(n);
+                    span1.Write(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadUInt64();
+                    var r = span2.ReadUInt64();
                     Assert.Equal(a[i], r);
                 }
             }
@@ -269,215 +509,26 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count; c++)
             {
                 var mem = new byte[16 * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new Guid[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var n = Guid.NewGuid();
                     a[i] = n;
-                    span1.MoveWrite(n);
+                    span1.Write(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadGuid();
+                    var r = span2.ReadGuid();
                     Assert.Equal(a[i], r);
                 }
             }
-        }
-
-
-
-        //        [Fact]
-        //        public void TestSize()
-        //        {
-        //            var mem = new byte[4];
-        //            var rnd = new Random();
-        //            for (var c = 0; c < count * 100_000; c++)
-        //            {
-        //                var sr = rnd.Next(0, 4);
-        //#pragma warning disable 8509
-        //                var a = sr switch
-        //#pragma warning restore 8509
-        //                {
-        //                    0 => (UInt32)rnd.Next(0, 0b00111111),
-        //                    1 => (UInt32)rnd.Next(0, 0b00111111_11111111),
-        //                    2 => (UInt32)rnd.Next(0, 0b00111111_11111111_11111111),
-        //                    3 => (UInt32)rnd.Next(0, 0b00111111_11111111_11111111_11111111)
-        //                };
-        //                var span1 = new Span<byte>(mem);
-        //                span1.Fill(0);
-        //                var span2 = new ReadOnlySpan<byte>(mem);
-
-        //                var s = span1.WriteSize(a);
-        //                // Number of bytes must match
-        //                Assert.Equal(sr + 1, s);
-        //                // Size must match
-        //                var bs = span2.MoveReadSize(out var size);
-        //                Assert.Equal(bs, s);
-        //                Assert.Equal(a, size);
-        //            }
-
-        //        }
-
-        [Fact]
-        public void TestSizedBytesW()
-        {
-            var rnd = new Random();
-            for (var c = 0; c < count; c++)
-            {
-                var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[(memSize + 4) * writeRepeatCount];
-                var answer = new byte[memSize * writeRepeatCount];
-                rnd.NextBytes(answer);
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
-
-                for (var i = 0; i < writeRepeatCount; i++)
-                {
-                    var a = new Span<byte>(answer).Slice(memSize * i, memSize).ToArray();
-                    span1.MoveSizedWrite(a);
-                }
-
-                // Ensure span is not zero
-                if (memSize > 0 && answer[0] != 0)
-                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var ac = 0;
-                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
-                {
-                    var r = span2.MoveSizedReadBytes(out var len);
-
-                    for (var i = 0; i < r.Length; i++)
-                        Assert.Equal(answer[ac++], r[i]);
-                }
-
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    var s = new Span<byte>(mem);
-                    s.MoveSizedWrite(new Span<byte>(new byte[s.Length + 1]));
-                });
-            }
 
         }
 
-        [Fact]
-        public void TestSizedSpan()
-        {
-            var rnd = new Random();
-            for (var c = 0; c < count; c++)
-            {
-                var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[(memSize + 4) * writeRepeatCount];
-                var answer = new byte[memSize * writeRepeatCount];
-                rnd.NextBytes(answer);
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
-
-                for (var i = 0; i < writeRepeatCount; i++)
-                {
-                    var a = new Span<byte>(answer).Slice(memSize * i, memSize);
-                    span1.MoveSizedWrite(a);
-                }
-
-                // Ensure span is not zero
-                if (memSize > 0 && answer[0] != 0)
-                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var ac = 0;
-                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
-                {
-                    var r = span2.MoveSizedReadBytes(out var len);
-
-                    for (var i = 0; i < r.Length; i++)
-                        Assert.Equal(answer[ac++], r[i]);
-                }
-
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    var s = new Span<byte>(mem);
-                    s.MoveSizedWrite(new Span<byte>(new byte[s.Length + 1]));
-                });
-            }
-
-        }
-
-        [Fact]
-        public void TestSizedReadOnlySpan()
-        {
-            var rnd = new Random();
-            for (var c = 0; c < count; c++)
-            {
-                var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[(memSize + 4) * writeRepeatCount];
-                var answer = new byte[memSize * writeRepeatCount];
-                rnd.NextBytes(answer);
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
-
-                for (var i = 0; i < writeRepeatCount; i++)
-                {
-                    var a = new ReadOnlySpan<byte>(answer).Slice(memSize * i, memSize);
-                    span1.MoveSizedWrite(a);
-                }
-
-                // Ensure span is not zero
-                if (memSize > 0 && answer[0] != 0)
-                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var ac = 0;
-                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
-                {
-                    var r = span2.MoveSizedReadBytes(out var len);
-
-                    for (var i = 0; i < r.Length; i++)
-                        Assert.Equal(answer[ac++], r[i]);
-                }
-
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    var s = new Span<byte>(mem);
-                    s.MoveSizedWrite(new Span<byte>(new byte[s.Length + 1]));
-                });
-
-            }
-
-        }
-
-        [Fact]
-        public void TestSizedString()
-        {
-            var rnd = new Random();
-            for (var c = 0; c < count; c++)
-            {
-                var memSize = rnd.Next(0, 1024);
-                var mem = new byte[(1024 + 4) * writeRepeatCount * 4];
-                var answer = new string[writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
-
-                for (var i = 0; i < writeRepeatCount; i++)
-                {
-                    var str = rnd.NextString("abcæøå诶	比西αβγ", memSize);
-                    //var str = rnd.NextString("abcdefghijklm", rnd.Next(0, 1024));
-                    answer[i] = str;
-                    span1.MoveSizedWrite(str);
-                }
-
-                // Ensure span is not zero
-                if (memSize > 0 && answer[0][0] != 0)
-                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                for (var i = 0; i < writeRepeatCount; i++)
-                {
-                    var r = span2.MoveSizedReadString(out var len);
-                    Assert.Equal(answer[i], r);
-                }
-
-
-            }
-
-        }
 
         [Fact]
         public void TestBytes()
@@ -489,22 +540,20 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 var mem = new byte[(memSize + 4) * writeRepeatCount];
                 var answer = new byte[memSize * writeRepeatCount];
                 rnd.NextBytes(answer);
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
 
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var a = new Span<byte>(answer).Slice(memSize * i, memSize).ToArray();
-                    span1.MoveWrite(a);
+                    span1.Write(a);
                 }
 
                 // Ensure span is not zero
-                if (memSize > 0 && answer[0] != 0)
-                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 var ac = 0;
                 for (var wrc = 0; wrc < writeRepeatCount; wrc++)
                 {
-                    var r = span2.MoveReadBytes(memSize);
+                    var r = span2.ReadBytes(memSize);
 
                     for (var i = 0; i < r.Length; i++)
                         Assert.Equal(answer[ac++], r[i]);
@@ -512,9 +561,185 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
 
                 Assert.Throws<ArgumentException>(() =>
                 {
-                    var s = new Span<byte>(mem);
-                    s.MoveWrite(new byte[mem.Length + 1]);
+                    var s = new SpanStream(mem);
+                    s.Write(new byte[mem.Length + 1]);
                 });
+            }
+
+        }
+
+        [Fact]
+        public void TestSpan()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var a = new Span<byte>(answer).Slice(memSize * i, memSize);
+                    span1.Write(a);
+                }
+
+                var ac = 0;
+                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
+                {
+                    var r = span2.ReadBytes(memSize);
+
+                    for (var i = 0; i < r.Length; i++)
+                        Assert.Equal(answer[ac++], r[i]);
+                }
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new SpanStream(mem);
+                    s.Write(new Span<byte>(new byte[mem.Length + 1]));
+                });
+            }
+        }
+
+        [Fact]
+        public void TestReadOnlySpan()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var a = new Span<byte>(answer).Slice(memSize * i, memSize);
+                    span1.Write(a);
+                }
+
+                // Ensure span is not zero
+                var ac = 0;
+                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
+                {
+                    var r = span2.ReadBytes(memSize);
+
+                    for (var i = 0; i < r.Length; i++)
+                        Assert.Equal(answer[ac++], r[i]);
+                }
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new SpanStream(mem);
+                    s.Write(new Span<byte>(new byte[mem.Length + 1]));
+                });
+            }
+
+        }
+
+        [Fact]
+        public void TestSizedBytes()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var a = new Span<byte>(answer).Slice(memSize * i, memSize).ToArray();
+                    span1.SizedWrite(a);
+                }
+
+                var ac = 0;
+                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
+                {
+                    var r = span2.SizedReadBytes(out var len);
+
+                    for (var i = 0; i < r.Length; i++)
+                        Assert.Equal(answer[ac++], r[i]);
+                }
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new SpanStream(mem);
+                    s.SizedWrite(new Span<byte>(new byte[s.Length + 1]));
+                });
+            }
+
+        }
+        [Fact]
+        public void TestSizedSpan()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[(memSize + 4) * writeRepeatCount];
+                var answer = new byte[memSize * writeRepeatCount];
+                rnd.NextBytes(answer);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var a = new ReadOnlySpan<byte>(answer).Slice(memSize * i, memSize);
+                    span1.SizedWrite(a);
+                }
+
+                var ac = 0;
+                for (var wrc = 0; wrc < writeRepeatCount; wrc++)
+                {
+                    var r = span2.SizedReadBytes(out var len);
+
+                    for (var i = 0; i < r.Length; i++)
+                        Assert.Equal(answer[ac++], r[i]);
+                }
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    var s = new SpanStream(mem);
+                    s.SizedWrite(new Span<byte>(new byte[s.Length + 1]));
+                });
+            }
+
+        }
+
+
+        [Fact]
+        public void TestSizedString()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(0, 1024);
+                var mem = new byte[(memSize + 4) * writeRepeatCount * 4];
+                var answer = new string[writeRepeatCount];
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var str = rnd.NextString("abcæøå诶	比西αβγ", memSize);
+                    answer[i] = str;
+                    span1.SizedWrite(str);
+                }
+
+                for (var i = 0; i < writeRepeatCount; i++)
+                {
+                    var r = span2.SizedReadString(out var len);
+                    Assert.Equal(answer[i], r);
+                }
             }
 
         }
@@ -527,8 +752,8 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             {
 
                 var mem = new byte[sizeof(UInt32) * writeRepeatCount];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
                 var a = new UInt32[writeRepeatCount];
 
                 for (var i = 0; i < writeRepeatCount; i++)
@@ -545,23 +770,20 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                     };
 
                     a[i] = n;
-                    span1.MoveWriteSize(n);
+                    span1.WriteSize(n);
                 }
 
-                // Ensure span is not zero
-                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveReadSize(out var len);
-                    Assert.Equal(span1.MeasureWriteSize(a[i]), len);
+                    var r = span2.ReadSize(out var len);
+                    Assert.Equal(span2.MeasureWriteSize(a[i]), len);
                     Assert.Equal(a[i], r);
                 }
             }
         }
 
-
         [Fact]
-        public void TestReadOnlySpanMove()
+        public void TestPosition()
         {
             var rnd = new Random();
             for (var c = 0; c < count; c++)
@@ -571,32 +793,25 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 var answer = new byte[memSize];
                 for (var i = 0; i < memSize; i++)
                     answer[i] = (byte)rnd.Next(0, 10);
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
 
                 for (var i = 0; i < memSize; i++)
                 {
-                    span1.Move(answer[i]);
-                    span1.MoveWrite(answer[i]);
+                    span1.Position += answer[i];
+                    span1.Write(answer[i]);
                 }
 
                 // Ensure span is not zero
-                if (memSize > 0 && answer[0] != 0)
-                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < memSize; i++)
                 {
-                    if (answer[i] > 1)
-                        Assert.Equal(0, span2[1]);
-                    span2.Move(answer[i]);
-                    var r = span2.MoveReadByte();
+
+                    span2.Position += answer[i];
+                    var r = span2.ReadByte();
                     Assert.Equal(answer[i], r);
                 }
 
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    var s = new Span<byte>(mem);
-                    s.MoveSizedWrite(new Span<byte>(new byte[s.Length + 1]));
-                });
+
 
             }
 
@@ -611,19 +826,19 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             {
                 var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[memSize * Utils.MeasureVLQ(UInt16.MaxValue) + 1];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
 
                 var data = new Int16[memSize];
                 for (var i = 0; i < memSize; i++)
                     data[i] = rnd.NextInt16();
 
                 for (var i = 0; i < memSize; i++)
-                    span1.MoveWriteVLQ(data[i]);
+                    span1.WriteVLQ(data[i]);
 
                 for (var i = 0; i < memSize; i++)
                 {
-                    Assert.Equal(data[i], span2.MoveReadVLQInt16(out var len));
+                    Assert.Equal(data[i], span2.ReadVLQInt16(out var len));
                     Assert.Equal(Utils.MeasureVLQ(data[i]), len);
                 }
 
@@ -631,7 +846,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 new Span<byte>(mem).Fill(0xFF);
                 Assert.Throws<OverflowException>(() =>
                 {
-                    var span3 = new ReadOnlySpan<byte>(mem);
+                    var span3 = new SpanStream(mem);
                     span3.ReadVLQInt16(out _);
                 });
 
@@ -646,19 +861,19 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             {
                 var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[memSize * Utils.MeasureVLQ(UInt16.MaxValue) + 1];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
 
                 var data = new UInt16[memSize];
                 for (var i = 0; i < memSize; i++)
                     data[i] = rnd.NextUInt16();
 
                 for (var i = 0; i < memSize; i++)
-                    span1.MoveWriteVLQ(data[i]);
+                    span1.WriteVLQ(data[i]);
 
                 for (var i = 0; i < memSize; i++)
                 {
-                    Assert.Equal(data[i], span2.MoveReadVLQUInt16(out var len));
+                    Assert.Equal(data[i], span2.ReadVLQUInt16(out var len));
                     Assert.Equal(Utils.MeasureVLQ(data[i]), len);
                 }
 
@@ -666,7 +881,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 new Span<byte>(mem).Fill(0xFF);
                 Assert.Throws<OverflowException>(() =>
                 {
-                    var span3 = new ReadOnlySpan<byte>(mem);
+                    var span3 = new SpanStream(mem);
                     span3.ReadVLQUInt16(out _);
                 });
 
@@ -680,19 +895,19 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             {
                 var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[memSize * Utils.MeasureVLQ((UInt24)UInt24.MaxValue) + 1];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
 
                 var data = new UInt24[memSize];
                 for (var i = 0; i < memSize; i++)
                     data[i] = rnd.NextUInt32().ToUInt24();
 
                 for (var i = 0; i < memSize; i++)
-                    span1.MoveWriteVLQ(data[i]);
+                    span1.WriteVLQ(data[i]);
 
                 for (var i = 0; i < memSize; i++)
                 {
-                    Assert.Equal(data[i], span2.MoveReadVLQUInt24(out var len));
+                    Assert.Equal(data[i], span2.ReadVLQUInt24(out var len));
                     Assert.Equal(Utils.MeasureVLQ(data[i]), len);
                 }
 
@@ -700,7 +915,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 new Span<byte>(mem).Fill(0xFF);
                 Assert.Throws<OverflowException>(() =>
                 {
-                    var span3 = new ReadOnlySpan<byte>(mem);
+                    var span3 = new SpanStream(mem);
                     span3.ReadVLQUInt24(out _);
                 });
 
@@ -714,19 +929,19 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             {
                 var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[memSize * Utils.MeasureVLQ(UInt32.MaxValue) + 1];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
 
                 var data = new Int32[memSize];
                 for (var i = 0; i < memSize; i++)
                     data[i] = rnd.NextInt32();
 
                 for (var i = 0; i < memSize; i++)
-                    span1.MoveWriteVLQ(data[i]);
+                    span1.WriteVLQ(data[i]);
 
                 for (var i = 0; i < memSize; i++)
                 {
-                    Assert.Equal(data[i], span2.MoveReadVLQInt32(out var len));
+                    Assert.Equal(data[i], span2.ReadVLQInt32(out var len));
                     Assert.Equal(Utils.MeasureVLQ(data[i]), len);
                 }
 
@@ -734,7 +949,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 new Span<byte>(mem).Fill(0xFF);
                 Assert.Throws<OverflowException>(() =>
                 {
-                    var span3 = new ReadOnlySpan<byte>(mem);
+                    var span3 = new SpanStream(mem);
                     span3.ReadVLQInt32(out _);
                 });
 
@@ -749,19 +964,19 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             {
                 var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[memSize * Utils.MeasureVLQ(UInt32.MaxValue) + 1];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
 
                 var data = new UInt32[memSize];
                 for (var i = 0; i < memSize; i++)
                     data[i] = rnd.NextUInt32();
 
                 for (var i = 0; i < memSize; i++)
-                    span1.MoveWriteVLQ(data[i]);
+                    span1.WriteVLQ(data[i]);
 
                 for (var i = 0; i < memSize; i++)
                 {
-                    Assert.Equal(data[i], span2.MoveReadVLQUInt32(out var len));
+                    Assert.Equal(data[i], span2.ReadVLQUInt32(out var len));
                     Assert.Equal(Utils.MeasureVLQ(data[i]), len);
                 }
 
@@ -769,7 +984,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 new Span<byte>(mem).Fill(0xFF);
                 Assert.Throws<OverflowException>(() =>
                 {
-                    var span3 = new ReadOnlySpan<byte>(mem);
+                    var span3 = new SpanStream(mem);
                     span3.ReadVLQUInt32(out _);
                 });
 
@@ -783,19 +998,19 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             {
                 var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[memSize * Utils.MeasureVLQ(UInt64.MaxValue) + 1];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
 
                 var data = new Int64[memSize];
                 for (var i = 0; i < memSize; i++)
                     data[i] = rnd.NextInt64();
 
                 for (var i = 0; i < memSize; i++)
-                    span1.MoveWriteVLQ(data[i]);
+                    span1.WriteVLQ(data[i]);
 
                 for (var i = 0; i < memSize; i++)
                 {
-                    Assert.Equal(data[i], span2.MoveReadVLQInt64(out var len));
+                    Assert.Equal(data[i], span2.ReadVLQInt64(out var len));
                     Assert.Equal(Utils.MeasureVLQ(data[i]), len);
                 }
 
@@ -803,7 +1018,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 new Span<byte>(mem).Fill(0xFF);
                 Assert.Throws<OverflowException>(() =>
                 {
-                    var span3 = new ReadOnlySpan<byte>(mem);
+                    var span3 = new SpanStream(mem);
                     span3.ReadVLQInt64(out _);
                 });
 
@@ -818,19 +1033,19 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             {
                 var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[memSize * Utils.MeasureVLQ(UInt64.MaxValue) + 1];
-                var span1 = new Span<byte>(mem);
-                var span2 = new ReadOnlySpan<byte>(mem);
+                var span1 = new SpanStream(mem);
+                var span2 = new SpanStream(mem);
 
                 var data = new UInt64[memSize];
                 for (var i = 0; i < memSize; i++)
                     data[i] = rnd.NextUInt64();
 
                 for (var i = 0; i < memSize; i++)
-                    span1.MoveWriteVLQ(data[i]);
+                    span1.WriteVLQ(data[i]);
 
                 for (var i = 0; i < memSize; i++)
                 {
-                    Assert.Equal(data[i], span2.MoveReadVLQUInt64(out var len));
+                    Assert.Equal(data[i], span2.ReadVLQUInt64(out var len));
                     Assert.Equal(Utils.MeasureVLQ(data[i]), len);
                 }
 
@@ -838,12 +1053,13 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 new Span<byte>(mem).Fill(0xFF);
                 Assert.Throws<OverflowException>(() =>
                 {
-                    var span3 = new ReadOnlySpan<byte>(mem);
+                    var span3 = new SpanStream(mem);
                     span3.ReadVLQUInt64(out _);
                 });
 
             }
         }
         #endregion
+
     }
 }

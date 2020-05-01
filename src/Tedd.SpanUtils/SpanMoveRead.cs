@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Tedd.SpanUtils;
 
 namespace Tedd
 {
@@ -144,6 +143,59 @@ namespace Tedd
             span = span.Slice((int)totalLength);
             return ret;
         }
+
+        #region VLQ
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadVLQInt16(ref this Span<byte> span, out int length)
+        {
+            var value = span.ReadVLQInt16(out length);
+            span = span.Slice(length);
+            return value;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadVLQUInt16(ref this Span<byte> span, out int length)
+        {
+            var value = span.ReadVLQUInt16(out length);
+            span = span.Slice(length);
+            return value;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadVLQUInt24(ref this Span<byte> span, out int length)
+        {
+            var value = span.ReadVLQUInt24(out length);
+            span = span.Slice(length);
+            return value;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadVLQInt32(ref this Span<byte> span, out int length)
+        {
+            var value = span.ReadVLQInt32(out length);
+            span = span.Slice(length);
+            return value;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadVLQUInt32(ref this Span<byte> span, out int length)
+        {
+            var value = span.ReadVLQUInt32(out length);
+            span = span.Slice(length);
+            return value;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadVLQInt64(ref this Span<byte> span, out int length)
+        {
+            var value = span.ReadVLQInt64(out length);
+            span = span.Slice(length);
+            return value;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadVLQUInt64(ref this Span<byte> span, out int length)
+        {
+            var value = span.ReadVLQUInt64(out length);
+            span = span.Slice(length);
+            return value;
+        }
+
+        #endregion
 
     }
 }

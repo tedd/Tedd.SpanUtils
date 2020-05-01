@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using Tedd.SpanUtils;
 
 namespace Tedd
 {
     public static class SpanMoveWrite
     {
- 
+
         #region Primitives
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MoveWrite(ref this Span<byte> span, byte value)
@@ -140,5 +139,60 @@ namespace Tedd
             span = span.Slice(len);
             return len;
         }
+
+        #region VLQ
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte MoveWriteVLQ(ref this Span<byte> span, in Int16 value)
+        {
+            var len = span.WriteVLQ(value);
+            span = span.Slice(len);
+            return len;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte MoveWriteVLQ(ref this Span<byte> span, UInt16 value)
+        {
+            var len = span.WriteVLQ(value);
+            span = span.Slice(len);
+            return len;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte MoveWriteVLQ(ref this Span<byte> span, UInt24 value)
+        {
+            var len = span.WriteVLQ(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte MoveWriteVLQ(ref this Span<byte> span, Int32 value)
+        {
+            var len = span.WriteVLQ(value);
+            span = span.Slice(len);
+            return len;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte MoveWriteVLQ(ref this Span<byte> span, UInt32 value)
+        {
+            var len = span.WriteVLQ(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte MoveWriteVLQ(ref this Span<byte> span, Int64 value)
+        {
+            var len = span.WriteVLQ(value);
+            span = span.Slice(len);
+            return len;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte MoveWriteVLQ(ref this Span<byte> span, UInt64 value)
+        {
+            var len = span.WriteVLQ(value);
+            span = span.Slice(len);
+            return len;
+        }
+        #endregion
+
     }
 }

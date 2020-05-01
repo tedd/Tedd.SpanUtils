@@ -17,13 +17,13 @@
     <RepositoryType>Git</RepositoryType>
     <Version>1.0.9</Version>
     <PackageLicenseExpression></PackageLicenseExpression>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>NuGet Signing Key.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
-      <PackageReference Include="System.Memory" Version="4.5.3" />
+      <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
   <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net\d'))">

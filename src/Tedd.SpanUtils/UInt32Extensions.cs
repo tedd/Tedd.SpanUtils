@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace Tedd.SpanUtils
+namespace Tedd
 {
     public static class UInt32Extensions
     {
@@ -10,6 +10,6 @@ namespace Tedd.SpanUtils
         /// </summary>
         /// <param name="value"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int MeasureWriteSize(this UInt32 value) => Utils.MeasureWriteSize(value);
+        public static byte MeasureWriteSize(this UInt32 value) => Utils.MeasureWriteSize(value);
     }
 }

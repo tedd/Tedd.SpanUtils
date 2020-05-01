@@ -299,7 +299,7 @@ namespace Tedd.SpanUtils.Tests.Span
             var rnd = new Random();
             for (var c = 0; c < count; c++)
             {
-                var memSize = rnd.Next(0, 10_000);
+                var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[(memSize + 4) * writeRepeatCount];
                 var answer = new byte[memSize * writeRepeatCount];
                 rnd.NextBytes(answer);
@@ -339,7 +339,7 @@ namespace Tedd.SpanUtils.Tests.Span
             var rnd = new Random();
             for (var c = 0; c < count; c++)
             {
-                var memSize = rnd.Next(0, 10_000);
+                var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[(memSize + 4) * writeRepeatCount];
                 var answer = new byte[memSize * writeRepeatCount];
                 rnd.NextBytes(answer);
@@ -378,7 +378,7 @@ namespace Tedd.SpanUtils.Tests.Span
             var rnd = new Random();
             for (var c = 0; c < count; c++)
             {
-                var memSize = rnd.Next(0, 10_000);
+                var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[(memSize + 4) * writeRepeatCount];
                 var answer = new byte[memSize * writeRepeatCount];
                 rnd.NextBytes(answer);
@@ -418,7 +418,7 @@ namespace Tedd.SpanUtils.Tests.Span
             var rnd = new Random();
             for (var c = 0; c < count; c++)
             {
-                var memSize = rnd.Next(0, 10_000);
+                var memSize = rnd.Next(1, 10_000);
                 var mem = new byte[(memSize + 4) * writeRepeatCount];
                 var answer = new byte[memSize * writeRepeatCount];
                 rnd.NextBytes(answer);
@@ -565,5 +565,249 @@ namespace Tedd.SpanUtils.Tests.Span
             }
 
         }
+
+        #region VLQ
+        [Fact]
+        public void TestVLQInt16()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[memSize * Utils.MeasureVLQ(UInt16.MaxValue) + 1];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                var data = new Int16[memSize];
+                for (var i = 0; i < memSize; i++)
+                    data[i] = rnd.NextInt16();
+
+                for (var i = 0; i < memSize; i++)
+                    span1.MoveWriteVLQ(data[i]);
+
+                for (var i = 0; i < memSize; i++)
+                {
+                    Assert.Equal(data[i], span2.MoveReadVLQInt16(out var len));
+                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                }
+
+                // Check overflow
+                new Span<byte>(mem).Fill(0xFF);
+                Assert.Throws<OverflowException>(() =>
+                {
+                    var span3 = new Span<byte>(mem);
+                    span3.ReadVLQInt16(out _);
+                });
+
+            }
+        }
+
+        [Fact]
+        public void TestVLQUInt16()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[memSize * Utils.MeasureVLQ(UInt16.MaxValue) + 1];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                var data = new UInt16[memSize];
+                for (var i = 0; i < memSize; i++)
+                    data[i] = rnd.NextUInt16();
+
+                for (var i = 0; i < memSize; i++)
+                    span1.MoveWriteVLQ(data[i]);
+
+                for (var i = 0; i < memSize; i++)
+                {
+                    Assert.Equal(data[i], span2.MoveReadVLQUInt16(out var len));
+                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                }
+
+                // Check overflow
+                new Span<byte>(mem).Fill(0xFF);
+                Assert.Throws<OverflowException>(() =>
+                {
+                    var span3 = new Span<byte>(mem);
+                    span3.ReadVLQUInt16(out _);
+                });
+
+            }
+        }
+        [Fact]
+        public void TestVLQUInt24()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[memSize * Utils.MeasureVLQ((UInt24)UInt24.MaxValue) + 1];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                var data = new UInt24[memSize];
+                for (var i = 0; i < memSize; i++)
+                    data[i] = rnd.NextUInt32().ToUInt24();
+
+                for (var i = 0; i < memSize; i++)
+                    span1.MoveWriteVLQ(data[i]);
+
+                for (var i = 0; i < memSize; i++)
+                {
+                    Assert.Equal(data[i], span2.MoveReadVLQUInt24(out var len));
+                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                }
+
+                // Check overflow
+                new Span<byte>(mem).Fill(0xFF);
+                Assert.Throws<OverflowException>(() =>
+                {
+                    var span3 = new Span<byte>(mem);
+                    span3.ReadVLQUInt24(out _);
+                });
+
+            }
+        }
+        [Fact]
+        public void TestVLQInt32()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[memSize * Utils.MeasureVLQ(UInt32.MaxValue) + 1];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                var data = new Int32[memSize];
+                for (var i = 0; i < memSize; i++)
+                    data[i] = rnd.NextInt32();
+
+                for (var i = 0; i < memSize; i++)
+                    span1.MoveWriteVLQ(data[i]);
+
+                for (var i = 0; i < memSize; i++)
+                {
+                    Assert.Equal(data[i], span2.MoveReadVLQInt32(out var len));
+                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                }
+
+                // Check overflow
+                new Span<byte>(mem).Fill(0xFF);
+                Assert.Throws<OverflowException>(() =>
+                {
+                    var span3 = new Span<byte>(mem);
+                    span3.ReadVLQInt32(out _);
+                });
+
+            }
+        }
+
+        [Fact]
+        public void TestVLQUInt32()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[memSize * Utils.MeasureVLQ(UInt32.MaxValue)+1];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                var data = new UInt32[memSize];
+                for (var i = 0; i < memSize; i++)
+                    data[i] = rnd.NextUInt32();
+
+                for (var i = 0; i < memSize; i++)
+                    span1.MoveWriteVLQ(data[i]);
+
+                for (var i = 0; i < memSize; i++)
+                {
+                    Assert.Equal(data[i], span2.MoveReadVLQUInt32(out var len));
+                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                }
+
+                // Check overflow
+                new Span<byte>(mem).Fill(0xFF);
+                Assert.Throws<OverflowException>(() =>
+                {
+                    var span3 = new Span<byte>(mem);
+                    span3.ReadVLQUInt32(out _);
+                });
+
+            }
+        }
+        [Fact]
+        public void TestVLQInt64()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[memSize * Utils.MeasureVLQ(UInt64.MaxValue) + 1];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                var data = new Int64[memSize];
+                for (var i = 0; i < memSize; i++)
+                    data[i] = rnd.NextInt64();
+
+                for (var i = 0; i < memSize; i++)
+                    span1.MoveWriteVLQ(data[i]);
+
+                for (var i = 0; i < memSize; i++)
+                {
+                    Assert.Equal(data[i], span2.MoveReadVLQInt64(out var len));
+                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                }
+
+                // Check overflow
+                new Span<byte>(mem).Fill(0xFF);
+                Assert.Throws<OverflowException>(() =>
+                {
+                    var span3 = new Span<byte>(mem);
+                    span3.ReadVLQInt64(out _);
+                });
+
+            }
+        }
+
+        [Fact]
+        public void TestVLQUInt64()
+        {
+            var rnd = new Random();
+            for (var c = 0; c < count; c++)
+            {
+                var memSize = rnd.Next(1, 10_000);
+                var mem = new byte[memSize * Utils.MeasureVLQ(UInt64.MaxValue) + 1];
+                var span1 = new Span<byte>(mem);
+                var span2 = new Span<byte>(mem);
+
+                var data = new UInt64[memSize];
+                for (var i = 0; i < memSize; i++)
+                    data[i] = rnd.NextUInt64();
+
+                for (var i = 0; i < memSize; i++)
+                    span1.MoveWriteVLQ(data[i]);
+
+                for (var i = 0; i < memSize; i++)
+                {
+                    Assert.Equal(data[i], span2.MoveReadVLQUInt64(out var len));
+                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                }
+
+                // Check overflow
+                new Span<byte>(mem).Fill(0xFF);
+                Assert.Throws<OverflowException>(() =>
+                {
+                    var span3 = new Span<byte>(mem);
+                    span3.ReadVLQUInt64(out _);
+                });
+
+            }
+        }
+        #endregion
     }
 }
