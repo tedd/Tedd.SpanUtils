@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace Tedd.SpanUtils
+namespace Tedd
 {
     public static class UInt24Extensions
     {
