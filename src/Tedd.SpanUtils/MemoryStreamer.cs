@@ -19,18 +19,41 @@ namespace Tedd
         private readonly ReadOnlyMemory<byte> ROMemory;
         private int _position { get; set; }
         private bool _canWrite = false;
+        private int _length;
 
         public MemoryStreamer(Memory<byte> memory)
         {
             Memory = memory;
             ROMemory = memory;
             _canWrite = true;
+            _length = 0;
         }
         public MemoryStreamer(ReadOnlyMemory<byte> memory)
         {
             Memory = null;
             ROMemory = memory;
             _canWrite = false;
+            _length = 0;
+        }
+
+        /// <summary>
+        /// Fills span with zero.
+        /// </summary>
+        /// <param name="all">Normally only clears until Length, set all to true to clear the whole underlying span.</param>
+        public void Clear(bool all = false)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
+
+            if (all)
+            {
+                Memory.Span.Fill(0);
+                _position = 0;
+                return;
+            }
+
+            Memory.Span.Slice(0, _position).Fill(0);
+            _position = 0;
         }
 
         #region Overrides of Stream
@@ -66,7 +89,7 @@ namespace Tedd
         public override long Length
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => ROMemory.Length;
+            get => _length;
         }
 
         /// <summary>Gets or sets the position within the current stream.</summary>
@@ -83,6 +106,8 @@ namespace Tedd
                 if (value > ROMemory.Span.Length || value < 0)
                     throw new ArgumentOutOfRangeException(nameof(Position));
                 _position = (int)value;
+                if (_position > Length)
+                    _length = _position;
             }
         }
 
@@ -105,11 +130,16 @@ namespace Tedd
             return Position;
         }
 
-        /// <summary>[Not supported] Sets the length of the current stream.</summary>
+        /// <summary>Sets the length of the current stream.</summary>
         /// <param name="value">The desired length of the current stream in bytes.</param>
-        /// <exception cref="T:System.NotSupportedException">The stream does not support both writing and seeking, such as if the stream is constructed from a pipe or console output.</exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">Attempt to set length that exceeds the underlying span.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override void SetLength(long value) => throw new NotSupportedException();
+        public override void SetLength(long value)
+        {
+            if (value > ROMemory.Length || value < 0)
+                throw new ArgumentOutOfRangeException(nameof(value));
+            _length = (int)value;
+        }
 
 
         /// <summary>Has no effect on Span.</summary>
@@ -198,15 +228,17 @@ namespace Tedd
         /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset">offset</paramref> or <paramref name="count">count</paramref> is negative, greater than buffer size or greater than remaining destination length.</exception>
         public void Write(in byte[] buffer, in int offset, in int count)
         {
-            if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
-            if (buffer is null)
-                throw new ArgumentNullException(nameof(buffer));
+            Write(new Span<byte>(buffer).Slice(offset, count));
 
-            var src = ((Span<byte>)buffer).Slice(offset, count);
-            var dst = Memory.Span.Slice((int)_position, count);
-            src.CopyTo(dst);
-            _position += count;
+            //if (!CanWrite)
+            //    throw new ReadOnlyException("Span is read-only.");
+            //if (buffer is null)
+            //    throw new ArgumentNullException(nameof(buffer));
+
+            //var src = ((Span<byte>)buffer).Slice(offset, count);
+            //var dst = Memory.Span.Slice((int)_position, count);
+            //src.CopyTo(dst);
+            //_position += count;
         }
 
         #endregion

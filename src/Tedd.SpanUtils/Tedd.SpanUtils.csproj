@@ -15,7 +15,7 @@
     <PackageProjectUrl>https://github.com/tedd/Tedd.SpanUtils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tedd/Tedd.SpanUtils</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <Version>1.0.9</Version>
+    <Version>1.1.0-beta.1</Version>
     <PackageLicenseExpression></PackageLicenseExpression>
     <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>
