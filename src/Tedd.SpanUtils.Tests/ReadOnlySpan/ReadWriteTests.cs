@@ -431,6 +431,111 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
 
         #region VLQ
         [Fact]
+        public void TestVLQInt16FullRange()
+        {
+            var rnd = new Random();
+            var mem = new byte[sizeof(Int16) + 1];
+            for (int c = Int16.MinValue; c < Int16.MaxValue; c++)
+            {
+                var answer = (Int16)c;
+                var span1 = new Span<byte>(mem);
+                var span2 = new ReadOnlySpan<byte>(mem);
+                span1.Fill(0);
+
+                var len = span1.WriteVLQ(answer);
+                var back = span2.ReadVLQInt16(out var len2);
+
+                Assert.Equal(answer, back);
+
+                Assert.Equal(Utils.MeasureVLQ(answer), len);
+                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+            }
+        }
+        [Fact]
+        public void TestVLQUInt16FullRange()
+        {
+            var rnd = new Random();
+            var mem = new byte[sizeof(UInt16) + 1];
+            for (int c = UInt16.MinValue; c < UInt16.MaxValue; c++)
+            {
+                var answer = (UInt16)c;
+                var span1 = new Span<byte>(mem);
+                var span2 = new ReadOnlySpan<byte>(mem);
+                span1.Fill(0);
+
+                var len = span1.WriteVLQ(answer);
+                var back = span2.ReadVLQUInt16(out var len2);
+
+                Assert.Equal(answer, back);
+
+                Assert.Equal(Utils.MeasureVLQ(answer), len);
+                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+            }
+        }
+        //[Fact]
+        //public void TestVLQInt32FullRange()
+        //{
+        //    var rnd = new Random();
+        //    var mem = new byte[sizeof(Int32) + 1];
+        //    for (int c = Int32.MinValue; c < Int32.MaxValue; c++)
+        //    {
+        //        var answer = (Int32)c;
+        //        var span1 = new Span<byte>(mem);
+        //        var span2 = new ReadOnlySpan<byte>(mem);
+        //        span1.Fill(0);
+
+        //        var len = span1.WriteVLQ(answer);
+        //        var back = span2.ReadVLQInt32(out var len2);
+
+        //        Assert.Equal(answer, back);
+
+        //        Assert.Equal(Utils.MeasureVLQ(answer), len);
+        //        Assert.Equal(Utils.MeasureVLQ(answer), len2);
+        //    }
+        //}
+        //[Fact]
+        //public void TestVLQUInt32FullRange()
+        //{
+        //    var rnd = new Random();
+        //    var mem = new byte[sizeof(UInt32) + 1];
+        //    for (UInt32 c = UInt32.MinValue; c < UInt32.MaxValue; c++)
+        //    {
+        //        var answer = (UInt32)c;
+        //        var span1 = new Span<byte>(mem);
+        //        var span2 = new ReadOnlySpan<byte>(mem);
+        //        span1.Fill(0);
+
+        //        var len = span1.WriteVLQ(answer);
+        //        var back = span2.ReadVLQUInt32(out var len2);
+
+        //        Assert.Equal(answer, back);
+
+        //        Assert.Equal(Utils.MeasureVLQ(answer), len);
+        //        Assert.Equal(Utils.MeasureVLQ(answer), len2);
+        //    }
+        //}
+        //[Fact]
+        //public void TestVLQInt64FullRange()
+        //{
+        //    var rnd = new Random();
+        //    var mem = new byte[sizeof(Int64) + 2];
+        //    for (Int64 c = Int64.MinValue; c < Int64.MaxValue; c++)
+        //    {
+        //        var answer = (Int64)c;
+        //        var span1 = new Span<byte>(mem);
+        //        var span2 = new ReadOnlySpan<byte>(mem);
+        //        span1.Fill(0);
+
+        //        var len = span1.WriteVLQ(answer);
+        //        var back = span2.ReadVLQInt64(out var len2);
+
+        //        Assert.Equal(answer, back);
+
+        //        Assert.Equal(Utils.MeasureVLQ(answer), len);
+        //        Assert.Equal(Utils.MeasureVLQ(answer), len2);
+        //    }
+        //}
+        [Fact]
         public void TestVLQInt16()
         {
             var rnd = new Random();
@@ -445,10 +550,10 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 var len = span1.WriteVLQ(answer);
                 var back = span2.ReadVLQInt16(out var len2);
 
+                Assert.Equal(answer, back);
+
                 Assert.Equal(Utils.MeasureVLQ(answer), len);
                 Assert.Equal(Utils.MeasureVLQ(answer), len2);
-
-                Assert.Equal(answer, back);
 
                 // Check overflow
                 span1.Fill(0xFF);

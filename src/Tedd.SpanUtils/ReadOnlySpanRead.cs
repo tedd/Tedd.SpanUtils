@@ -114,9 +114,9 @@ namespace Tedd
             return Encoding.UTF8.GetString(bytes);
 #endif
         }
+
+
         #region VLQ
-
-
         /// <summary>
         /// Read VLQ (Variable Length Quantity) of Int16 (short), this can be up to 3 bytes in length.
         /// Use (out _) as parameter to ignore length.
@@ -131,7 +131,38 @@ namespace Tedd
         /// <returns>Value</returns>
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int16 ReadVLQInt16(in this ReadOnlySpan<byte> span, out int length) => (Int16)span.ReadVLQUInt16(out length);
+        public static Int16 ReadVLQInt16(in this ReadOnlySpan<byte> span, out int length)
+        {
+            // Lower bound special case
+            if (span[0] == 0b0100_0000)
+            {
+                length = 1;
+                return Int16.MinValue;
+            }
+
+            var i = 0;
+            var shift = 0;
+            Int32 ret = 0;
+
+            ret |= (Int32)(span[0] & 0b0011_1111) << shift;
+            shift += 6;
+
+            while ((span[i++] & 0b1000_0000) != 0)
+            {
+                if (i == sizeof(Int16) + 2)
+                    throw new OverflowException($"VLQ exceeded {sizeof(Int16) + 1} bytes");
+
+                ret |= (Int32)(span[i] & 0b0111_1111) << shift;
+                shift += 7;
+            }
+
+            length = i;
+
+            if ((span[0] & 0b0100_0000) != 0)
+                return (Int16)(ret * -1);
+
+            return (Int16)ret;
+        }
         /// <summary>
         /// Read VLQ (Variable Length Quantity) of UInt16 (ushort), this can be up to 3 bytes in length.
         /// Use (out _) as parameter to ignore length.
@@ -146,7 +177,7 @@ namespace Tedd
         /// <returns>Value</returns>
         public static UInt16 ReadVLQUInt16(in this ReadOnlySpan<byte> span, out int length)
         {
-            byte i = 0;
+            var i = 0;
             var shift = 0;
             UInt32 ret = 0;
             do
@@ -176,7 +207,7 @@ namespace Tedd
 
         public static UInt24 ReadVLQUInt24(in this ReadOnlySpan<byte> span, out int length)
         {
-            byte i = 0;
+            var i = 0;
             var shift = 0;
             UInt32 ret = 0;
             do
@@ -186,7 +217,6 @@ namespace Tedd
 
                 ret |= (UInt32)(span[i] & 0b0111_1111) << shift;
                 shift += 7;
-                var s = span[i + 1] & 0b1000_0000;
             } while ((span[i++] & 0b1000_0000) != 0);
 
             length = i;
@@ -207,7 +237,39 @@ namespace Tedd
         /// <returns>Value</returns>
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int32 ReadVLQInt32(in this ReadOnlySpan<byte> span, out int length) => (Int32)span.ReadVLQUInt32(out length);
+        public static Int32 ReadVLQInt32(in this ReadOnlySpan<byte> span, out int length)
+        {
+            // Lower bound special case
+            if (span[0] == 0b0100_0000)
+            {
+                length = 1;
+                return Int32.MinValue;
+            }
+
+
+            var i = 0;
+            var shift = 0;
+            Int32 ret = 0;
+
+            ret |= (Int32)(span[0] & 0b0011_1111) << shift;
+            shift += 6;
+
+            while ((span[i++] & 0b1000_0000) != 0)
+            {
+                if (i == sizeof(Int32) + 2)
+                    throw new OverflowException($"VLQ exceeded {sizeof(Int32) + 1} bytes");
+
+                ret |= (Int32)(span[i] & 0b0111_1111) << shift;
+                shift += 7;
+            }
+
+            length = i;
+
+            if ((span[0] & 0b0100_0000) != 0)
+                return (Int32)(ret * -1);
+
+            return (Int32)ret;
+        }
         /// <summary>
         /// Read VLQ (Variable Length Quantity) of UInt32 (uint), this can be up to 5 bytes in length.
         /// Use (out _) as parameter to ignore length.
@@ -223,7 +285,7 @@ namespace Tedd
 
         public static UInt32 ReadVLQUInt32(in this ReadOnlySpan<byte> span, out int length)
         {
-            byte i = 0;
+            var i = 0;
             var shift = 0;
             UInt32 ret = 0;
             do
@@ -251,7 +313,38 @@ namespace Tedd
         /// <param name="length">Number of bytes read.</param>
         /// <returns>Value</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int64 ReadVLQInt64(in this ReadOnlySpan<byte> span, out int length) => (Int64)span.ReadVLQUInt64(out length);
+        public static Int64 ReadVLQInt64(in this ReadOnlySpan<byte> span, out int length)
+        {
+            // Lower bound special case
+            if (span[0] == 0b0100_0000)
+            {
+                length = 1;
+                return Int64.MinValue;
+            }
+
+            var i = 0;
+            var shift = 0;
+            Int64 ret = 0;
+
+            ret |= (Int64)(span[0] & 0b0011_1111) << shift;
+            shift += 6;
+
+            while ((span[i++] & 0b1000_0000) != 0)
+            {
+                if (i == sizeof(Int64) + 3)
+                    throw new OverflowException($"VLQ exceeded {sizeof(Int64) + 2} bytes");
+
+                ret |= (Int64)(span[i] & 0b0111_1111) << shift;
+                shift += 7;
+            }
+
+            length = i;
+
+            if ((span[0] & 0b0100_0000) != 0)
+                return (Int64)(ret * -1);
+
+            return (Int64)ret;
+        }
         /// <summary>
         /// Read VLQ (Variable Length Quantity) of UInt64 (ulong), this can be up to 10 bytes in length.
         /// Use (out _) as parameter to ignore length.
@@ -266,13 +359,13 @@ namespace Tedd
         /// <returns>Value</returns>
         public static UInt64 ReadVLQUInt64(in this ReadOnlySpan<byte> span, out int length)
         {
-            byte i = 0;
+            var i = 0;
             var shift = 0;
             UInt64 ret = 0;
             do
             {
-                if (i == sizeof(UInt64) + 2)
-                    throw new OverflowException($"VLQ exceeded {sizeof(UInt64) + 1} bytes");
+                if (i == sizeof(UInt64) + 3)
+                    throw new OverflowException($"VLQ exceeded {sizeof(UInt64) + 2} bytes");
 
                 ret |= ((UInt64)(span[i] & 0b0111_1111) << shift);
                 shift += 7;
@@ -283,7 +376,6 @@ namespace Tedd
         }
 
         #endregion
-
 
     }
 }

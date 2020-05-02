@@ -180,7 +180,7 @@ namespace Tedd
         /// <param name="span"></param>
         /// <param name="value"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte WriteSize(in this Span<byte> span, in UInt32 value)
+        public static byte WriteSize(in this Span<byte> span, UInt32 value)
         {
             var bs = span.MeasureWriteSize(value);
             if (bs == 1)
@@ -202,12 +202,42 @@ namespace Tedd
         /// <param name="span"></param>
         /// <param name="value"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureWriteSize(in this Span<byte> span, in UInt32 value) => value.MeasureWriteSize();
+        public static byte MeasureWriteSize(in this Span<byte> span, UInt32 value) => value.MeasureWriteSize();
         #endregion
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte WriteVLQ(in this Span<byte> span, Int16 value) => span.WriteVLQ((UInt16) value);
+        public static byte WriteVLQ(in this Span<byte> span, Int16 value)
+        {
+            byte i = 0;
+            if (value < 0)
+            {
+                span[0] = 0b0100_0000;
+                // Special case for lower bound, no more processing required
+                if (value == Int16.MinValue)
+                    return 1;
+                value *= -1;
+
+            }
+            else span[0] = 0b0000_0000;
+
+            // Write first byte, special case as we only have room for 6 bits in this one
+            span[0] |= (byte)(value & 0b0011_1111);
+            value >>= 6;
+
+            // Still got some left? Go at it with 7 bit increments
+            while (value > 0)
+            {
+                // We need one more byte, set current bit flag for that
+                span[i++] |= 0b1000_0000;
+                // Then the next 7 bits. Note that we don't need to remove 8th bit as overflow always would set that anyway.
+                span[i] = (byte)value;
+                value >>= 7;
+            }
+
+            return ++i;
+        }
+
         public static byte WriteVLQ(in this Span<byte> span, UInt16 value)
         {
             byte i = 0;
@@ -234,7 +264,37 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte WriteVLQ(in this Span<byte> span, Int32 value) => span.WriteVLQ((UInt32) value);
+        public static byte WriteVLQ(in this Span<byte> span, Int32 value)
+        {
+            byte i = 0;
+            if (value < 0)
+            {
+                span[0] = 0b0100_0000;
+                // Special case for lower bound, no more processing required
+                if (value == Int32.MinValue)
+                    return 1;
+                value *= -1;
+
+            }
+            else span[0] = 0b0000_0000;
+
+            // Write first byte, special case as we only have room for 6 bits in this one
+            span[0] |= (byte)(value & 0b0011_1111);
+            value >>= 6;
+
+            // Still got some left? Go at it with 7 bit increments
+            while (value > 0)
+            {
+                // We need one more byte, set current bit flag for that
+                span[i++] |= 0b1000_0000;
+                // Then the next 7 bits. Note that we don't need to remove 8th bit as overflow always would set that anyway.
+                span[i] = (byte)value;
+                value >>= 7;
+            }
+
+            return ++i;
+        }
+
         public static byte WriteVLQ(in this Span<byte> span, UInt32 value)
         {
             byte i = 0;
@@ -248,7 +308,37 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte WriteVLQ(in this Span<byte> span, Int64 value) => span.WriteVLQ((UInt64)value);
+        public static byte WriteVLQ(in this Span<byte> span, Int64 value)
+        {
+            byte i = 0;
+            if (value < 0)
+            {
+                span[0] = 0b0100_0000;
+                // Special case for lower bound, no more processing required
+                if (value == Int64.MinValue)
+                    return 1;
+                value *= -1;
+
+            }
+            else span[0] = 0b0000_0000;
+
+            // Write first byte, special case as we only have room for 6 bits in this one
+            span[0] |= (byte)(value & 0b0011_1111);
+            value >>= 6;
+
+            // Still got some left? Go at it with 7 bit increments
+            while (value > 0)
+            {
+                // We need one more byte, set current bit flag for that
+                span[i++] |= 0b1000_0000;
+                // Then the next 7 bits. Note that we don't need to remove 8th bit as overflow always would set that anyway.
+                span[i] = (byte)value;
+                value >>= 7;
+            }
+
+            return ++i;
+        }
+
         public static byte WriteVLQ(in this Span<byte> span, UInt64 value)
         {
             byte i = 0;
