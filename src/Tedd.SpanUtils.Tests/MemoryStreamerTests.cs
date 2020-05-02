@@ -48,6 +48,15 @@ namespace Tedd.SpanUtils.Tests.Span
         #endregion
 
         [Fact]
+        public void TestOtherStreamStuff()
+        {
+            var mem = new byte[2];
+            var ms = new MemoryStreamer(mem);
+            Assert.Throws<NotSupportedException>(() => ms.SetLength(0));
+            ms.Flush();
+        }
+
+        [Fact]
         public void TestSizedReadWriteSpan()
         {
             var rnd = new Random();

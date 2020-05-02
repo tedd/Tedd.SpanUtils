@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace Tedd
 {
     /// <summary>
-    /// A ref struct (allocated on stack) that gives the same functionality as a System.IO.Stream.
+    /// A ref struct (allocated on stack) that gives similar functionality as System.IO.Stream.
     /// Additionally has all the read/write methods of this library. Read/write will progress position.
     /// </summary>
     public ref struct SpanStream
@@ -29,6 +29,8 @@ namespace Tedd
                 if (value > ROSpan.Length || value < 0)
                     throw new ArgumentOutOfRangeException(nameof(Position));
                 _position = value;
+                if (_position > Length)
+                    Length = _position;
             }
         }
 
@@ -37,7 +39,7 @@ namespace Tedd
             Span = span;
             ROSpan = (ReadOnlySpan<byte>)span;
             _position = 0;
-            Length = span.Length;
+            Length = 0;
         }
 
         public SpanStream(in ReadOnlySpan<byte> span)
@@ -45,7 +47,44 @@ namespace Tedd
             ROSpan = span;
             _position = 0;
             Span = null;
-            Length = span.Length;
+            Length = 0;
+        }
+
+        /// <summary>Sets the length of the current stream.</summary>
+        /// <param name="value">The desired length of the current stream in bytes.</param>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">Attempt to set length that exceeds the underlying span.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetLength(long value)
+        {
+            if (value > ROSpan.Length || value < 0)
+                throw new ArgumentOutOfRangeException(nameof(value));
+            Length = (int)value;
+        }
+
+
+        /// <summary>Has no effect on Span.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Flush() { }
+
+
+        /// <summary>
+        /// Fills span with zero.
+        /// </summary>
+        /// <param name="all">Normally only clears until Length, set all to true to clear the whole underlying span.</param>
+        public void Clear(bool all = false)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
+
+            if (all)
+            {
+                Span.Fill(0);
+                _position = 0;
+                return;
+            }
+
+            Span.Slice(0, _position).Fill(0);
+            _position = 0;
         }
 
         /// <summary>Gets a value indicating whether the current stream supports reading.</summary>
