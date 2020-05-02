@@ -30,17 +30,51 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureVLQ(Int16 value) => MeasureVLQ((UInt64)(UInt16)value);
+        public static byte MeasureVLQ(Int16 value)
+        {
+            // Lower bound special case
+            if (value == Int16.MinValue)
+                return 1;
+            return MeasureVLQ((Int64) value);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureVLQ(UInt16 value) => MeasureVLQ((UInt64)value);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureVLQ(UInt24 value) => MeasureVLQ((UInt64)((UInt32)value & 0xFFFFFF));
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureVLQ(Int32 value) => MeasureVLQ((UInt64)(UInt32)value);
+        public static byte MeasureVLQ(Int32 value)
+        {
+            // Lower bound special case
+            if (value == Int32.MinValue)
+                return 1;
+            return MeasureVLQ((Int64)value);
+        }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureVLQ(UInt32 value) => MeasureVLQ((UInt64)value);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureVLQ(Int64 value) => MeasureVLQ((UInt64)value);
+        public static byte MeasureVLQ(Int64 value)
+        {
+            // Lower bound special case
+            if (value == Int64.MinValue)
+                return 1;
+
+            if (value < 0)
+                value *= -1;
+            byte i = 1;
+            if (value >= 0b01000000)
+            {
+                i++;
+                value >>= 6;
+            }
+            while (value >= 0b10000000)
+            {
+                i++;
+                value >>= 7;
+            }
+            return i;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureVLQ(UInt64 value)

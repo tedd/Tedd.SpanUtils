@@ -426,7 +426,7 @@ namespace Tedd
 
         #region Read
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int ReadByte()
+        public override int ReadByte()
         {
             var ret = ROMemory.Span.Slice(_position, sizeof(Byte)).ReadByte();
             Position += sizeof(Byte);
