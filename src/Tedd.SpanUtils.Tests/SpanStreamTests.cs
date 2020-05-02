@@ -673,7 +673,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new SpanStream(mem);
-                    s.SizedWrite(new Span<byte>(new byte[s.Length + 1]));
+                    s.SizedWrite(new Span<byte>(new byte[mem.Length + 1]));
                 });
             }
 
@@ -709,7 +709,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new SpanStream(mem);
-                    s.SizedWrite(new Span<byte>(new byte[s.Length + 1]));
+                    s.SizedWrite(new Span<byte>(new byte[mem.Length + 1]));
                 });
             }
 

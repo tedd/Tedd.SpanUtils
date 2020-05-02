@@ -228,6 +228,8 @@ namespace Tedd
         /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset">offset</paramref> or <paramref name="count">count</paramref> is negative, greater than buffer size or greater than remaining destination length.</exception>
         public void Write(in byte[] buffer, in int offset, in int count)
         {
+            if (buffer is null)
+                throw new ArgumentNullException(nameof(buffer));
             Write(new Span<byte>(buffer).Slice(offset, count));
 
             //if (!CanWrite)

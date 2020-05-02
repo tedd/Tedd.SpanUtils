@@ -52,7 +52,7 @@ namespace Tedd.SpanUtils.Tests.Span
         {
             var mem = new byte[2];
             var ms = new MemoryStreamer(mem);
-            Assert.Throws<NotSupportedException>(() => ms.SetLength(0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ms.SetLength(mem.Length+1));
             ms.Flush();
         }
 
@@ -682,7 +682,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new MemoryStreamer(mem);
-                    s.SizedWrite(new Span<byte>(new byte[s.Length + 1]));
+                    s.SizedWrite(new Span<byte>(new byte[mem.Length + 1]));
                 });
             }
 
@@ -718,7 +718,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new MemoryStreamer(mem);
-                    s.SizedWrite(new Span<byte>(new byte[s.Length + 1]));
+                    s.SizedWrite(new Span<byte>(new byte[mem.Length + 1]));
                 });
             }
 
