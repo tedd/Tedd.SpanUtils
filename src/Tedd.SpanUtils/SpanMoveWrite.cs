@@ -142,7 +142,7 @@ namespace Tedd
 
         #region VLQ
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MoveWriteVLQ(ref this Span<byte> span, in Int16 value)
+        public static byte MoveWriteVLQ(ref this Span<byte> span, Int16 value)
         {
             var len = span.WriteVLQ(value);
             span = span.Slice(len);

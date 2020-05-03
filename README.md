@@ -71,10 +71,10 @@ If you want to know how many bytes the number is, simply do (firstByte>>6)+1. Th
 # Sized writes
 String, byte\[\], Span<> and ReadOnlySpan<> can be written using `SizedWrite()`. This will put a 1-4 byte size descriptor in front of the actual data, meaning you do not have to know the size when you read it back using `SizedRead*()`;
 
-# Variable Length Quantity
+# Variable-Length Quantity
 Sized writes give an advantage when processing data, since you only need the first two bits to know length. So on first byte you know how much data you need to read for the full number. It is though capped at 30-bit integers since two bits are used for size description.
 
-Another way to store numbers are Variable Length Quantity. This existists in some variations, but mainly is encoded so that first bit in each byte tells if there is another byte in the sequence. For signed integeres, the second bit of first byte is the signed bit.
+Another way to store numbers are Variable-Length Quantity. This existists in some variations, but mainly is encoded so that first bit in each byte tells if there is another byte in the sequence. For signed integeres, the second bit of first byte is the signed bit.
 
 WriteVLQ() and ReadVLQ\*() methods provide this functionality.
 
