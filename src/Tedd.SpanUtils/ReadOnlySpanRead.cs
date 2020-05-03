@@ -8,16 +8,16 @@ namespace Tedd
     {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte ReadByte(in this ReadOnlySpan<byte> span) => span[0];
+        public static byte ReadByte(this ReadOnlySpan<byte> span) => span[0];
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static sbyte ReadSByte(in this ReadOnlySpan<byte> span) => (sbyte)span[0];
+        public static sbyte ReadSByte(this ReadOnlySpan<byte> span) => (sbyte)span[0];
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int16 ReadInt16(in this ReadOnlySpan<byte> span) => (Int16)span.ReadUInt16();
+        public static Int16 ReadInt16(this ReadOnlySpan<byte> span) => (Int16)span.ReadUInt16();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UInt16 ReadUInt16(in this ReadOnlySpan<byte> span)
+        public static UInt16 ReadUInt16(this ReadOnlySpan<byte> span)
         {
             //return MemoryMarshal.Cast<byte, UInt16>(span)[0];
             return (UInt16)(
@@ -26,7 +26,7 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UInt24 ReadUInt24(in this ReadOnlySpan<byte> span)
+        public static UInt24 ReadUInt24(this ReadOnlySpan<byte> span)
         {
             // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
             return (UInt24)(Int32)(
@@ -36,10 +36,10 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int32 ReadInt32(in this ReadOnlySpan<byte> span) => (Int32)span.ReadUInt32();
+        public static Int32 ReadInt32(this ReadOnlySpan<byte> span) => (Int32)span.ReadUInt32();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UInt32 ReadUInt32(in this ReadOnlySpan<byte> span)
+        public static UInt32 ReadUInt32(this ReadOnlySpan<byte> span)
         {
             // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
             return (UInt32)(
@@ -50,10 +50,10 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int64 ReadInt64(in this ReadOnlySpan<byte> span) => (Int64)span.ReadUInt64();
+        public static Int64 ReadInt64(this ReadOnlySpan<byte> span) => (Int64)span.ReadUInt64();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UInt64 ReadUInt64(in this ReadOnlySpan<byte> span)
+        public static UInt64 ReadUInt64(this ReadOnlySpan<byte> span)
         {
             //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
             return (UInt64)(
@@ -68,10 +68,10 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Guid ReadGuid(in this ReadOnlySpan<byte> span) => new Guid(span.Slice(0, 16).ToArray());
+        public static Guid ReadGuid(this ReadOnlySpan<byte> span) => new Guid(span.Slice(0, 16).ToArray());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UInt32 ReadSize(in this ReadOnlySpan<byte> span, out int totalLength)
+        public static UInt32 ReadSize(this ReadOnlySpan<byte> span, out int totalLength)
         {
             var b1 = span[0];
             var s = b1 >> 6;
@@ -88,13 +88,13 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte[] ReadBytes(in this ReadOnlySpan<byte> span, int length)
+        public static byte[] ReadBytes(this ReadOnlySpan<byte> span, int length)
         {
             return span.Slice(0, length).ToArray();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte[] SizedReadBytes(in this ReadOnlySpan<byte> span, out int totalLength)
+        public static byte[] SizedReadBytes(this ReadOnlySpan<byte> span, out int totalLength)
         {
             var size = span.ReadSize(out var len);
             totalLength = len + (int)size;
@@ -102,7 +102,7 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string SizedReadString(in this ReadOnlySpan<byte> span, out int totalLength)
+        public static string SizedReadString(this ReadOnlySpan<byte> span, out int totalLength)
         {
             var size = span.ReadSize(out var len);
             totalLength = len + (int)size;
@@ -131,7 +131,7 @@ namespace Tedd
         /// <returns>Value</returns>
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int16 ReadVLQInt16(in this ReadOnlySpan<byte> span, out int length)
+        public static Int16 ReadVLQInt16(this ReadOnlySpan<byte> span, out int length)
         {
             // Lower bound special case
             if (span[0] == 0b0100_0000)
@@ -175,7 +175,7 @@ namespace Tedd
         /// </example>
         /// <param name="length">Number of bytes read.</param>
         /// <returns>Value</returns>
-        public static UInt16 ReadVLQUInt16(in this ReadOnlySpan<byte> span, out int length)
+        public static UInt16 ReadVLQUInt16(this ReadOnlySpan<byte> span, out int length)
         {
             var i = 0;
             var shift = 0;
@@ -205,7 +205,7 @@ namespace Tedd
         /// <param name="length">Number of bytes read.</param>
         /// <returns>Value</returns>
 
-        public static UInt24 ReadVLQUInt24(in this ReadOnlySpan<byte> span, out int length)
+        public static UInt24 ReadVLQUInt24(this ReadOnlySpan<byte> span, out int length)
         {
             var i = 0;
             var shift = 0;
@@ -237,7 +237,7 @@ namespace Tedd
         /// <returns>Value</returns>
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int32 ReadVLQInt32(in this ReadOnlySpan<byte> span, out int length)
+        public static Int32 ReadVLQInt32(this ReadOnlySpan<byte> span, out int length)
         {
             // Lower bound special case
             if (span[0] == 0b0100_0000)
@@ -283,7 +283,7 @@ namespace Tedd
         /// <param name="length">Number of bytes read.</param>
         /// <returns>Value</returns>
 
-        public static UInt32 ReadVLQUInt32(in this ReadOnlySpan<byte> span, out int length)
+        public static UInt32 ReadVLQUInt32(this ReadOnlySpan<byte> span, out int length)
         {
             var i = 0;
             var shift = 0;
@@ -313,7 +313,7 @@ namespace Tedd
         /// <param name="length">Number of bytes read.</param>
         /// <returns>Value</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int64 ReadVLQInt64(in this ReadOnlySpan<byte> span, out int length)
+        public static Int64 ReadVLQInt64(this ReadOnlySpan<byte> span, out int length)
         {
             // Lower bound special case
             if (span[0] == 0b0100_0000)
@@ -357,7 +357,7 @@ namespace Tedd
         /// </example>
         /// <param name="length">Number of bytes read.</param>
         /// <returns>Value</returns>
-        public static UInt64 ReadVLQUInt64(in this ReadOnlySpan<byte> span, out int length)
+        public static UInt64 ReadVLQUInt64(this ReadOnlySpan<byte> span, out int length)
         {
             var i = 0;
             var shift = 0;
