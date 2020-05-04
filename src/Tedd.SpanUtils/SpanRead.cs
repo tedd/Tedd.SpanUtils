@@ -7,6 +7,7 @@ namespace Tedd
 {
     public static class SpanRead
     {
+        #region Primitives
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte ReadByte(this Span<byte> span) => span[0];
 
@@ -69,6 +70,41 @@ namespace Tedd
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool ReadBool(this Span<byte> span) => span[0] != 0;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static char ReadChar(this Span<byte> span)
+        {
+            Span<char> a = stackalloc char[1];
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            span.Slice(0,sizeof(char)).CopyTo(ab);
+            return a[0];
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float ReadFloat(this Span<byte> span)
+        {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0,sizeof(float)).CopyTo(ab);
+            return a[0];
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double ReadDouble(this Span<byte> span)
+        {
+            Span<double> a = stackalloc double[1];
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            span.Slice(0,sizeof(double)).CopyTo(ab);
+            return a[0];
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static decimal ReadDecimal(this Span<byte> span)
+        {
+            Span<decimal> a = stackalloc decimal[1];
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            span.Slice(0,sizeof(decimal)).CopyTo(ab);
+            return a[0];
+        }
+       
+        #endregion
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Guid ReadGuid(this Span<byte> span) => new Guid(span.Slice(0, 16).ToArray());

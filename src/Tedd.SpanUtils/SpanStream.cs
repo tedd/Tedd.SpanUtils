@@ -155,6 +155,7 @@ namespace Tedd
         #endregion
 
         #region Write
+        #region Primitives
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Write(byte value)
         {
@@ -257,6 +258,44 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Write(char value)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
+
+            Span.Slice(Position, sizeof(char)).Write(value);
+            return sizeof(char);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Write(float value)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
+
+            Span.Slice(Position, sizeof(float)).Write(value);
+            return sizeof(float);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Write(double value)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
+
+            Span.Slice(Position, sizeof(double)).Write(value);
+            return sizeof(double);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Write(decimal value)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
+
+            Span.Slice(Position, sizeof(decimal)).Write(value);
+            return sizeof(decimal);
+        }
+        #endregion
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Write(Guid value)
         {
             if (!CanWrite)
@@ -347,6 +386,7 @@ namespace Tedd
         #endregion
 
         #region Read
+        #region Primitives
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int ReadByte()
         {
@@ -411,6 +451,42 @@ namespace Tedd
             Position += sizeof(UInt64);
             return ret;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool ReadBool()
+        {
+            var ret = Span.Slice(_position, SizeofGuid).ReadBool();
+            Position += 1;
+            return ret;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public char ReadChar()
+        {
+            var ret = Span.Slice(_position, SizeofGuid).ReadChar();
+            Position += sizeof(char);
+            return ret;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float ReadFloat()
+        {
+            var ret = Span.Slice(_position, SizeofGuid).ReadFloat();
+            Position += sizeof(float);
+            return ret;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double ReadDouble()
+        {
+            var ret = Span.Slice(_position, SizeofGuid).ReadDouble();
+            Position += sizeof(double);
+            return ret;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public decimal ReadDecimal()
+        {
+            var ret = Span.Slice(_position, SizeofGuid).ReadDecimal();
+            Position += sizeof(decimal);
+            return ret;
+        }
+        #endregion
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Guid ReadGuid()

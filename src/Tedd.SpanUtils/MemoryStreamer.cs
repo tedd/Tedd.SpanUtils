@@ -243,8 +243,9 @@ namespace Tedd
 
         //#endregion
 
-        
+
         #region Write
+        #region Primitives
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Write(byte value)
         {
@@ -344,6 +345,43 @@ namespace Tedd
             Memory.Span.Slice(_position, 1).Write(value);
             return 1;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Write(char value)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Memory is read-only.");
+
+            Memory.Span.Slice(_position, sizeof(char)).Write(value);
+            return sizeof(char);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Write(float value)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Memory is read-only.");
+
+            Memory.Span.Slice(_position, sizeof(float)).Write(value);
+            return sizeof(float);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Write(double value)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Memory is read-only.");
+
+            Memory.Span.Slice(_position, sizeof(double)).Write(value);
+            return sizeof(double);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Write(decimal value)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Memory is read-only.");
+
+            Memory.Span.Slice(_position, sizeof(decimal)).Write(value);
+            return sizeof(decimal);
+        }
+        #endregion
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Write(Guid value)
@@ -436,6 +474,7 @@ namespace Tedd
         #endregion
 
         #region Read
+        #region Primitives
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int ReadByte()
         {
@@ -508,6 +547,39 @@ namespace Tedd
             Position += 1;
             return ret;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public char ReadChar()
+        {
+            var ret = ROMemory.Span.Slice(_position, SizeofGuid).ReadChar();
+            Position += sizeof(char);
+            return ret;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float ReadFloat()
+        {
+            var ret = ROMemory.Span.Slice(_position, SizeofGuid).ReadFloat();
+            Position += sizeof(float);
+            return ret;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double ReadDouble()
+        {
+            var ret = ROMemory.Span.Slice(_position, SizeofGuid).ReadDouble();
+            Position += sizeof(double);
+            return ret;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public decimal ReadDecimal()
+        {
+            var ret = ROMemory.Span.Slice(_position, SizeofGuid).ReadDecimal();
+            Position += sizeof(decimal);
+            return ret;
+        }
+        #endregion
+
+        #region Standard datatypes
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Guid ReadGuid()
         {
@@ -515,6 +587,20 @@ namespace Tedd
             Position += SizeofGuid;
             return ret;
         }
+        #endregion
+
+        #region Sized read
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public UInt32 ReadSize(out int length)
+        {
+            var ret = ROMemory.Span.Slice(_position).ReadSize(out length);
+            Position += length;
+            return ret;
+        }
+        #endregion
+
+        #region Sized array read
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string SizedReadString(out int length)
         {
@@ -529,6 +615,9 @@ namespace Tedd
             Position += length;
             return ret;
         }
+        #endregion
+
+        #region Arrays
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public byte[] ReadBytes(int length)
         {
@@ -536,13 +625,7 @@ namespace Tedd
             Position += length;
             return ret;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public UInt32 ReadSize(out int length)
-        {
-            var ret = ROMemory.Span.Slice(_position).ReadSize(out length);
-            Position += length;
-            return ret;
-        }
+        #endregion
 
         #endregion
 
