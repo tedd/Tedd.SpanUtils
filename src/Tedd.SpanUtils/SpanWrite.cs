@@ -81,6 +81,14 @@ namespace Tedd
         }
         #endregion
 
+        #region Other
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte Write(this Span<byte> span, bool value)
+        {
+            span[0] = (byte)(value?1:0);
+            return 1;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte Write(this Span<byte> span, Guid value)
         {
@@ -89,7 +97,7 @@ namespace Tedd
 
             return 16;
         }
-
+        #endregion
 
         #region Arrays
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -115,7 +123,6 @@ namespace Tedd
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SizedWrite(this Span<byte> span, byte[] value) => span.SizedWrite(new Span<byte>(value));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SizedWrite(this Span<byte> span, string value)
         {
 #if NETCOREAPP || NETSTANDARD
@@ -144,7 +151,6 @@ namespace Tedd
             return len;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SizedWrite(this Span<byte> span, Span<byte> value)
         {
             var mbs = span.MeasureWriteSize((UInt32)value.Length);
@@ -159,7 +165,6 @@ namespace Tedd
         }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SizedWrite(this Span<byte> span, ReadOnlySpan<byte> value)
         {
             var mbs = span.MeasureWriteSize((UInt32)value.Length);
@@ -179,7 +184,6 @@ namespace Tedd
         /// </summary>
         /// <param name="span"></param>
         /// <param name="value"></param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte WriteSize(this Span<byte> span, UInt32 value)
         {
             var bs = span.MeasureWriteSize(value);
@@ -206,7 +210,6 @@ namespace Tedd
         #endregion
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte WriteVLQ(this Span<byte> span, Int16 value)
         {
             byte i = 0;
@@ -263,7 +266,6 @@ namespace Tedd
             return i;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte WriteVLQ(this Span<byte> span, Int32 value)
         {
             byte i = 0;
@@ -307,7 +309,6 @@ namespace Tedd
             return i;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte WriteVLQ(this Span<byte> span, Int64 value)
         {
             byte i = 0;
