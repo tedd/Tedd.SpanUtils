@@ -245,6 +245,17 @@ namespace Tedd
             Position += sizeof(UInt64);
             return ret;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Write(bool value)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
+
+            Span.Slice(Position, 1).Write(value);
+            return 1;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Write(Guid value)
         {
@@ -567,6 +578,46 @@ namespace Tedd
 
 
         #endregion
+        #endregion
+
+
+        #region aliases
+        /// <summary>
+        /// Alias for ReadShort()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Int16 ReadShort() => ReadInt16();
+        /// <summary>
+        /// Alias for ReadUInt16()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public UInt16 ReadUShort() => ReadUInt16();
+        /// <summary>
+        /// Alias for ReadInt32()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Int32 ReadInt() => ReadInt32();
+        /// <summary>
+        /// Alias for ReadUInt32()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public UInt32 ReadUInt() => ReadUInt32();
+        /// <summary>
+        /// Alias for ReadInt64()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Int64 ReadLong() => ReadInt64();
+        /// <summary>
+        /// Alias for ReadUInt64()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public UInt64 ReadULong() => ReadUInt64();
         #endregion
     }
 }

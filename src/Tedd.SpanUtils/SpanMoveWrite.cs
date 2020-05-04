@@ -66,6 +66,14 @@ namespace Tedd
         #endregion
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int MoveWrite(ref this Span<byte> span, bool value)
+        {
+            var len = span.Write(value);
+            span = span.Slice(len);
+            return len;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MoveWrite(ref this Span<byte> span, Guid value)
         {
             var len = span.Write(value);

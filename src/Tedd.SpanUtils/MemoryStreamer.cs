@@ -43,7 +43,7 @@ namespace Tedd
         public void Clear(bool all = false)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             if (all)
             {
@@ -198,59 +198,58 @@ namespace Tedd
 
 
 
+        //#region Read / Write byte[]
+        ///// <summary>Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
+        ///// <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between offset and (offset + count - 1) replaced by the bytes read from the current source.</param>
+        ///// <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the current stream.</param>
+        ///// <param name="count">The maximum number of bytes to be read from the current stream.</param>
+        ///// <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
+        ///// <exception cref="T:System.ArgumentNullException"><paramref name="buffer">buffer</paramref> is null.</exception>
+        ///// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset">offset</paramref> or <paramref name="count">count</paramref> is negative, greater than buffer size or greater than remaining destination length.</exception>
+        //public int Read(byte[] buffer, int offset, int count)
+        //{
+        //    if (buffer is null)
+        //        throw new ArgumentNullException(nameof(buffer));
 
+        //    var dst = ((Span<byte>)buffer).Slice(offset, count);
+        //    var src = ROMemory.Span.Slice((int)_position, Math.Min(count, (int)ROMemory.Span.Length - (int)_position));
+        //    src.CopyTo(dst);
+        //    _position += src.Length;
+        //    return src.Length;
+        //}
 
-        #region Read / Write byte[]
-        /// <summary>Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
-        /// <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between offset and (offset + count - 1) replaced by the bytes read from the current source.</param>
-        /// <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the current stream.</param>
-        /// <param name="count">The maximum number of bytes to be read from the current stream.</param>
-        /// <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="buffer">buffer</paramref> is null.</exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset">offset</paramref> or <paramref name="count">count</paramref> is negative, greater than buffer size or greater than remaining destination length.</exception>
-        public int Read(byte[] buffer, int offset, int count)
-        {
-            if (buffer is null)
-                throw new ArgumentNullException(nameof(buffer));
+        ///// <summary>When overridden in a derived class, writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.</summary>
+        ///// <param name="buffer">An array of bytes. This method copies count bytes from buffer to the current stream.</param>
+        ///// <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream.</param>
+        ///// <param name="count">The number of bytes to be written to the current stream.</param>
+        ///// <exception cref="T:System.ArgumentNullException"><paramref name="buffer">buffer</paramref> is null.</exception>
+        ///// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset">offset</paramref> or <paramref name="count">count</paramref> is negative, greater than buffer size or greater than remaining destination length.</exception>
+        //public void Write(byte[] buffer, int offset, int count)
+        //{
+        //    if (buffer is null)
+        //        throw new ArgumentNullException(nameof(buffer));
+        //    Write(new Span<byte>(buffer).Slice(offset, count));
 
-            var dst = ((Span<byte>)buffer).Slice(offset, count);
-            var src = ROMemory.Span.Slice((int)_position, Math.Min(count, (int)ROMemory.Span.Length - (int)_position));
-            src.CopyTo(dst);
-            _position += src.Length;
-            return src.Length;
-        }
+        //    //if (!CanWrite)
+        //    //    throw new ReadOnlyException("Memory is read-only.");
+        //    //if (buffer is null)
+        //    //    throw new ArgumentNullException(nameof(buffer));
 
-        /// <summary>When overridden in a derived class, writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.</summary>
-        /// <param name="buffer">An array of bytes. This method copies count bytes from buffer to the current stream.</param>
-        /// <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream.</param>
-        /// <param name="count">The number of bytes to be written to the current stream.</param>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="buffer">buffer</paramref> is null.</exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset">offset</paramref> or <paramref name="count">count</paramref> is negative, greater than buffer size or greater than remaining destination length.</exception>
-        public void Write(byte[] buffer, int offset, int count)
-        {
-            if (buffer is null)
-                throw new ArgumentNullException(nameof(buffer));
-            Write(new Span<byte>(buffer).Slice(offset, count));
+        //    //var src = ((Span<byte>)buffer).Slice(offset, count);
+        //    //var dst = Memory.Span.Slice((int)_position, count);
+        //    //src.CopyTo(dst);
+        //    //_position += count;
+        //}
 
-            //if (!CanWrite)
-            //    throw new ReadOnlyException("Span is read-only.");
-            //if (buffer is null)
-            //    throw new ArgumentNullException(nameof(buffer));
+        //#endregion
 
-            //var src = ((Span<byte>)buffer).Slice(offset, count);
-            //var dst = Memory.Span.Slice((int)_position, count);
-            //src.CopyTo(dst);
-            //_position += count;
-        }
-
-        #endregion
-
+        
         #region Write
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Write(byte value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position, sizeof(Byte)).Write(value);
             Position += sizeof(Byte);
@@ -260,7 +259,7 @@ namespace Tedd
         public int Write(SByte value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position, sizeof(SByte)).Write(value);
             Position += sizeof(SByte);
@@ -270,7 +269,7 @@ namespace Tedd
         public int Write(Int16 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position, sizeof(Int16)).Write(value);
             Position += sizeof(Int16);
@@ -280,7 +279,7 @@ namespace Tedd
         public int Write(UInt16 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position, sizeof(UInt16)).Write(value);
             Position += sizeof(UInt16);
@@ -290,7 +289,7 @@ namespace Tedd
         public int Write(UInt24 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position, (int)UInt24.Size).Write(value);
             Position += (int)UInt24.Size;
@@ -300,7 +299,7 @@ namespace Tedd
         public int Write(Int32 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position, sizeof(Int32)).Write(value);
             Position += sizeof(Int32);
@@ -310,7 +309,7 @@ namespace Tedd
         public int Write(UInt32 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position, sizeof(UInt32)).Write(value);
             Position += sizeof(UInt32);
@@ -320,7 +319,7 @@ namespace Tedd
         public int Write(Int64 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position, sizeof(Int64)).Write(value);
             Position += sizeof(Int64);
@@ -330,17 +329,27 @@ namespace Tedd
         public int Write(UInt64 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position, sizeof(UInt64)).Write(value);
             Position += sizeof(UInt64);
             return ret;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public byte Write(bool value)
+        {
+            if (!CanWrite)
+                throw new ReadOnlyException("Memory is read-only.");
+
+            Memory.Span.Slice(_position, 1).Write(value);
+            return 1;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Write(Guid value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position, 16).Write(value);
             Position += 16;
@@ -350,7 +359,7 @@ namespace Tedd
         public int Write(byte[] value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position).Write(value);
             Position += value.Length;
@@ -360,7 +369,7 @@ namespace Tedd
         public int Write(Span<byte> value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var ret = Memory.Span.Slice(_position).Write(value);
             Position += value.Length;
@@ -370,7 +379,7 @@ namespace Tedd
         public int WriteSize(UInt32 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var length = Memory.Span.Slice(_position).WriteSize(value);
             Position += length;
@@ -381,7 +390,7 @@ namespace Tedd
         public int SizedWrite(string value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var length = Memory.Span.Slice(_position).SizedWrite(value);
             Position += length;
@@ -391,7 +400,7 @@ namespace Tedd
         public int SizedWrite(byte[] value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var length = Memory.Span.Slice(_position).SizedWrite(value);
             Position += length;
@@ -401,7 +410,7 @@ namespace Tedd
         public int SizedWrite(Span<byte> value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var length = Memory.Span.Slice(_position).SizedWrite(value);
             Position += length;
@@ -411,7 +420,7 @@ namespace Tedd
         public int SizedWrite(ReadOnlySpan<byte> value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var length = Memory.Span.Slice(_position).SizedWrite(value);
             Position += length;
@@ -493,6 +502,13 @@ namespace Tedd
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool ReadBool()
+        {
+            var ret = ROMemory.Span.Slice(_position, SizeofGuid).ReadBool();
+            Position += 1;
+            return ret;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Guid ReadGuid()
         {
             var ret = ROMemory.Span.Slice(_position, SizeofGuid).ReadGuid();
@@ -536,7 +552,7 @@ namespace Tedd
         public int WriteVLQ(Int16 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var len = Memory.Span.Slice(_position).WriteVLQ(value);
             Position += len;
@@ -546,7 +562,7 @@ namespace Tedd
         public int WriteVLQ(UInt16 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var len = Memory.Span.Slice(_position).WriteVLQ(value);
             Position += len;
@@ -556,7 +572,7 @@ namespace Tedd
         public int WriteVLQ(UInt24 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var len = Memory.Span.Slice(_position).WriteVLQ(value);
             Position += len;
@@ -567,7 +583,7 @@ namespace Tedd
         public int WriteVLQ(Int32 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var len = Memory.Span.Slice(_position).WriteVLQ(value);
             Position += len;
@@ -577,7 +593,7 @@ namespace Tedd
         public int WriteVLQ(UInt32 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var len = Memory.Span.Slice(_position).WriteVLQ(value);
             Position += len;
@@ -588,7 +604,7 @@ namespace Tedd
         public int WriteVLQ(Int64 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var len = Memory.Span.Slice(_position).WriteVLQ(value);
             Position += len;
@@ -598,7 +614,7 @@ namespace Tedd
         public int WriteVLQ(UInt64 value)
         {
             if (!CanWrite)
-                throw new ReadOnlyException("Span is read-only.");
+                throw new ReadOnlyException("Memory is read-only.");
 
             var len = Memory.Span.Slice(_position).WriteVLQ(value);
             Position += len;
@@ -659,5 +675,46 @@ namespace Tedd
 
         #endregion
         #endregion
+
+
+        #region aliases
+        /// <summary>
+        /// Alias for ReadShort()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Int16 ReadShort() => ReadInt16();
+        /// <summary>
+        /// Alias for ReadUInt16()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public UInt16 ReadUShort() => ReadUInt16();
+        /// <summary>
+        /// Alias for ReadInt32()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Int32 ReadInt() => ReadInt32();
+        /// <summary>
+        /// Alias for ReadUInt32()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public UInt32 ReadUInt() => ReadUInt32();
+        /// <summary>
+        /// Alias for ReadInt64()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Int64 ReadLong() => ReadInt64();
+        /// <summary>
+        /// Alias for ReadUInt64()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public UInt64 ReadULong() => ReadUInt64();
+        #endregion
+
     }
 }
