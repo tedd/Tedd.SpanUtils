@@ -52,10 +52,14 @@ namespace Tedd.SpanUtils.Benchmark.Tests
         public static void NormalAssignEx(Span<byte> span, long value)
         {
             // Byte by byte copy
-            span[0] = (byte)(value >> (8 * 3));
-            span[1] = (byte)(value >> (8 * 2));
-            span[2] = (byte)(value >> (8 * 1));
-            span[3] = (byte)value;
+            span[0] = (byte)(value >> (8 * 7));
+            span[1] = (byte)((value >> (8 * 6)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 5)) & 0xFF);
+            span[3] = (byte)((value >> (8 * 4)) & 0xFF);
+            span[4] = (byte)((value >> (8 * 3)) & 0xFF);
+            span[5] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[6] = (byte)((value >> (8 * 1)) & 0xFF);
+            span[7] = (byte)(value & 0xFF);
         }
 
         [Benchmark]
@@ -80,10 +84,39 @@ namespace Tedd.SpanUtils.Benchmark.Tests
         public static void NormalAssignLFEx(Span<byte> span, long value)
         {
             // Byte by byte copy
-            span[3] = (byte)value;
-            span[0] = (byte)(value >> (8 * 3));
-            span[1] = (byte)(value >> (8 * 2));
-            span[2] = (byte)(value >> (8 * 1));
+            span[7] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 7));
+            span[1] = (byte)((value >> (8 * 6)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 5)) & 0xFF);
+            span[3] = (byte)((value >> (8 * 4)) & 0xFF);
+            span[4] = (byte)((value >> (8 * 3)) & 0xFF);
+            span[5] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[6] = (byte)((value >> (8 * 1)) & 0xFF);
+        }
+
+        [Benchmark]
+        public void NormalAssignIfCheck()
+        {
+            for (var i = 0; i < AlignmentCount; i++)
+            {
+                var s = ((Span<byte>)Memory).Slice(i, sizeof(long));
+                NormalAssignIfCheckEx(s, Value);
+            }
+        }
+
+        public static void NormalAssignIfCheckEx(Span<byte> span, long value)
+        {
+            // Byte by byte copy
+            if (span.Length < 8)
+                throw new IndexOutOfRangeException("");
+            span[0] = (byte)(value >> (8 * 7));
+            span[1] = (byte)((value >> (8 * 6)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 5)) & 0xFF);
+            span[3] = (byte)((value >> (8 * 4)) & 0xFF);
+            span[4] = (byte)((value >> (8 * 3)) & 0xFF);
+            span[5] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[6] = (byte)((value >> (8 * 1)) & 0xFF);
+            span[7] = (byte)(value & 0xFF);
         }
 
         [Benchmark()]
@@ -108,10 +141,15 @@ namespace Tedd.SpanUtils.Benchmark.Tests
         public static void AssignReverseEx(Span<byte> span, long value)
         {
             // Byte by byte copy
-            span[3] = (byte)value;
-            span[2] = (byte)(value >> (8 * 1));
-            span[1] = (byte)(value >> (8 * 2));
-            span[0] = (byte)(value >> (8 * 3));
+            span[7] = (byte)(value & 0xFF);
+            span[6] = (byte)((value >> (8 * 1)) & 0xFF);
+            span[5] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[4] = (byte)((value >> (8 * 3)) & 0xFF);
+            span[3] = (byte)((value >> (8 * 4)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 5)) & 0xFF);
+            span[1] = (byte)((value >> (8 * 6)) & 0xFF);
+            span[0] = (byte)(value >> (8 * 7));
+
         }
 
         [Benchmark()]
@@ -189,6 +227,10 @@ namespace Tedd.SpanUtils.Benchmark.Tests
         {
             // Byte by byte copy from known sized stack array
             var b = stackalloc byte[] {
+                (byte)(value >> (8 * 7)),
+                (byte)(value >> (8 * 6)),
+                (byte)(value >> (8 * 5)),
+                (byte)(value >> (8 * 4)),
                 (byte)(value >> (8 * 3)),
                 (byte)(value >> (8 * 2)),
                 (byte)(value >> (8 * 1)),
@@ -198,6 +240,10 @@ namespace Tedd.SpanUtils.Benchmark.Tests
             span[1] = b[1];
             span[2] = b[2];
             span[3] = b[3];
+            span[4] = b[4];
+            span[5] = b[5];
+            span[6] = b[6];
+            span[7] = b[7];
         }
 
         [Benchmark()]
@@ -227,6 +273,10 @@ namespace Tedd.SpanUtils.Benchmark.Tests
             span[1] = b[1];
             span[2] = b[2];
             span[3] = b[3];
+            span[4] = b[4];
+            span[5] = b[5];
+            span[6] = b[6];
+            span[7] = b[7];
         }
     }
 }

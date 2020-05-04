@@ -9,8 +9,9 @@ namespace Tedd.SpanUtils.Benchmark
     {
         static void Main(string[] args)
         {
-            var summary1 = BenchmarkRunner.Run<SpanCopyMethodInt>();
-            var summary2 = BenchmarkRunner.Run<SpanCopyMethodLong>();
+            //var summary1 = BenchmarkRunner.Run<SpanCopyMethodInt>();
+            //var summary2 = BenchmarkRunner.Run<SpanCopyMethodLong>();
+            var summary3 = BenchmarkRunner.Run<SpanReadMethodLong>();
             
         }
     }
