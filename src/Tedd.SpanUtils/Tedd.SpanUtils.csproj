@@ -8,19 +8,19 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Tedd Hansen</Authors>
     <Company>Tedd Hansen</Company>
-    <Description>Extension methods to read/write different datatypes to Span&lt;byte&gt;. See documentation on GitHub for examples.</Description>
+    <Description>Extension methods to read/write different datatypes to Span&lt;byte&gt; (tested, benchmarked, optimized). Plus SpanStream and MemoryStreamer for stream-like behavior on Span&lt;byte&gt; and Memory&lt;byte&gt;. See documentation on GitHub for examples.</Description>
     <PackageTags>Span ReadOnlySpan Read Write SByte Byte Int16 UInt16 UInt24 Int32 UInt32 Int64 UInt64 String Bytes VLQ VariableLengthQuantity SpanStream MemoryStream</PackageTags>
     <Copyright>Tedd Hansen</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/tedd/Tedd.SpanUtils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tedd/Tedd.SpanUtils</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <Version>1.1.0-beta.3</Version>
+    <Version>1.1.0-beta.4</Version>
     <PackageLicenseExpression></PackageLicenseExpression>
     <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>NuGet Signing Key.pfx</AssemblyOriginatorKeyFile>
-    <PackageReleaseNotes>VLQ now supports (signed) negative numbers without maxing encoded length.</PackageReleaseNotes>
+    <PackageReleaseNotes>SpanStream and MemoryStreamer (which is Stream for Memory&lt;byte&gt;). Variable-lenght quantity datatypes. Optimized read/write methods. All primitive types implemented.</PackageReleaseNotes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
