@@ -79,16 +79,48 @@ namespace Tedd
 
             return 8;
         }
-        #endregion
-
-        #region Other
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte Write(this Span<byte> span, bool value)
         {
-            span[0] = (byte)(value?1:0);
+            span[0] = (byte)(value ? 1 : 0);
             return 1;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe byte Write(this Span<byte> span, char value)
+        {
+            Span<char> a = stackalloc char[1] {value};
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            ab.CopyTo(span);
+            return sizeof(char);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte Write(this Span<byte> span, float value)
+        {
+            Span<float> a = stackalloc float[1] { value };
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            ab.CopyTo(span);
+            return sizeof(float);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte Write(this Span<byte> span, double value)
+        {
+            Span<double> a = stackalloc double[1] { value };
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            ab.CopyTo(span);
+            return sizeof(double);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte Write(this Span<byte> span, decimal value)
+        {
+            Span<decimal> a = stackalloc decimal[1] { value };
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            ab.CopyTo(span);
+            return sizeof(decimal);
+        }
 
+        #endregion
+
+        #region Other
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte Write(this Span<byte> span, Guid value)
         {
