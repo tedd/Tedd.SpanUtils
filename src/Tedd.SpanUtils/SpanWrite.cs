@@ -29,8 +29,8 @@ namespace Tedd
         public static byte Write(this Span<byte> span, UInt16 value)
         {
             //MemoryMarshal.Cast<byte, UInt16>(span)[0] = value;
-            span[0] = (byte)(value >> (8 * 1));
             span[1] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 1));
 
             return 2;
         }
@@ -39,9 +39,9 @@ namespace Tedd
         public static byte Write(this Span<byte> span, UInt24 value)
         {
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[2] = (byte)((Int32)value & 0xFF);
             span[0] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
             span[1] = (byte)(((Int32)value >> (8 * 1)) & 0xFF);
-            span[2] = (byte)((Int32)value & 0xFF);
 
             return 3;
         }
@@ -53,10 +53,10 @@ namespace Tedd
         public static byte Write(this Span<byte> span, UInt32 value)
         {
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[3] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 3));
             span[1] = (byte)((value >> (8 * 2)) & 0xFF);
             span[2] = (byte)((value >> (8 * 1)) & 0xFF);
-            span[3] = (byte)(value & 0xFF);
 
             return 4;
         }
@@ -67,7 +67,9 @@ namespace Tedd
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte Write(this Span<byte> span, UInt64 value)
         {
-            //MemoryMarshal.Cast<byte, UInt64>(span)[0] = value;
+            // 13% more speed if we write last first, then rest in sequence.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            span[7] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 7));
             span[1] = (byte)((value >> (8 * 6)) & 0xFF);
             span[2] = (byte)((value >> (8 * 5)) & 0xFF);
@@ -75,7 +77,6 @@ namespace Tedd
             span[4] = (byte)((value >> (8 * 3)) & 0xFF);
             span[5] = (byte)((value >> (8 * 2)) & 0xFF);
             span[6] = (byte)((value >> (8 * 1)) & 0xFF);
-            span[7] = (byte)(value & 0xFF);
 
             return 8;
         }

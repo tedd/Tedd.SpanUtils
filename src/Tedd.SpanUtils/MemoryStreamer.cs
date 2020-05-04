@@ -179,6 +179,8 @@ namespace Tedd
         /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset">offset</paramref> or <paramref name="count">count</paramref> is negative, greater than buffer size or greater than remaining destination length.</exception>
         public override void Write(byte[] buffer, int offset, int count)
         {
+            if (!CanWrite)
+                throw new ReadOnlyException("Memory is read-only.");
             //if (offset + count > buffer.Length)
             //    throw new ArgumentException($"The sum of offset and count is greater than the buffer length.");
             if (buffer is null)
