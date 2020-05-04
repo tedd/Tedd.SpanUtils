@@ -31,9 +31,10 @@ namespace Tedd
         {
             // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
             return (UInt24)(Int32)(
-                  ((UInt32)span[0] << (8 * 2))
+                ((UInt32)span[2])
                 | ((UInt32)span[1] << (8 * 1))
-                | ((UInt32)span[2]));
+                | ((UInt32)span[0] << (8 * 2))
+                  );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -44,10 +45,11 @@ namespace Tedd
         {
             // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
             return (UInt32)(
-                ((UInt32)span[0] << (8 * 3))
-                | ((UInt32)span[1] << (8 * 2))
+                ((UInt32)span[3])
                 | ((UInt32)span[2] << (8 * 1))
-                | ((UInt32)span[3]));
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -57,15 +59,18 @@ namespace Tedd
         public static UInt64 ReadUInt64(this Span<byte> span)
         {
             //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
             return (UInt64)(
-                ((UInt64)span[0] << (8 * 7))
-                | ((UInt64)span[1] << (8 * 6))
-                | ((UInt64)span[2] << (8 * 5))
-                | ((UInt64)span[3] << (8 * 4))
-                | ((UInt64)span[4] << (8 * 3))
-                | ((UInt64)span[5] << (8 * 2))
+                ((UInt64)span[7])
                 | ((UInt64)span[6] << (8 * 1))
-                | ((UInt64)span[7]));
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
