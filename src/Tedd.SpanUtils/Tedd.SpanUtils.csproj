@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;net462;net47;net471;net472;net48;netstandard2.1;netstandard2.1;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net461;net462;net47;net471;net472;net48;netstandard2.1;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <!--<TargetFramework>netcoreapp3.1</TargetFramework>-->
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable> 
@@ -15,7 +15,7 @@
     <PackageProjectUrl>https://github.com/tedd/Tedd.SpanUtils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tedd/Tedd.SpanUtils</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <Version>1.1.0-beta.4</Version>
+    <Version>1.1.0-beta.5</Version>
     <PackageLicenseExpression></PackageLicenseExpression>
     <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>
