@@ -15,8 +15,8 @@ namespace Tedd
         private const int SizeofGuid = 16;
         private const int SizeofUInt24 = 3;
 
-        private readonly Memory<byte> Memory;
-        private readonly ReadOnlyMemory<byte> ROMemory;
+        private Memory<byte> Memory;
+        private ReadOnlyMemory<byte> ROMemory;
         private int _position { get; set; }
         private bool _canWrite = false;
         private int _length;
@@ -35,6 +35,7 @@ namespace Tedd
             _canWrite = false;
             _length = 0;
         }
+        public int MaxLength => ROMemory.Length;
 
         /// <summary>
         /// Fills span with zero.

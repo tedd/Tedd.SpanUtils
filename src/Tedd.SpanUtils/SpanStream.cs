@@ -13,8 +13,8 @@ namespace Tedd
         private const int SizeofGuid = 16;
         private const int SizeofUInt24 = 3;
 
-        private readonly Span<byte> Span;
-        private readonly ReadOnlySpan<byte> ROSpan;
+        private Span<byte> Span;
+        private ReadOnlySpan<byte> ROSpan;
         private int _position;
         public int Length;
 
@@ -49,6 +49,8 @@ namespace Tedd
             Span = null;
             Length = 0;
         }
+
+        public int MaxLength => ROSpan.Length;
 
         /// <summary>Sets the length of the current stream.</summary>
         /// <param name="value">The desired length of the current stream in bytes.</param>
