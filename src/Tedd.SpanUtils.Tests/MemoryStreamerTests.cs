@@ -47,12 +47,25 @@ namespace Tedd.SpanUtils.Tests.Span
         }
         #endregion
 
+
+        [Fact]
+        public void TestLength()
+        {
+            var mem = new byte[100];
+            var ss = new MemoryStreamer(mem);
+            Assert.Equal(0, ss.Length);
+            Assert.Equal(100, ss.MaxLength);
+            ss.Write((UInt32)0);
+            Assert.Equal(4, ss.Length);
+            ss.Clear();
+            Assert.Equal(0, ss.Length);
+        }
         [Fact]
         public void TestOtherStreamStuff()
         {
             var mem = new byte[2];
             var ms = new MemoryStreamer(mem);
-            Assert.Throws<ArgumentOutOfRangeException>(() => ms.SetLength(mem.Length+1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ms.SetLength(mem.Length + 1));
             ms.Flush();
         }
 
@@ -768,15 +781,23 @@ namespace Tedd.SpanUtils.Tests.Span
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var sr = rnd.Next(0, 4);
-#pragma warning disable 8509
-                    var n = sr switch
-#pragma warning restore 8509
+                    uint n;
+                    switch (sr)
                     {
-                        0 => (UInt32)rnd.Next(0, 0b00111111),
-                        1 => (UInt32)rnd.Next(0b01000000, 0b00111111_11111111),
-                        2 => (UInt32)rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111),
-                        3 => (UInt32)rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111)
-                    };
+                        case 0:
+                            n = (UInt32)rnd.Next(0, 0b00111111);
+                            break;
+                        case 1:
+                            n = (UInt32)rnd.Next(0b01000000, 0b00111111_11111111);
+                            break;
+                        case 2:
+                            n = (UInt32)rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111);
+                            break;
+                        //case 3:
+                        default:
+                            n = (UInt32)rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111);
+                            break;
+                    }
 
                     a[i] = n;
                     span1.WriteSize(n);

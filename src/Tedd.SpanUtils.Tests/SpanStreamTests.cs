@@ -11,6 +11,19 @@ namespace Tedd.SpanUtils.Tests.Span
         private int count = 100;
         private int writeRepeatCount = 10;
 
+        [Fact]
+        public void TestLength()
+        {
+            var mem = new byte[100];
+            var ss = new SpanStream(mem);
+            Assert.Equal(0, ss.Length);
+            Assert.Equal(100, ss.MaxLength);
+            ss.Write((UInt32)0);
+            Assert.Equal(4, ss.Length);
+            ss.Clear();
+            Assert.Equal(0, ss.Length);
+        }
+
         #region Standard Stream Read Write
         [Fact]
         public void TestStreamReadWrite()
@@ -759,15 +772,23 @@ namespace Tedd.SpanUtils.Tests.Span
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var sr = rnd.Next(0, 4);
-#pragma warning disable 8509
-                    var n = sr switch
-#pragma warning restore 8509
+                    uint n;
+                    switch (sr)
                     {
-                        0 => (UInt32)rnd.Next(0, 0b00111111),
-                        1 => (UInt32)rnd.Next(0b01000000, 0b00111111_11111111),
-                        2 => (UInt32)rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111),
-                        3 => (UInt32)rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111)
-                    };
+                        case 0:
+                            n = (UInt32)rnd.Next(0, 0b00111111);
+                            break;
+                        case 1:
+                            n = (UInt32)rnd.Next(0b01000000, 0b00111111_11111111);
+                            break;
+                        case 2:
+                            n = (UInt32)rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111);
+                            break;
+                        //case 3:
+                        default:
+                            n = (UInt32)rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111);
+                            break;
+                    }
 
                     a[i] = n;
                     span1.WriteSize(n);
