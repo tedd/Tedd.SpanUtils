@@ -121,15 +121,17 @@ namespace Tedd
             var b1 = span[0];
             var s = b1 >> 6;
             totalLength = s + 1;
-#pragma warning disable 8509
-            return s switch
-#pragma warning restore 8509
+            switch (s)
             {
-                0b00 => (UInt32)b1 & 0b00111111,
-                0b01 => (UInt32)span.ReadUInt16() & 0b00111111_11111111,
-                0b10 => (UInt32)span.ReadUInt24() & 0b00111111_11111111_11111111,
-                0b11 => (UInt32)span.ReadUInt32() & 0b00111111_11111111_11111111_11111111
-            };
+                case 0b00:
+                    return (UInt32) b1 & 0b00111111;
+                case 0b01:
+                    return (UInt32) span.ReadUInt16() & 0b00111111_11111111;
+                case 0b10:
+                    return (UInt32) span.ReadUInt24() & 0b00111111_11111111_11111111;
+                //case 0b11:
+            }
+            return (UInt32)span.ReadUInt32() & 0b00111111_11111111_11111111_11111111;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

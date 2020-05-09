@@ -87,6 +87,7 @@ namespace Tedd
 
             Span.Slice(0, _position).Fill(0);
             _position = 0;
+            Length = 0;
         }
 
         /// <summary>Gets a value indicating whether the current stream supports reading.</summary>

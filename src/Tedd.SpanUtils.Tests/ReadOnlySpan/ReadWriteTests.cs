@@ -257,15 +257,24 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
             for (var c = 0; c < count * 10_000; c++)
             {
                 var sr = rnd.Next(0, 4);
-#pragma warning disable 8509
-                var a = sr switch
-#pragma warning restore 8509
+                uint a;
+                switch (sr)
                 {
-                    0 => (UInt32)rnd.Next(0, 0b00111111),
-                    1 => (UInt32)rnd.Next(0b01000000, 0b00111111_11111111),
-                    2 => (UInt32)rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111),
-                    3 => (UInt32)rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111)
-                };
+                    case 0:
+                        a = (UInt32) rnd.Next(0, 0b00111111);
+                        break;
+                    case 1:
+                        a = (UInt32) rnd.Next(0b01000000, 0b00111111_11111111);
+                        break;
+                    case 2:
+                        a = (UInt32) rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111);
+                        break;
+                    //case 3:
+                    default:
+                        a = (UInt32) rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111);
+                        break;
+                }
+
                 var span1 = new Span<byte>(mem);
                 span1.Fill(0);
                 var span2 = new ReadOnlySpan<byte>(mem);

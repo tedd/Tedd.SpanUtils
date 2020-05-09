@@ -55,6 +55,7 @@ namespace Tedd
 
             Memory.Span.Slice(0, _position).Fill(0);
             _position = 0;
+            _length = 0;
         }
 
         #region Overrides of Stream
