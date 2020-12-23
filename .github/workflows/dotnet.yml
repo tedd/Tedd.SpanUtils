@@ -50,12 +50,16 @@ jobs:
       uses: microsoft/setup-msbuild@v1
 
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.2      
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: latest
 
     - name: Restore Packages
       run: nuget restore Tedd.SpanUtils.sln
       working-directory: src
-
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    
     - name: Build Solution
       run: |
         msbuild.exe Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../_build"
