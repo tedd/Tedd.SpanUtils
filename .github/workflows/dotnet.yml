@@ -7,15 +7,13 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-net:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
-      
-      
-      
+          
     - name: Setup .NET Core 2.2
       uses: actions/setup-dotnet@v1
       with:
@@ -43,3 +41,21 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
       working-directory: src
+
+  build-netframework:
+    runs-on: windows-latest
+
+    steps:
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2      
+
+    - name: Restore Packages
+      run: nuget restore Tedd.SpanUtils.sln
+      working-directory: src
+
+    - name: Build Solution
+      run: |
+        msbuild.exe Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../_build"
