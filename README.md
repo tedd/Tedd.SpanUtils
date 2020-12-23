@@ -88,3 +88,6 @@ Strings are converted to UTF8 before being written to span.
 For .Net Core allocation-free copying is used to avoid large GC objects. Since UTF8 has variable size the size is first calculated using `Encoding.UTF8.GetByteCount`. This means two passes are made over the string, first calculating then copying to span.
 
 For .Net 4.x a short-lived byte array is used for buffering UTF8 before writing.
+
+## NOTE
+Since these methods are implemented as extension methods they cause a defensive copy of a few bytes upon each call. This is a weakness/feature of C#.
