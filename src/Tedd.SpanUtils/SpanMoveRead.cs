@@ -131,7 +131,7 @@ namespace Tedd
         {
             var size = span.ReadSize(out var len);
             totalLength = (int)size + len;
-#if NETCOREAPP || NETSTANDARD
+#if NETCOREAPP || NETSTANDARD21
             var ros = (ReadOnlySpan<byte>)span.Slice(len, (int)size);
             var ret = Encoding.UTF8.GetString(ros);
 #else
