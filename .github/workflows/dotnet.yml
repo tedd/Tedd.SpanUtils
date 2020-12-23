@@ -26,7 +26,7 @@ jobs:
       run: cd $GITHUB_WORKSPACE
     
     - name: Debug
-      run: dir
+      run: echo "::set-output name=dir::$(dir)\n"
       
     - name: Restore Packages
       run: nuget restore src/Tedd.SpanUtils.sln
