@@ -19,7 +19,6 @@ jobs:
     - uses: actions/cache@v2
       with:
         path: ${{ github.workspace }}/.nuget/packages
-        id: cache-nuget
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
           ${{ runner.os }}-nuget-
@@ -28,7 +27,6 @@ jobs:
       uses: actions/setup-dotnet@v1
 
     - name: Restore dependencies
-      if: steps.cache-nuget.outputs.cache-hit != 'true'
       run: dotnet restore
 
     - name: Build
@@ -37,37 +35,35 @@ jobs:
     - name: Test
       run: dotnet test Tedd.SpanUtils.Tests/Tedd.SpanUtils.Tests.csproj --no-build --verbosity normal
 
-  build-net-core31:
-    runs-on: windows-latest
-    defaults:
-      run:
-        working-directory: src
-    env:
-      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages    
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: ${{ github.workspace }}/.nuget/packages
-        id: cache-nuget
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
+  # build-net-core31:
+    # runs-on: windows-latest
+    # defaults:
+      # run:
+        # working-directory: src
+    # env:
+      # NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages    
+    # steps:
+    # - uses: actions/checkout@v2
+    # - uses: actions/cache@v2
+      # with:
+        # path: ${{ github.workspace }}/.nuget/packages
+        # key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        # restore-keys: |
+          # ${{ runner.os }}-nuget-
 
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.x
+    # - name: Setup .NET Core 3.1
+      # uses: actions/setup-dotnet@v1
+      # with:
+        # dotnet-version: 3.1.x
 
-    - name: Restore dependencies
-      if: steps.cache-nuget.outputs.cache-hit != 'true'
-      run: dotnet restore
+    # - name: Restore dependencies
+      # run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore    
+    # - name: Build
+      # run: dotnet build --no-restore    
 
-    - name: Test
-      run: dotnet test Tedd.SpanUtils.Tests/Tedd.SpanUtils.Tests.csproj --no-build --verbosity normal
+    # - name: Test
+      # run: dotnet test Tedd.SpanUtils.Tests/Tedd.SpanUtils.Tests.csproj --no-build --verbosity normal
 
   build-net-framework462:
     runs-on: windows-latest
@@ -82,20 +78,18 @@ jobs:
     - uses: actions/cache@v2
       with:
         path: ${{ github.workspace }}/.nuget/packages
-        id: cache-nuget
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
           ${{ runner.os }}-nuget-
 
     - name: Restore dependencies
-      if: steps.cache-nuget.outputs.cache-hit != 'true'
       run: dotnet restore
 
     - name: Create Build Directory
       run: mkdir Build
-    - name: Build .Net Framework
+    - name: Build
       run: |
         msbuild.exe Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="Build"
 
     - name: Test
-      run: dotnet test Tedd.SpanUtils.DotNet4Tests/Tedd.SpanUtils.DotNet4Tests.csproj --no-build --verbosity normal
+      run: ../xunit/xunit.console.exe Tedd.SpanUtils.DotNet4Tests\bin\Release\net462\Tedd.SpanUtils.DotNet4Tests.dll
