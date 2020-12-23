@@ -40,7 +40,7 @@ jobs:
       run: dotnet build --no-restore Tedd.SpanUtils.DotNet4Tests\Tedd.SpanUtils.DotNet4Tests.csproj
 
     - name: Test .Net Framework (legacy)
-      run: ../xunit/xunit.console.exe Tedd.SpanUtils.DotNet4Tests\bin\Release\net462\Tedd.SpanUtils.DotNet4Tests.dll
+      run: ../xunit/xunit.console.exe Tedd.SpanUtils.DotNet4Tests\bin\Debug\net462\Tedd.SpanUtils.DotNet4Tests.dll
 
 
     #- name: Create Build Directory
