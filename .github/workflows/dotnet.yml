@@ -17,18 +17,8 @@ jobs:
         
     steps:
       - uses: actions/checkout@v2
-
-#    - name: Setup MSBuild
-#      uses: microsoft/setup-msbuild@v1
-
-#    - name: Restore Packages
-#      run: nuget restore
-
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
-
-      - name: Restore dependencies
-        run: dotnet restore
+      - uses: microsoft/setup-msbuild@v1.0.2
+      - run: dotnet restore
 
       - name: Create Build Directory
         run: mkdir Build
@@ -36,3 +26,9 @@ jobs:
       - name: Build Solution
         run: |
           msbuild.exe Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="Build"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: Tedd.SpanUtils
+          path: "Build"
