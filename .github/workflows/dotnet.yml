@@ -11,9 +11,9 @@ jobs:
   build-netframework:
     runs-on: windows-latest
 
-#    defaults:
-#      run:
-#        working-directory: ../
+    defaults:
+      run:
+        working-directory: src
         
     steps:
 #    - name: Setup MSBuild
