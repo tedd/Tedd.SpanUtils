@@ -7,40 +7,6 @@ on:
     branches: [ master ]
 
 jobs:
-  build-net:
-
-    runs-on: windows-latest
-
-    steps:
-    - uses: actions/checkout@v2
-          
-    - name: Setup .NET Core 2.2
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 2.1.x
-
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.x
-
-    - name: Setup .NET 5
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '5.0.x'
-        
-    - name: Setup .NET latest
-      uses: actions/setup-dotnet@v1
-
-    - name: Restore dependencies
-      run: dotnet restore
-      working-directory: src
-    - name: Build
-      run: dotnet build --no-restore
-      working-directory: src
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-      working-directory: src
 
   build-netframework:
     runs-on: windows-latest
@@ -58,6 +24,9 @@ jobs:
 
     - name: Navigate to Workspace
       run: cd $GITHUB_WORKSPACE
+    
+    - name: Debug
+      run: dir
       
     - name: Restore Packages
       run: nuget restore src/Tedd.SpanUtils.sln
