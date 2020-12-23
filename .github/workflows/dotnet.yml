@@ -11,17 +11,20 @@ jobs:
   build-netframework:
     runs-on: windows-latest
 
-    defaults:
-      run:
-        working-directory: ../
+#    defaults:
+#      run:
+#        working-directory: ../
         
     steps:
 #    - name: Setup MSBuild
 #      uses: microsoft/setup-msbuild@v1
 
-    - name: Restore Packages
-      run: nuget restore
-    
+#    - name: Restore Packages
+#      run: nuget restore
+
+    - name: Restore dependencies
+      run: dotnet restore
+
     - name: Create Build Directory
       run: mkdir Build
     
