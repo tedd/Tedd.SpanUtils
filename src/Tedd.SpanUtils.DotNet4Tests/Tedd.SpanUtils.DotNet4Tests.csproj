@@ -9,13 +9,25 @@
 
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.4" />
-    <PackageReference Include="Tedd.RandomUtils" Version="1.0.4" />
+    <PackageReference Include="Tedd.RandomUtils" Version="1.0.5" />
     <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.console" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
   </ItemGroup>
 
 
   <ItemGroup>
     <Compile Include="..\Tedd.SpanUtils.Tests\**\*.cs" Exclude="..\Tedd.SpanUtils.Tests\obj\**\*.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Remove="NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="NewFolder\**" />
   </ItemGroup>
 
 
@@ -35,5 +47,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  
+   
+  <Target Name="Test">
+    <xunit Assemblies="$(OutDir)\Tedd.SpanUtils.DotNet4Tests.dll" />
+  </Target>  
 
 </Project>
