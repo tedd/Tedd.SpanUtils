@@ -27,7 +27,7 @@ jobs:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
     - name: Restore Packages
-      run: nuget restore Tedd.SpanUtils.sln
+      run: nuget restore
     
     - name: Create Build Directory
       run: mkdir Build
