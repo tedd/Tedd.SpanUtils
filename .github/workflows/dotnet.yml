@@ -57,11 +57,14 @@ jobs:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
     - name: Navigate to Workspace
-      run: cd $GITHUB_WORKSPACE/src
+      run: cd $GITHUB_WORKSPACE
       
     - name: Restore Packages
-      run: nuget restore Tedd.SpanUtils.sln
+      run: nuget restore src/Tedd.SpanUtils.sln
+    
+    - name: Create Build Directory
+      run: mkdir Build
     
     - name: Build Solution
       run: |
-        msbuild.exe Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../_build"
+        msbuild.exe src/Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="Build"
