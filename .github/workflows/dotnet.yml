@@ -56,10 +56,11 @@ jobs:
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
+    - name: Navigate to Workspace
+      run: cd $GITHUB_WORKSPACE/src
+      
     - name: Restore Packages
       run: nuget restore Tedd.SpanUtils.sln
-      working-directory: src
-
     
     - name: Build Solution
       run: |
