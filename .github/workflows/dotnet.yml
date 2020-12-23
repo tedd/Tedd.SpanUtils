@@ -53,12 +53,13 @@ jobs:
       uses: nuget/setup-nuget@v1
       with:
         nuget-version: latest
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
     - name: Restore Packages
       run: nuget restore Tedd.SpanUtils.sln
       working-directory: src
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
     
     - name: Build Solution
       run: |
