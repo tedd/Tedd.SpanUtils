@@ -16,18 +16,20 @@ jobs:
         working-directory: src
         
     steps:
+      - uses: actions/checkout@v2
+
 #    - name: Setup MSBuild
 #      uses: microsoft/setup-msbuild@v1
 
 #    - name: Restore Packages
 #      run: nuget restore
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Create Build Directory
-      run: mkdir Build
+      - name: Create Build Directory
+        run: mkdir Build
     
-    - name: Build Solution
-      run: |
-        msbuild.exe Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="Build"
+      - name: Build Solution
+        run: |
+          msbuild.exe Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="Build"
