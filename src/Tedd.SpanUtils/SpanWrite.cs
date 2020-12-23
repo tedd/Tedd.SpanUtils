@@ -158,7 +158,7 @@ namespace Tedd
 
         public static int SizedWrite(this Span<byte> span, string value)
         {
-#if NETCOREAPP || NETSTANDARD
+#if NETCOREAPP || NETSTANDARD21
             // We use GetByteCount followed by direct copy to avoid creating a byte array (avoid GC).
             // For larger strings this could cause 
             var strSize = (UInt32)Encoding.UTF8.GetByteCount(value);
