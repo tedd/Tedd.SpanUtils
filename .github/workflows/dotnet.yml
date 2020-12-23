@@ -16,6 +16,7 @@ jobs:
       NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages    
     steps:
     - uses: actions/checkout@v2
+    - uses: microsoft/setup-msbuild@v1.0.2
     - uses: actions/cache@v2
       with:
         path: ${{ github.workspace }}/.nuget/packages
@@ -32,64 +33,16 @@ jobs:
     - name: Build
       run: dotnet build --no-restore    
 
-    - name: Test
+    - name: Test .Net
       run: dotnet test Tedd.SpanUtils.Tests/Tedd.SpanUtils.Tests.csproj --no-build --verbosity normal
 
-  # build-net-core31:
-    # runs-on: windows-latest
-    # defaults:
-      # run:
-        # working-directory: src
-    # env:
-      # NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages    
-    # steps:
-    # - uses: actions/checkout@v2
-    # - uses: actions/cache@v2
-      # with:
-        # path: ${{ github.workspace }}/.nuget/packages
-        # key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        # restore-keys: |
-          # ${{ runner.os }}-nuget-
-
-    # - name: Setup .NET Core 3.1
-      # uses: actions/setup-dotnet@v1
-      # with:
-        # dotnet-version: 3.1.x
-
-    # - name: Restore dependencies
-      # run: dotnet restore
-
-    # - name: Build
-      # run: dotnet build --no-restore    
-
-    # - name: Test
-      # run: dotnet test Tedd.SpanUtils.Tests/Tedd.SpanUtils.Tests.csproj --no-build --verbosity normal
-
-  build-net-framework462:
-    runs-on: windows-latest
-    defaults:
-      run:
-        working-directory: src
-    env:
-      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages    
-    steps:
-    - uses: microsoft/setup-msbuild@v1.0.2
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: ${{ github.workspace }}/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
-
-    - name: Restore dependencies
-      run: dotnet restore
-
-    - name: Create Build Directory
-      run: mkdir Build
-    - name: Build
-      run: |
-        msbuild.exe Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="Build"
-
-    - name: Test
+    - name: Test .Net Framework (legacy)
       run: ../xunit/xunit.console.exe Tedd.SpanUtils.DotNet4Tests\bin\Release\net462\Tedd.SpanUtils.DotNet4Tests.dll
+
+
+    #- name: Create Build Directory
+    #  run: mkdir Build
+    #- name: Build
+    #  run: |
+    #    msbuild.exe Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="Build"
+
