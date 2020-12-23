@@ -36,6 +36,9 @@ jobs:
     - name: Test .Net
       run: dotnet test Tedd.SpanUtils.Tests/Tedd.SpanUtils.Tests.csproj --no-build --verbosity normal
 
+    - name: Build .Net Framework tests (legacy)
+      run: dotnet build --no-restore Tedd.SpanUtils.DotNet4Tests\Tedd.SpanUtils.DotNet4Tests.csproj
+
     - name: Test .Net Framework (legacy)
       run: ../xunit/xunit.console.exe Tedd.SpanUtils.DotNet4Tests\bin\Release\net462\Tedd.SpanUtils.DotNet4Tests.dll
 
