@@ -89,7 +89,7 @@ namespace Tedd
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe byte Write(this Span<byte> span, char value)
         {
-            Span<char> a = stackalloc char[1] {value};
+            Span<char> a = stackalloc char[1] { value };
             var ab = MemoryMarshal.Cast<char, byte>(a);
             ab.CopyTo(span);
             return sizeof(char);
@@ -242,7 +242,7 @@ namespace Tedd
         public static byte MeasureWriteSize(this Span<byte> span, UInt32 value) => value.MeasureWriteSize();
         #endregion
 
-
+        #region VLQ
         public static byte WriteVLQ(this Span<byte> span, Int16 value)
         {
             byte i = 0;
@@ -384,7 +384,26 @@ namespace Tedd
             span[i++] = (byte)value;
             return i;
         }
+        #endregion VLQ
 
+        #region VInt
+        /// <summary>
+		/// Writes a VInt (EBML Variable Length Integer) to the specified span.
+		/// </summary>
+		/// <returns>The number of bytes written.</returns>
+		public static int WriteVInt(this Span<byte> span, ulong value)
+        {
+            int position = 0;
+            int size = VInt.GetSize(value);
 
+            value |= 1UL << (7 * size);
+            for (int i = size - 1; i >= 0; --i)
+            {
+                span[position++] = (byte)(value >> (8 * i));
+            }
+
+            return position;
+        }
+        #endregion
     }
 }
