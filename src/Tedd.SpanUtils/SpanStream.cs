@@ -391,7 +391,7 @@ namespace Tedd
         #region Read
         #region Primitives
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int ReadByte()
+        public byte ReadByte()
         {
             var ret = ROSpan.Slice(Position, sizeof(Byte)).ReadByte();
             Position += sizeof(Byte);
