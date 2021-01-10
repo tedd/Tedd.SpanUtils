@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -81,7 +82,7 @@ namespace Tedd
         {
             Span<char> a = stackalloc char[1];
             var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0,sizeof(char)).CopyTo(ab);
+            span.Slice(0, sizeof(char)).CopyTo(ab);
             return a[0];
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -89,7 +90,7 @@ namespace Tedd
         {
             Span<float> a = stackalloc float[1];
             var ab = MemoryMarshal.Cast<float, byte>(a);
-            span.Slice(0,sizeof(float)).CopyTo(ab);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
             return a[0];
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -97,7 +98,7 @@ namespace Tedd
         {
             Span<double> a = stackalloc double[1];
             var ab = MemoryMarshal.Cast<double, byte>(a);
-            span.Slice(0,sizeof(double)).CopyTo(ab);
+            span.Slice(0, sizeof(double)).CopyTo(ab);
             return a[0];
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -105,10 +106,10 @@ namespace Tedd
         {
             Span<decimal> a = stackalloc decimal[1];
             var ab = MemoryMarshal.Cast<decimal, byte>(a);
-            span.Slice(0,sizeof(decimal)).CopyTo(ab);
+            span.Slice(0, sizeof(decimal)).CopyTo(ab);
             return a[0];
         }
-       
+
         #endregion
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -124,14 +125,14 @@ namespace Tedd
             switch (s)
             {
                 case 0b00:
-                    return (UInt32) b1 & 0b00111111;
+                    return (UInt32)b1 & 0b00111111;
                 case 0b01:
-                    return (UInt32) span.ReadUInt16() & 0b00111111_11111111;
+                    return (UInt32)span.ReadUInt16() & 0b00111111_11111111;
                 case 0b10:
-                    return (UInt32) span.ReadUInt24() & 0b00111111_11111111_11111111;
+                    return (UInt32)span.ReadUInt24() & 0b00111111_11111111_11111111;
                 //case 0b11:
                 default:
-                    return (UInt32) span.ReadUInt32() & 0b00111111_11111111_11111111_11111111;
+                    return (UInt32)span.ReadUInt32() & 0b00111111_11111111_11111111_11111111;
             }
 
         }
@@ -424,6 +425,49 @@ namespace Tedd
             return ret;
         }
 
+        #endregion
+
+        #region VInt
+        /// <summary>
+        /// Read VInt (EBML Variable Length Integer)
+        /// </summary>
+        /// <param name="length">The maximum number of bytes possible.</param>
+        /// <returns>Value</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VInt ReadVInt(this Span<byte> span, int maxLength)
+        {
+            if (span.Length == 0)
+            {
+                throw new InvalidDataException("Invalid Variable Int");
+            }
+
+            uint b1 = span[0];
+            ulong raw = b1;
+            uint mask = 0xFF00;
+
+            span = span.Slice(1);
+
+            for (int i = 0; i < maxLength; ++i)
+            {
+                mask >>= 1;
+
+                if ((b1 & mask) != 0)
+                {
+                    ulong value = raw & ~mask;
+
+                    for (int j = 0; j < i; ++j)
+                    {
+                        byte b = span[j];
+                        raw = (raw << 8) | b;
+                        value = (value << 8) | b;
+                    }
+
+                    return new VInt(i + 1, raw, value);
+                }
+            }
+
+            throw new InvalidDataException("Invalid Variable Int");
+        }
         #endregion
 
         #region aliases
