@@ -35,7 +35,7 @@ namespace Tedd
             // Lower bound special case
             if (value == Int16.MinValue)
                 return 1;
-            return MeasureVLQ((Int64) value);
+            return MeasureVLQ((Int64)value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

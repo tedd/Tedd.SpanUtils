@@ -205,5 +205,43 @@ namespace Tedd
 
         #endregion
 
+        #region aliases
+        /// <summary>
+        /// Alias for ReadShort()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShort(this Span<byte> span) => span.ReadInt16();
+        /// <summary>
+        /// Alias for ReadUInt16()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShort(this Span<byte> span) => span.ReadUInt16();
+        /// <summary>
+        /// Alias for ReadInt32()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt(this Span<byte> span) => span.ReadInt32();
+        /// <summary>
+        /// Alias for ReadUInt32()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt(this Span<byte> span) => span.ReadUInt32();
+        /// <summary>
+        /// Alias for ReadInt64()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLong(this Span<byte> span) => span.ReadInt64();
+        /// <summary>
+        /// Alias for ReadUInt64()
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULong(this Span<byte> span) => span.ReadUInt64();
+        #endregion
     }
 }
