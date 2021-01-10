@@ -124,12 +124,12 @@ namespace Tedd
             switch (s)
             {
                 case 0b00:
-                    return (UInt32) b1 & 0b00111111;
+                    return (UInt32)b1 & 0b00111111;
                 case 0b01:
-                    return (UInt32) span.ReadUInt16() & 0b00111111_11111111;
+                    return (UInt32)span.ReadUInt16() & 0b00111111_11111111;
                 case 0b10:
-                    return (UInt32) span.ReadUInt24() & 0b00111111_11111111_11111111;
-                //case 0b11:
+                    return (UInt32)span.ReadUInt24() & 0b00111111_11111111_11111111;
+                    //case 0b11:
             }
             return (UInt32)span.ReadUInt32() & 0b00111111_11111111_11111111_11111111;
         }

@@ -10,6 +10,6 @@ namespace Tedd
     {
         MinValue = 0,
         MaxValue = 0xFFFFFF,
-        Size=3
+        Size = 3
     }
 }
