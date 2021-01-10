@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Xunit;
-using Tedd;
 
 namespace Tedd.SpanUtils.Tests.Span
 {
@@ -233,17 +232,17 @@ namespace Tedd.SpanUtils.Tests.Span
                 switch (sr)
                 {
                     case 0:
-                        a = (UInt32) rnd.Next(0, 0b00111111);
+                        a = (UInt32)rnd.Next(0, 0b00111111);
                         break;
                     case 1:
-                        a = (UInt32) rnd.Next(0b01000000, 0b00111111_11111111);
+                        a = (UInt32)rnd.Next(0b01000000, 0b00111111_11111111);
                         break;
                     case 2:
-                        a = (UInt32) rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111);
+                        a = (UInt32)rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111);
                         break;
                     //case 3:
                     default:
-                        a = (UInt32) rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111);
+                        a = (UInt32)rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111);
                         break;
                 }
 
@@ -737,6 +736,31 @@ namespace Tedd.SpanUtils.Tests.Span
                 });
 
             }
+        }
+        #endregion
+
+        #region VInt
+        [Theory]
+        [InlineData(new byte[] { 0x80 }, 1, 0x80ul, 0)]
+        [InlineData(new byte[] { 0x81 }, 1, 0x81ul, 1)]
+        [InlineData(new byte[] { 0xfe }, 1, 0xfeul, 126)]
+        [InlineData(new byte[] { 0x40, 0x7f }, 2, 0x407ful, 127)]
+        [InlineData(new byte[] { 0x40, 0x80 }, 2, 0x4080ul, 128)]
+        [InlineData(new byte[] { 0x10, 0xDE, 0xFF, 0xAD }, 4, 0x10deffad, 0xdeffad)]
+
+        public void TestVInt(byte[] bytes, int expectedLength, ulong expectedEncodedValue, ulong expectedValue)
+        {
+            var readResult = bytes.AsSpan().ReadVInt(4);
+
+            Assert.Equal(expectedLength, readResult.Length);
+            Assert.Equal(expectedEncodedValue, readResult.EncodedValue);
+            Assert.Equal(expectedValue, readResult.Value);
+
+            var writeSpan = new byte[VInt.GetSize(expectedValue)].AsSpan();
+            var writeLength = writeSpan.WriteVInt(expectedValue);
+
+            Assert.Equal(expectedLength, writeLength);
+            Assert.Equal(bytes, writeSpan.ToArray());
         }
         #endregion
     }
