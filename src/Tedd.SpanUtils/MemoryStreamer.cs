@@ -606,16 +606,16 @@ namespace Tedd
         #region Sized array read
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public string SizedReadString(out int length)
+        public string ReadSizedString(out int length)
         {
-            var ret = ROMemory.Span.Slice(_position).SizedReadString(out length);
+            var ret = ROMemory.Span.Slice(_position).ReadSizedString(out length);
             Position += length;
             return ret;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public byte[] SizedReadBytes(out int length)
+        public byte[] ReadSizedBytes(out int length)
         {
-            var ret = ROMemory.Span.Slice(_position).SizedReadBytes(out length);
+            var ret = ROMemory.Span.Slice(_position).ReadSizedBytes(out length);
             Position += length;
             return ret;
         }
