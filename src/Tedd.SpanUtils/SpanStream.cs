@@ -499,16 +499,16 @@ namespace Tedd
             return ret;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public string SizedReadString(out int length)
+        public string ReadSizedString(out int length)
         {
-            var ret = ROSpan.Slice(Position).SizedReadString(out length);
+            var ret = ROSpan.Slice(Position).ReadSizedString(out length);
             Position += length;
             return ret;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public byte[] SizedReadBytes(out int length)
+        public byte[] ReadSizedBytes(out int length)
         {
-            var ret = ROSpan.Slice(Position).SizedReadBytes(out length);
+            var ret = ROSpan.Slice(Position).ReadSizedBytes(out length);
             Position += length;
             return ret;
         }

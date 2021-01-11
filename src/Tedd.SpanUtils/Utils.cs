@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tedd.SpanUtils { }
 namespace Tedd
 {
     public static class Utils
