@@ -3,7 +3,7 @@ using System.Linq;
 using Xunit;
 using Tedd;
 
-namespace Tedd.SpanUtils.Tests.Span
+namespace Tedd.SpanUtilsTests.Span
 {
     public class MoveReadMoveWriteTests
     {
@@ -437,7 +437,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 var ac = 0;
                 for (var wrc = 0; wrc < writeRepeatCount; wrc++)
                 {
-                    var r = span2.MoveSizedReadBytes(out var len);
+                    var r = span2.MoveReadSizedBytes(out var len);
 
                     for (var i = 0; i < r.Length; i++)
                         Assert.Equal(answer[ac++], r[i]);
@@ -454,7 +454,7 @@ namespace Tedd.SpanUtils.Tests.Span
 
 
         [Fact]
-        public void TestSizedReadString()
+        public void TestReadSizedString()
         {
             var rnd = new Random();
             for (var c = 0; c < count; c++)
@@ -477,7 +477,7 @@ namespace Tedd.SpanUtils.Tests.Span
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveSizedReadString(out var len);
+                    var r = span2.MoveReadSizedString(out var len);
                     Assert.Equal(answer[i], r);
                 }
             }

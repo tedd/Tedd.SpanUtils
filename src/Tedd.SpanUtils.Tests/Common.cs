@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace Tedd.SpanUtils.Tests
+namespace Tedd.SpanUtilsTests
 {
     public class Common
     {
@@ -13,7 +13,7 @@ namespace Tedd.SpanUtils.Tests
             Assert.Throws<ArgumentException>(() =>
             {
                 var span1 = new Span<byte>(mem);
-                _ = span1.MeasureWriteSize(UInt32.MaxValue);
+                _ = SpanUtils.MeasureWriteSize(UInt32.MaxValue);
             });
         }
 

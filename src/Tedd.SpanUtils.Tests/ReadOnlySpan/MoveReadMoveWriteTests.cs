@@ -3,7 +3,7 @@ using System.Linq;
 using Xunit;
 using Tedd;
 
-namespace Tedd.SpanUtils.Tests.ReadOnlySpan
+namespace Tedd.SpanUtilsTests.ReadOnlySpan
 {
     public class MoveReadMoveWriteTests
     {
@@ -349,7 +349,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 var ac = 0;
                 for (var wrc = 0; wrc < writeRepeatCount; wrc++)
                 {
-                    var r = span2.MoveSizedReadBytes(out var len);
+                    var r = span2.MoveReadSizedBytes(out var len);
 
                     for (var i = 0; i < r.Length; i++)
                         Assert.Equal(answer[ac++], r[i]);
@@ -389,7 +389,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 var ac = 0;
                 for (var wrc = 0; wrc < writeRepeatCount; wrc++)
                 {
-                    var r = span2.MoveSizedReadBytes(out var len);
+                    var r = span2.MoveReadSizedBytes(out var len);
 
                     for (var i = 0; i < r.Length; i++)
                         Assert.Equal(answer[ac++], r[i]);
@@ -429,7 +429,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                 var ac = 0;
                 for (var wrc = 0; wrc < writeRepeatCount; wrc++)
                 {
-                    var r = span2.MoveSizedReadBytes(out var len);
+                    var r = span2.MoveReadSizedBytes(out var len);
 
                     for (var i = 0; i < r.Length; i++)
                         Assert.Equal(answer[ac++], r[i]);
@@ -470,7 +470,7 @@ namespace Tedd.SpanUtils.Tests.ReadOnlySpan
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
-                    var r = span2.MoveSizedReadString(out var len);
+                    var r = span2.MoveReadSizedString(out var len);
                     Assert.Equal(answer[i], r);
                 }
 

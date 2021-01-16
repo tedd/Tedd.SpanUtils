@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tedd
 {
-    public static class Utils
+    public static partial class SpanUtils
     {
         /// <summary>
         /// Counts how many bytes WriteSize will use for a given value.

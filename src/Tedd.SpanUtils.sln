@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tedd.SpanUtils.Tests", "Ted
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tedd.SpanUtils.DotNet4Tests", "Tedd.SpanUtils.DotNet4Tests\Tedd.SpanUtils.DotNet4Tests.csproj", "{3632E0D9-1876-40AC-BB5D-433DC7D6004D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tedd.SpanUtils.Benchmark", "Tedd.SpanUtils.Benchmark\Tedd.SpanUtils.Benchmark.csproj", "{1D5EB2C3-57F5-49F2-BC9E-6FEC547A6357}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tedd.SpanUtils.Benchmark", "Tedd.SpanUtils.Benchmark\Tedd.SpanUtils.Benchmark.csproj", "{1D5EB2C3-57F5-49F2-BC9E-6FEC547A6357}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tedd.SpanUtils.SourceGenerator", "Tedd.SpanUtils.SourceGenerator\Tedd.SpanUtils.SourceGenerator.csproj", "{438247EF-9636-4518-B639-6C31DBE718CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{1D5EB2C3-57F5-49F2-BC9E-6FEC547A6357}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D5EB2C3-57F5-49F2-BC9E-6FEC547A6357}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D5EB2C3-57F5-49F2-BC9E-6FEC547A6357}.Release|Any CPU.Build.0 = Release|Any CPU
+		{438247EF-9636-4518-B639-6C31DBE718CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{438247EF-9636-4518-B639-6C31DBE718CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{438247EF-9636-4518-B639-6C31DBE718CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{438247EF-9636-4518-B639-6C31DBE718CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
