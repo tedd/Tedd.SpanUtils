@@ -2,7 +2,7 @@
 using System.Linq;
 using Xunit;
 
-namespace Tedd.SpanUtils.Tests.Span
+namespace Tedd.SpanUtilsTests.Span
 {
     public class ReadWriteTests
     {
@@ -279,7 +279,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var r = span2.SizedReadBytes(out var len);
+                var r = span2.ReadSizedBytes(out var len);
                 for (var i = 0; i < answer.Length; i++)
                     Assert.Equal(answer[i], r[i]);
 
@@ -311,7 +311,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var r = span2.SizedReadBytes(out var len);
+                var r = span2.ReadSizedBytes(out var len);
                 for (var i = 0; i < answer.Length; i++)
                     Assert.Equal(answer[i], r[i]);
 
@@ -341,7 +341,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var r = span2.SizedReadBytes(out var len);
+                var r = span2.ReadSizedBytes(out var len);
                 for (var i = 0; i < answer.Length; i++)
                     Assert.Equal(answer[i], r[i]);
 
@@ -371,7 +371,7 @@ namespace Tedd.SpanUtils.Tests.Span
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
                     Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
-                var r = span2.SizedReadString(out var len);
+                var r = span2.ReadSizedString(out var len);
                 Assert.Equal(answer, r);
 
 
