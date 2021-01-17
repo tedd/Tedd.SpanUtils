@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Data;
 namespace Tedd {
     public partial class MemoryStreamer {
 
@@ -24,6 +25,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(SByte value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(SByte);
         }
@@ -44,6 +47,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Byte value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(Byte);
         }
@@ -64,6 +69,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(UInt16 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(UInt16);
         }
@@ -84,6 +91,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Int16 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(Int16);
         }
@@ -104,6 +113,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(UInt32 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(UInt32);
         }
@@ -124,6 +135,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Int32 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(Int32);
         }
@@ -144,6 +157,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(UInt64 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(UInt64);
         }
@@ -164,6 +179,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Int64 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(Int64);
         }
@@ -184,6 +201,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Single value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(Single);
         }
@@ -204,6 +223,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Double value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(Double);
         }
@@ -224,6 +245,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Decimal value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(Decimal);
         }
@@ -244,6 +267,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Boolean value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(Boolean);
         }
@@ -264,6 +289,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Char value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += sizeof(Char);
         }
@@ -380,6 +407,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteVLQ(UInt16 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteVLQ(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -400,6 +429,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteVLQ(Int16 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteVLQ(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -420,6 +451,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteVLQ(UInt32 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteVLQ(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -440,6 +473,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteVLQ(Int32 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteVLQ(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -460,6 +495,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteVLQ(UInt64 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteVLQ(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -480,6 +517,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteVLQ(Int64 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteVLQ(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -500,6 +539,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(UInt24 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += 3;
         }
@@ -520,6 +561,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteVLQ(UInt24 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteVLQ(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -540,6 +583,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Guid value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += 16;
         }
@@ -556,6 +601,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Byte[] value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -572,6 +619,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(Span<byte> value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -588,6 +637,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Write(ReadOnlySpan<byte> value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.Write(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -608,6 +659,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteSize(UInt32 value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteSize(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -628,6 +681,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteSized(Byte[] value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteSized(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -648,6 +703,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteSized(String value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteSized(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -656,6 +713,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteSized(Span<byte> value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteSized(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }
@@ -664,6 +723,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteSized(ReadOnlySpan<byte> value, out int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only.");
             SpanUtils.WriteSized(Memory.Span.Slice(_position), value, out length);
             Position += length;
         }

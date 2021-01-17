@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Tedd.SpanUtils.SourceGenerator
 {
-    public static class CodeGenSpanStream
+    public static class CodeGenStreams
     {
 
         public static void Generate(string root)
@@ -53,9 +53,13 @@ namespace Tedd.SpanUtils.SourceGenerator
             if (ds.RW == MethodRW.WriteOnly)
                 return;
 
-            var memory = isMemoryStreamer ? "Memory." : "";
+            var memory = isMemoryStreamer ? "Memory." : "RO";
             List<string> pDef = new();
             List<string> p = new();
+
+            // Special case for returning span, then we need to read Span only
+            if (!isMemoryStreamer&&ds.Name == "Span")
+                memory = "";
 
 
             if (!string.IsNullOrWhiteSpace(ds.ExtraReadParamsDef))
@@ -112,6 +116,8 @@ namespace Tedd.SpanUtils.SourceGenerator
             sb.Append($@"
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void {name}({Sj(pDef)}) {{
+            if (!CanWrite)
+                throw new ReadOnlyException(""Span is read-only."");
             SpanUtils.{name}({memory}Span.Slice(_position), {Sj(p)});
             Position += {ds.Size};
         }}");

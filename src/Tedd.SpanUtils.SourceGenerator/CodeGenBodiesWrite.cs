@@ -189,10 +189,11 @@ namespace Tedd.SpanUtils.SourceGenerator
             {
                 span[0] = 0b0100_0000;
                 // Special case for lower bound, no more processing required
-                if (value == Int16.MinValue)
+                if (value == Int16.MinValue) {
                     length = 1;
                     [MOVE]
                     return;
+                }
                 value *= -1;
 
             }
@@ -267,6 +268,7 @@ namespace Tedd.SpanUtils.SourceGenerator
                 span[length] = (byte)value;
                 value >>= 7;
             }
+            ++length;
             [LEN]
             [MOVE]";
 
@@ -309,6 +311,7 @@ namespace Tedd.SpanUtils.SourceGenerator
                 span[length] = (byte)value;
                 value >>= 7;
             }
+            ++length;
             [LEN]
             [MOVE]";
 
@@ -382,7 +385,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             SpanUtils.WriteSize(span, (UInt32)bytes.Length, out var mbs);
             var len = (int)mbs + bytes.Length;
             var s = span.Slice(mbs, bytes.Length);
-            SpanUtils.Write(span, bytes, out _);
+            SpanUtils.Write(s, bytes, out _);
 #endif
             length = len;
             [LEN]
