@@ -10,6 +10,6 @@ namespace Tedd
         /// </summary>
         /// <param name="value"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureWriteSize(this UInt32 value) => Utils.MeasureWriteSize(value);
+        public static byte MeasureWriteSize(this UInt32 value) => SpanUtils.MeasureWriteSize(value);
     }
 }

@@ -502,7 +502,11 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Span<byte> ReadSpan(this ReadOnlySpan<byte>span, int length) => SpanUtils.ReadSpan(span, length);
+        public static ReadOnlySpan<byte> ReadReadOnlySpan(this Span<byte>span, int length) => SpanUtils.ReadReadOnlySpan(span, length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<byte> ReadReadOnlySpan(this ReadOnlySpan<byte>span, int length) => SpanUtils.ReadReadOnlySpan(span, length);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1054,7 +1058,11 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Span<byte> MoveReadSpan(ref this ReadOnlySpan<byte>span, int length) => SpanUtils.MoveReadSpan(ref span, length);
+        public static ReadOnlySpan<byte> MoveReadReadOnlySpan(ref this Span<byte>span, int length) => SpanUtils.MoveReadReadOnlySpan(ref span, length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<byte> MoveReadReadOnlySpan(ref this ReadOnlySpan<byte>span, int length) => SpanUtils.MoveReadReadOnlySpan(ref span, length);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1298,6 +1306,14 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Write(this Span<byte>span, ReadOnlySpan<byte> value, out int length) => SpanUtils.Write(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Write(this Span<byte>span, ReadOnlySpan<byte> value) => SpanUtils.Write(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void WriteSize(this Span<byte>span, UInt32 value, out int length) => SpanUtils.WriteSize(span, value, out length);
 
 
@@ -1527,6 +1543,14 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MoveWrite(ref this Span<byte>span, Span<byte> value) => SpanUtils.MoveWrite(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWrite(ref this Span<byte>span, ReadOnlySpan<byte> value, out int length) => SpanUtils.MoveWrite(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWrite(ref this Span<byte>span, ReadOnlySpan<byte> value) => SpanUtils.MoveWrite(ref span, value, out _);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -428,7 +428,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var a = new Span<byte>(answer).Slice(memSize * i, memSize).ToArray();
-                    span1.MoveSizedWrite(a);
+                    span1.MoveWriteSized(a);
                 }
 
                 // Ensure span is not zero
@@ -446,7 +446,7 @@ namespace Tedd.SpanUtilsTests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.MoveSizedWrite(new Span<byte>(new byte[s.Length + 1]));
+                    s.MoveWriteSized(new Span<byte>(new byte[s.Length + 1]));
                 });
             }
 
@@ -469,7 +469,7 @@ namespace Tedd.SpanUtilsTests.Span
                 {
                     var str = rnd.NextString("abcæøå诶	比西αβγ", memSize);
                     answer[i] = str;
-                    span1.MoveSizedWrite(str);
+                    span1.MoveWriteSized(str);
                 }
 
                 // Ensure span is not zero
@@ -526,7 +526,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var r = span2.MoveReadSize(out var len);
-                    Assert.Equal(span2.MeasureWriteSize(a[i]), len);
+                    Assert.Equal(Tedd.SpanUtils.MeasureWriteSize(a[i]), len);
                     Assert.Equal(a[i], r);
                 }
             }
@@ -567,7 +567,7 @@ namespace Tedd.SpanUtilsTests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.MoveSizedWrite(new Span<byte>(new byte[s.Length + 1]));
+                    s.MoveWriteSized(new Span<byte>(new byte[s.Length + 1]));
                 });
 
             }
@@ -582,7 +582,7 @@ namespace Tedd.SpanUtilsTests.Span
             for (var c = 0; c < count; c++)
             {
                 var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[memSize * Utils.MeasureVLQ(UInt16.MaxValue) + 1];
+                var mem = new byte[memSize * SpanUtils.MeasureVLQ(UInt16.MaxValue) + 1];
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
@@ -596,7 +596,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < memSize; i++)
                 {
                     Assert.Equal(data[i], span2.MoveReadVLQInt16(out var len));
-                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                    Assert.Equal(SpanUtils.MeasureVLQ(data[i]), len);
                 }
 
                 // Check overflow
@@ -617,7 +617,7 @@ namespace Tedd.SpanUtilsTests.Span
             for (var c = 0; c < count; c++)
             {
                 var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[memSize * Utils.MeasureVLQ(UInt16.MaxValue) + 1];
+                var mem = new byte[memSize * SpanUtils.MeasureVLQ(UInt16.MaxValue) + 1];
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
@@ -631,7 +631,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < memSize; i++)
                 {
                     Assert.Equal(data[i], span2.MoveReadVLQUInt16(out var len));
-                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                    Assert.Equal(SpanUtils.MeasureVLQ(data[i]), len);
                 }
 
                 // Check overflow
@@ -651,7 +651,7 @@ namespace Tedd.SpanUtilsTests.Span
             for (var c = 0; c < count; c++)
             {
                 var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[memSize * Utils.MeasureVLQ((UInt24)UInt24.MaxValue) + 1];
+                var mem = new byte[memSize * SpanUtils.MeasureVLQ((UInt24)UInt24.MaxValue) + 1];
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
@@ -665,7 +665,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < memSize; i++)
                 {
                     Assert.Equal(data[i], span2.MoveReadVLQUInt24(out var len));
-                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                    Assert.Equal(SpanUtils.MeasureVLQ(data[i]), len);
                 }
 
                 // Check overflow
@@ -685,7 +685,7 @@ namespace Tedd.SpanUtilsTests.Span
             for (var c = 0; c < count; c++)
             {
                 var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[memSize * Utils.MeasureVLQ(UInt32.MaxValue) + 1];
+                var mem = new byte[memSize * SpanUtils.MeasureVLQ(UInt32.MaxValue) + 1];
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
@@ -699,7 +699,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < memSize; i++)
                 {
                     Assert.Equal(data[i], span2.MoveReadVLQInt32(out var len));
-                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                    Assert.Equal(SpanUtils.MeasureVLQ(data[i]), len);
                 }
 
                 // Check overflow
@@ -720,7 +720,7 @@ namespace Tedd.SpanUtilsTests.Span
             for (var c = 0; c < count; c++)
             {
                 var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[memSize * Utils.MeasureVLQ(UInt32.MaxValue)+1];
+                var mem = new byte[memSize * SpanUtils.MeasureVLQ(UInt32.MaxValue)+1];
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
@@ -734,7 +734,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < memSize; i++)
                 {
                     Assert.Equal(data[i], span2.MoveReadVLQUInt32(out var len));
-                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                    Assert.Equal(SpanUtils.MeasureVLQ(data[i]), len);
                 }
 
                 // Check overflow
@@ -754,7 +754,7 @@ namespace Tedd.SpanUtilsTests.Span
             for (var c = 0; c < count; c++)
             {
                 var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[memSize * Utils.MeasureVLQ(UInt64.MaxValue) + 1];
+                var mem = new byte[memSize * SpanUtils.MeasureVLQ(UInt64.MaxValue) + 1];
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
@@ -768,7 +768,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < memSize; i++)
                 {
                     Assert.Equal(data[i], span2.MoveReadVLQInt64(out var len));
-                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                    Assert.Equal(SpanUtils.MeasureVLQ(data[i]), len);
                 }
 
                 // Check overflow
@@ -789,7 +789,7 @@ namespace Tedd.SpanUtilsTests.Span
             for (var c = 0; c < count; c++)
             {
                 var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[memSize * Utils.MeasureVLQ(UInt64.MaxValue) + 1];
+                var mem = new byte[memSize * SpanUtils.MeasureVLQ(UInt64.MaxValue) + 1];
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
@@ -803,7 +803,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < memSize; i++)
                 {
                     Assert.Equal(data[i], span2.MoveReadVLQUInt64(out var len));
-                    Assert.Equal(Utils.MeasureVLQ(data[i]), len);
+                    Assert.Equal(SpanUtils.MeasureVLQ(data[i]), len);
                 }
 
                 // Check overflow
