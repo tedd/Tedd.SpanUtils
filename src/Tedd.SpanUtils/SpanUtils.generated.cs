@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Data;
 namespace Tedd {
     public static partial class SpanUtils {
 
@@ -2226,7 +2227,7 @@ namespace Tedd {
 
             span = span.Slice(length);
             return (Int16)ret;
-        }   
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -3011,10 +3012,11 @@ namespace Tedd {
             {
                 span[0] = 0b0100_0000;
                 // Special case for lower bound, no more processing required
-                if (value == Int16.MinValue)
+                if (value == Int16.MinValue) {
                     length = 1;
                     
                     return;
+                }
                 value *= -1;
 
             }
@@ -3091,6 +3093,7 @@ namespace Tedd {
                 span[length] = (byte)value;
                 value >>= 7;
             }
+            ++length;
             
             
         }
@@ -3147,6 +3150,7 @@ namespace Tedd {
                 span[length] = (byte)value;
                 value >>= 7;
             }
+            ++length;
             
             
         }
@@ -3306,7 +3310,7 @@ namespace Tedd {
             SpanUtils.WriteSize(span, (UInt32)bytes.Length, out var mbs);
             var len = (int)mbs + bytes.Length;
             var s = span.Slice(mbs, bytes.Length);
-            SpanUtils.Write(span, bytes, out _);
+            SpanUtils.Write(s, bytes, out _);
 #endif
             length = len;
             
@@ -3573,10 +3577,11 @@ namespace Tedd {
             {
                 span[0] = 0b0100_0000;
                 // Special case for lower bound, no more processing required
-                if (value == Int16.MinValue)
+                if (value == Int16.MinValue) {
                     length = 1;
                     span = span.Slice(length);
                     return;
+                }
                 value *= -1;
 
             }
@@ -3653,6 +3658,7 @@ namespace Tedd {
                 span[length] = (byte)value;
                 value >>= 7;
             }
+            ++length;
             
             span = span.Slice(length);
         }
@@ -3709,6 +3715,7 @@ namespace Tedd {
                 span[length] = (byte)value;
                 value >>= 7;
             }
+            ++length;
             
             span = span.Slice(length);
         }
@@ -3868,7 +3875,7 @@ namespace Tedd {
             SpanUtils.WriteSize(span, (UInt32)bytes.Length, out var mbs);
             var len = (int)mbs + bytes.Length;
             var s = span.Slice(mbs, bytes.Length);
-            SpanUtils.Write(span, bytes, out _);
+            SpanUtils.Write(s, bytes, out _);
 #endif
             length = len;
             
