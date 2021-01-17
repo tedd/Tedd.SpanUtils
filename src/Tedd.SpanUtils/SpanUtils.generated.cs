@@ -1237,7 +1237,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Byte[] ReadBytes( ReadOnlySpan<byte> span, int length) {
+        public static Byte[] ReadBytes(Span<byte> span, int length) {
             var ret = span.Slice(0, length).ToArray();
             
             
@@ -1246,7 +1246,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Byte[] ReadBytes( Span<byte> span, int length) {
+        public static Byte[] ReadBytes(ReadOnlySpan<byte> span, int length) {
             var ret = span.Slice(0, length).ToArray();
             
             
@@ -1255,7 +1255,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Span<byte> ReadSpan( ReadOnlySpan<byte> span, int length) {
+        public static Span<byte> ReadSpan(Span<byte> span, int length) {
             var ret = span.Slice(0, length);
             
             
@@ -1264,7 +1264,16 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Span<byte> ReadSpan( Span<byte> span, int length) {
+        public static ReadOnlySpan<byte> ReadReadOnlySpan(Span<byte> span, int length) {
+            var ret = span.Slice(0, length);
+            
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<byte> ReadReadOnlySpan(ReadOnlySpan<byte> span, int length) {
             var ret = span.Slice(0, length);
             
             
@@ -2217,7 +2226,7 @@ namespace Tedd {
 
             span = span.Slice(length);
             return (Int16)ret;
-        }
+        }   
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -2623,7 +2632,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Byte[] MoveReadBytes(ref  ReadOnlySpan<byte> span, int length) {
+        public static Byte[] MoveReadBytes(ref Span<byte> span, int length) {
             var ret = span.Slice(0, length).ToArray();
             
             span = span.Slice(length);
@@ -2632,7 +2641,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Byte[] MoveReadBytes(ref  Span<byte> span, int length) {
+        public static Byte[] MoveReadBytes(ref ReadOnlySpan<byte> span, int length) {
             var ret = span.Slice(0, length).ToArray();
             
             span = span.Slice(length);
@@ -2641,7 +2650,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Span<byte> MoveReadSpan(ref  ReadOnlySpan<byte> span, int length) {
+        public static Span<byte> MoveReadSpan(ref Span<byte> span, int length) {
             var ret = span.Slice(0, length);
             
             span = span.Slice(length);
@@ -2650,7 +2659,16 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Span<byte> MoveReadSpan(ref  Span<byte> span, int length) {
+        public static ReadOnlySpan<byte> MoveReadReadOnlySpan(ref Span<byte> span, int length) {
+            var ret = span.Slice(0, length);
+            
+            span = span.Slice(length);
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<byte> MoveReadReadOnlySpan(ref ReadOnlySpan<byte> span, int length) {
             var ret = span.Slice(0, length);
             
             span = span.Slice(length);
@@ -2777,7 +2795,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, SByte value, out int length) {
+        public static void Write(Span<byte>span, SByte value, out int length) {
         span[0] = (byte)value;
         length = sizeof(SByte);
         
@@ -2789,7 +2807,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Byte value, out int length) {
+        public static void Write(Span<byte>span, Byte value, out int length) {
         span[0] = value;
         length = sizeof(Byte);
         
@@ -2801,7 +2819,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, UInt16 value, out int length) {
+        public static void Write(Span<byte>span, UInt16 value, out int length) {
             span[1] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 1));
             length = sizeof(UInt16);
@@ -2814,7 +2832,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Int16 value, out int length) {
+        public static void Write(Span<byte>span, Int16 value, out int length) {
             span[1] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 1));
             length = sizeof(Int16);
@@ -2827,7 +2845,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, UInt32 value, out int length) {
+        public static void Write(Span<byte>span, UInt32 value, out int length) {
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[3] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 3));
@@ -2843,7 +2861,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Int32 value, out int length) {
+        public static void Write(Span<byte>span, Int32 value, out int length) {
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[3] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 3));
@@ -2859,7 +2877,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, UInt64 value, out int length) {
+        public static void Write(Span<byte>span, UInt64 value, out int length) {
             // 13% more speed if we write last first, then rest in sequence.
             // https://github.com/tedd/Tedd.SpanUtils/issues/3
             span[7] = (byte)(value & 0xFF);
@@ -2880,7 +2898,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Int64 value, out int length) {
+        public static void Write(Span<byte>span, Int64 value, out int length) {
             // 13% more speed if we write last first, then rest in sequence.
             // https://github.com/tedd/Tedd.SpanUtils/issues/3
             span[7] = (byte)(value & 0xFF);
@@ -2901,7 +2919,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Single value, out int length) {
+        public static void Write(Span<byte>span, Single value, out int length) {
             Span<float> a = stackalloc float[1] { value };
             var ab = MemoryMarshal.Cast<float, byte>(a);
             ab.CopyTo(span);
@@ -2915,7 +2933,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Double value, out int length) {
+        public static void Write(Span<byte>span, Double value, out int length) {
             Span<double> a = stackalloc double[1] { value };
             var ab = MemoryMarshal.Cast<double, byte>(a);
             ab.CopyTo(span);
@@ -2929,7 +2947,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Decimal value, out int length) {
+        public static void Write(Span<byte>span, Decimal value, out int length) {
             Span<decimal> a = stackalloc decimal[1] { value };
             var ab = MemoryMarshal.Cast<decimal, byte>(a);
             ab.CopyTo(span);
@@ -2943,7 +2961,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Boolean value, out int length) {
+        public static void Write(Span<byte>span, Boolean value, out int length) {
             span[0] = (byte)(value ? 1 : 0);
             length = sizeof(Boolean);
             
@@ -2955,7 +2973,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Char value, out int length) {
+        public static void Write(Span<byte>span, Char value, out int length) {
             Span<char> a = stackalloc char[1] { value };
             var ab = MemoryMarshal.Cast<char, byte>(a);
             ab.CopyTo(span);
@@ -2969,7 +2987,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteVLQ(Span<byte> span, UInt16 value, out int length) {
+        public static void WriteVLQ(Span<byte>span, UInt16 value, out int length) {
             length = 0;
             while (value >= 0x80)
             {
@@ -2987,7 +3005,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteVLQ(Span<byte> span, Int16 value, out int length) {
+        public static void WriteVLQ(Span<byte>span, Int16 value, out int length) {
             length = 0;
             if (value < 0)
             {
@@ -3027,7 +3045,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteVLQ(Span<byte> span, UInt32 value, out int length) {
+        public static void WriteVLQ(Span<byte>span, UInt32 value, out int length) {
             length = 0;
             while (value >= 0x80)
             {
@@ -3045,7 +3063,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteVLQ(Span<byte> span, Int32 value, out int length) {
+        public static void WriteVLQ(Span<byte>span, Int32 value, out int length) {
             length = 0;
             if (value < 0)
             {
@@ -3083,7 +3101,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteVLQ(Span<byte> span, UInt64 value, out int length) {
+        public static void WriteVLQ(Span<byte>span, UInt64 value, out int length) {
             length = 0;
             while (value >= 0x80)
             {
@@ -3101,7 +3119,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteVLQ(Span<byte> span, Int64 value, out int length) {
+        public static void WriteVLQ(Span<byte>span, Int64 value, out int length) {
             length = 0;
             if (value < 0)
             {
@@ -3139,7 +3157,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, UInt24 value, out int length) {
+        public static void Write(Span<byte>span, UInt24 value, out int length) {
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[2] = (byte)((Int32)value & 0xFF);
             span[0] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
@@ -3154,7 +3172,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteVLQ(Span<byte> span, UInt24 value, out int length) {
+        public static void WriteVLQ(Span<byte>span, UInt24 value, out int length) {
             length = 0;
             value = (UInt24)((UInt32)value & 0b11111111_11111111_11111111);
             while ((UInt32)value >= 0x80)
@@ -3173,7 +3191,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Guid value, out int length) {
+        public static void Write(Span<byte>span, Guid value, out int length) {
             var array = new Span<byte>(value.ToByteArray());
             array.CopyTo(span);
             length = array.Length;
@@ -3187,7 +3205,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Byte[] value, out int length) {
+        public static void Write(Span<byte>span, Byte[] value, out int length) {
             value.CopyTo(span);
             length = value.Length;
             
@@ -3200,7 +3218,20 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Write(Span<byte> span, Span<byte> value, out int length) {
+        public static void Write(Span<byte>span, Span<byte> value, out int length) {
+            value.CopyTo(span);
+            length = value.Length;
+            
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Write(Span<byte>span, ReadOnlySpan<byte> value) => SpanUtils.Write(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Write(Span<byte>span, ReadOnlySpan<byte> value, out int length) {
             value.CopyTo(span);
             length = value.Length;
             
@@ -3213,7 +3244,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteSize(Span<byte> span, UInt32 value, out int length) {
+        public static void WriteSize(Span<byte>span, UInt32 value, out int length) {
             length = SpanUtils.MeasureWriteSize(value);
             if (length == 1)
                 SpanUtils.Write(span, (Byte)value);
@@ -3235,7 +3266,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteSized(Span<byte> span, Byte[] value, out int length) {
+        public static void WriteSized(Span<byte>span, Byte[] value, out int length) {
             var mbs = SpanUtils.MeasureWriteSize((UInt32)value.Length);
             var len = mbs + value.Length;
             if (len > span.Length)
@@ -3254,7 +3285,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteSized(Span<byte> span, String value, out int length) {
+        public static void WriteSized(Span<byte>span, String value, out int length) {
 #if NETCOREAPP || NETSTANDARD21
             // We use GetByteCount followed by direct copy to avoid creating a byte array (avoid GC).
             // For larger strings this could cause 
@@ -3288,7 +3319,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteSized(Span<byte> span, Span<byte> value, out int length) {
+        public static void WriteSized(Span<byte>span, Span<byte> value, out int length) {
             var mbs = SpanUtils.MeasureWriteSize((UInt32)value.Length);
             var len = mbs + value.Length;
             if (len > span.Length)
@@ -3307,7 +3338,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteSized(Span<byte> span, ReadOnlySpan<byte> value, out int length) {
+        public static void WriteSized(Span<byte>span, ReadOnlySpan<byte> value, out int length) {
             var mbs = SpanUtils.MeasureWriteSize((UInt32)value.Length);
             var len = mbs + value.Length;
             if (len > span.Length)
@@ -3326,7 +3357,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, SByte value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, SByte value, out int length) {
         span[0] = (byte)value;
         length = sizeof(SByte);
         span = span.Slice(sizeof(SByte));
@@ -3338,7 +3369,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Byte value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Byte value, out int length) {
         span[0] = value;
         length = sizeof(Byte);
         span = span.Slice(sizeof(Byte));
@@ -3350,7 +3381,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, UInt16 value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, UInt16 value, out int length) {
             span[1] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 1));
             length = sizeof(UInt16);
@@ -3363,7 +3394,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Int16 value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Int16 value, out int length) {
             span[1] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 1));
             length = sizeof(Int16);
@@ -3376,7 +3407,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, UInt32 value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, UInt32 value, out int length) {
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[3] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 3));
@@ -3392,7 +3423,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Int32 value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Int32 value, out int length) {
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[3] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 3));
@@ -3408,7 +3439,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, UInt64 value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, UInt64 value, out int length) {
             // 13% more speed if we write last first, then rest in sequence.
             // https://github.com/tedd/Tedd.SpanUtils/issues/3
             span[7] = (byte)(value & 0xFF);
@@ -3429,7 +3460,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Int64 value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Int64 value, out int length) {
             // 13% more speed if we write last first, then rest in sequence.
             // https://github.com/tedd/Tedd.SpanUtils/issues/3
             span[7] = (byte)(value & 0xFF);
@@ -3450,7 +3481,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Single value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Single value, out int length) {
             Span<float> a = stackalloc float[1] { value };
             var ab = MemoryMarshal.Cast<float, byte>(a);
             ab.CopyTo(span);
@@ -3464,7 +3495,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Double value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Double value, out int length) {
             Span<double> a = stackalloc double[1] { value };
             var ab = MemoryMarshal.Cast<double, byte>(a);
             ab.CopyTo(span);
@@ -3478,7 +3509,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Decimal value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Decimal value, out int length) {
             Span<decimal> a = stackalloc decimal[1] { value };
             var ab = MemoryMarshal.Cast<decimal, byte>(a);
             ab.CopyTo(span);
@@ -3492,7 +3523,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Boolean value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Boolean value, out int length) {
             span[0] = (byte)(value ? 1 : 0);
             length = sizeof(Boolean);
             span = span.Slice(sizeof(Boolean));
@@ -3504,7 +3535,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Char value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Char value, out int length) {
             Span<char> a = stackalloc char[1] { value };
             var ab = MemoryMarshal.Cast<char, byte>(a);
             ab.CopyTo(span);
@@ -3518,7 +3549,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteVLQ(ref Span<byte> span, UInt16 value, out int length) {
+        public static void MoveWriteVLQ(ref Span<byte>span, UInt16 value, out int length) {
             length = 0;
             while (value >= 0x80)
             {
@@ -3536,7 +3567,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteVLQ(ref Span<byte> span, Int16 value, out int length) {
+        public static void MoveWriteVLQ(ref Span<byte>span, Int16 value, out int length) {
             length = 0;
             if (value < 0)
             {
@@ -3576,7 +3607,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteVLQ(ref Span<byte> span, UInt32 value, out int length) {
+        public static void MoveWriteVLQ(ref Span<byte>span, UInt32 value, out int length) {
             length = 0;
             while (value >= 0x80)
             {
@@ -3594,7 +3625,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteVLQ(ref Span<byte> span, Int32 value, out int length) {
+        public static void MoveWriteVLQ(ref Span<byte>span, Int32 value, out int length) {
             length = 0;
             if (value < 0)
             {
@@ -3632,7 +3663,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteVLQ(ref Span<byte> span, UInt64 value, out int length) {
+        public static void MoveWriteVLQ(ref Span<byte>span, UInt64 value, out int length) {
             length = 0;
             while (value >= 0x80)
             {
@@ -3650,7 +3681,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteVLQ(ref Span<byte> span, Int64 value, out int length) {
+        public static void MoveWriteVLQ(ref Span<byte>span, Int64 value, out int length) {
             length = 0;
             if (value < 0)
             {
@@ -3688,7 +3719,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, UInt24 value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, UInt24 value, out int length) {
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[2] = (byte)((Int32)value & 0xFF);
             span[0] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
@@ -3703,7 +3734,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteVLQ(ref Span<byte> span, UInt24 value, out int length) {
+        public static void MoveWriteVLQ(ref Span<byte>span, UInt24 value, out int length) {
             length = 0;
             value = (UInt24)((UInt32)value & 0b11111111_11111111_11111111);
             while ((UInt32)value >= 0x80)
@@ -3722,7 +3753,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Guid value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Guid value, out int length) {
             var array = new Span<byte>(value.ToByteArray());
             array.CopyTo(span);
             length = array.Length;
@@ -3736,7 +3767,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Byte[] value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Byte[] value, out int length) {
             value.CopyTo(span);
             length = value.Length;
             
@@ -3749,7 +3780,20 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWrite(ref Span<byte> span, Span<byte> value, out int length) {
+        public static void MoveWrite(ref Span<byte>span, Span<byte> value, out int length) {
+            value.CopyTo(span);
+            length = value.Length;
+            
+            span = span.Slice(length);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWrite(ref Span<byte>span, ReadOnlySpan<byte> value) => SpanUtils.MoveWrite(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWrite(ref Span<byte>span, ReadOnlySpan<byte> value, out int length) {
             value.CopyTo(span);
             length = value.Length;
             
@@ -3762,7 +3806,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteSize(ref Span<byte> span, UInt32 value, out int length) {
+        public static void MoveWriteSize(ref Span<byte>span, UInt32 value, out int length) {
             length = SpanUtils.MeasureWriteSize(value);
             if (length == 1)
                 SpanUtils.Write(span, (Byte)value);
@@ -3784,7 +3828,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteSized(ref Span<byte> span, Byte[] value, out int length) {
+        public static void MoveWriteSized(ref Span<byte>span, Byte[] value, out int length) {
             var mbs = SpanUtils.MeasureWriteSize((UInt32)value.Length);
             var len = mbs + value.Length;
             if (len > span.Length)
@@ -3803,7 +3847,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteSized(ref Span<byte> span, String value, out int length) {
+        public static void MoveWriteSized(ref Span<byte>span, String value, out int length) {
 #if NETCOREAPP || NETSTANDARD21
             // We use GetByteCount followed by direct copy to avoid creating a byte array (avoid GC).
             // For larger strings this could cause 
@@ -3837,7 +3881,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteSized(ref Span<byte> span, Span<byte> value, out int length) {
+        public static void MoveWriteSized(ref Span<byte>span, Span<byte> value, out int length) {
             var mbs = SpanUtils.MeasureWriteSize((UInt32)value.Length);
             var len = mbs + value.Length;
             if (len > span.Length)
@@ -3856,7 +3900,7 @@ namespace Tedd {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MoveWriteSized(ref Span<byte> span, ReadOnlySpan<byte> value, out int length) {
+        public static void MoveWriteSized(ref Span<byte>span, ReadOnlySpan<byte> value, out int length) {
             var mbs = SpanUtils.MeasureWriteSize((UInt32)value.Length);
             var len = mbs + value.Length;
             if (len > span.Length)

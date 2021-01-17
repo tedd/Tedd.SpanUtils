@@ -82,7 +82,7 @@ namespace Tedd.SpanUtilsTests.Span
 
                 var span1 = new MemoryStreamer(mem);
                 var span2 = new MemoryStreamer(mem);
-                span1.SizedWrite(new Span<byte>(answer));
+                span1.WriteSized(new Span<byte>(answer));
                 span1.Write(1234);
 
                 var bytes = span2.ReadSizedBytes(out var length);
@@ -104,7 +104,7 @@ namespace Tedd.SpanUtilsTests.Span
 
                 var span1 = new MemoryStreamer(mem);
                 var span2 = new MemoryStreamer(new ReadOnlyMemory<byte>(mem));
-                span1.SizedWrite(new Span<byte>(answer));
+                span1.WriteSized(new Span<byte>(answer));
                 span1.Write(1234);
 
                 var bytes = span2.ReadSizedBytes(out var length);
@@ -126,7 +126,7 @@ namespace Tedd.SpanUtilsTests.Span
 
                 var span1 = new MemoryStreamer(mem);
                 var span2 = new MemoryStreamer(mem);
-                span1.SizedWrite(answer);
+                span1.WriteSized(answer);
                 span1.Write(1234);
 
                 var bytes = span2.ReadSizedBytes(out var length);
@@ -159,95 +159,95 @@ namespace Tedd.SpanUtilsTests.Span
             var mem = new byte[100];
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteSize(1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteSize(1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((byte)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((byte)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((sbyte)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((sbyte)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((Int16)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((Int16)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((UInt16)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((UInt16)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((UInt24)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((UInt24)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((Int32)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((Int32)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((UInt32)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((UInt32)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((Int64)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((Int64)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((UInt64)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write((UInt64)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((byte)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((byte)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((sbyte)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((sbyte)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((Int16)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((Int16)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((UInt16)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((UInt16)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((UInt24)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((UInt24)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((Int32)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((Int32)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((UInt32)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((UInt32)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((Int64)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((Int64)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((UInt64)1);
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteVLQ((UInt64)1);
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).SizedWrite("1");
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteSized("1");
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).SizedWrite(new byte[1] { 1 });
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteSized(new byte[1] { 1 });
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).SizedWrite(new Span<byte>(new byte[1] { 1 }));
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteSized(new Span<byte>(new byte[1] { 1 }));
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).SizedWrite(new ReadOnlySpan<byte>(new byte[1] { 1 }));
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).WriteSized(new ReadOnlySpan<byte>(new byte[1] { 1 }));
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
@@ -259,11 +259,11 @@ namespace Tedd.SpanUtilsTests.Span
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write(new Span<byte>(new byte[1] { 1 }));
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write(new Span<byte>(new byte[1] { 1 }));
             });
             Assert.Throws<ReadOnlyException>(() =>
             {
-                _ = new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write(Guid.NewGuid());
+                new MemoryStreamer(new ReadOnlyMemory<byte>(mem)).Write(Guid.NewGuid());
             });
         }
 
@@ -680,7 +680,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var a = new Span<byte>(answer).Slice(memSize * i, memSize).ToArray();
-                    span1.SizedWrite(a);
+                    span1.WriteSized(a);
                 }
 
                 var ac = 0;
@@ -695,7 +695,7 @@ namespace Tedd.SpanUtilsTests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new MemoryStreamer(mem);
-                    s.SizedWrite(new Span<byte>(new byte[mem.Length + 1]));
+                    s.WriteSized(new Span<byte>(new byte[mem.Length + 1]));
                 });
             }
 
@@ -716,7 +716,7 @@ namespace Tedd.SpanUtilsTests.Span
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var a = new ReadOnlySpan<byte>(answer).Slice(memSize * i, memSize);
-                    span1.SizedWrite(a);
+                    span1.WriteSized(a);
                 }
 
                 var ac = 0;
@@ -731,7 +731,7 @@ namespace Tedd.SpanUtilsTests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new MemoryStreamer(mem);
-                    s.SizedWrite(new Span<byte>(new byte[mem.Length + 1]));
+                    s.WriteSized(new Span<byte>(new byte[mem.Length + 1]));
                 });
             }
 
@@ -754,7 +754,7 @@ namespace Tedd.SpanUtilsTests.Span
                 {
                     var str = rnd.NextString("abcæøå诶	比西αβγ", memSize);
                     answer[i] = str;
-                    span1.SizedWrite(str);
+                    span1.WriteSized(str);
                 }
 
                 for (var i = 0; i < writeRepeatCount; i++)

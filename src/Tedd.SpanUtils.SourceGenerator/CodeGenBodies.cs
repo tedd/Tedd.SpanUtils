@@ -9,9 +9,7 @@ namespace Tedd.SpanUtils.SourceGenerator
     public static partial class CodeGenBodies
     {
         public static List<MethodData> DataStructures = new();
-
-        public delegate string CreateBodyDelegate(bool littleEndian);
-
+        
         public static void Initialize()
         {
             // Add generator info for all primitives
@@ -109,6 +107,17 @@ namespace Tedd.SpanUtils.SourceGenerator
                 ExtraReadParams = "length",
                 Size = "length",
                 NoLengthParam = true
+            });            
+            DataStructures.Add(new MethodData()
+            {
+                Name = $"ReadOnlySpan",
+                TypeString = "ReadOnlySpan<byte>",
+                ReadBody = GetMethod($"ReadSpan"),
+                WriteBody = GetMethod($"WriteSpan"),
+                ExtraReadParamsDef = "int length",
+                ExtraReadParams = "length",
+                Size = "length",
+                NoLengthParam = true
             });
             DataStructures.Add(new MethodData()
             {
@@ -154,7 +163,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             });
             DataStructures.Add(new MethodData()
             {
-                Name = $"SizedSpan",
+                Name = $"SizedReadOnlySpan",
                 RW= MethodRW.WriteOnly,
                 WriteName = $"Sized",
                 TypeString="ReadOnlySpan<byte>",

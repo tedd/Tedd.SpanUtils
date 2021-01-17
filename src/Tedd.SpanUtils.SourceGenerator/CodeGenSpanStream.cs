@@ -7,34 +7,53 @@ namespace Tedd.SpanUtils.SourceGenerator
 {
     public static class CodeGenSpanStream
     {
-        private static string tab = "    ";
 
         public static void Generate(string root)
         {
             var le = true;
-            var sb = new StringBuilder();
 
-            foreach (var ds in CodeGenBodies.DataStructures)
+
             {
-                GenReadBody(ds, sb);
-                GenWriteBody(ds, sb);
-            }
+                var sb = new StringBuilder();
 
-            var str = Helper.CreateRefStruct("SpanStream", sb.ToString(), "");
-            var ns = Helper.CreateNamespace("Tedd", str, CodeGenBodies.usings);
-            var fn = Path.Combine(root, "SpanStream.generated.cs");
-            if (File.Exists(fn))
-                File.Delete(fn);
-            File.WriteAllText(fn, ns);
+                foreach (var ds in CodeGenBodies.DataStructures)
+                {
+                    GenReadBody(ds, sb, false);
+                    GenWriteBody(ds, sb, false);
+                }
+
+                var str = Helper.CreateRefStruct("SpanStream", sb.ToString(), "");
+                var ns = Helper.CreateNamespace("Tedd", str, CodeGenBodies.usings);
+                var fn = Path.Combine(root, "SpanStream.generated.cs");
+                if (File.Exists(fn))
+                    File.Delete(fn);
+                File.WriteAllText(fn, ns);
+            }
+            {
+                var sb = new StringBuilder();
+
+                foreach (var ds in CodeGenBodies.DataStructures)
+                {
+                    GenReadBody(ds, sb, true);
+                    GenWriteBody(ds, sb, true);
+                }
+                var str = Helper.CreateClass(false, "MemoryStreamer", sb.ToString(), "");
+                var ns = Helper.CreateNamespace("Tedd", str, CodeGenBodies.usings);
+                var fn = Path.Combine(root, "MemoryStreamer.generated.cs");
+                if (File.Exists(fn))
+                    File.Delete(fn);
+                File.WriteAllText(fn, ns);
+            }
         }
 
         private static string Sj(List<string> l) => String.Join(", ", l);
 
-        private static void GenReadBody(MethodData ds, StringBuilder sb)
+        private static void GenReadBody(MethodData ds, StringBuilder sb, bool isMemoryStreamer)
         {
             if (ds.RW == MethodRW.WriteOnly)
                 return;
 
+            var memory = isMemoryStreamer ? "Memory." : "";
             List<string> pDef = new();
             List<string> p = new();
 
@@ -43,47 +62,35 @@ namespace Tedd.SpanUtils.SourceGenerator
                 pDef.Add(ds.ExtraReadParamsDef);
             if (!string.IsNullOrWhiteSpace(ds.ExtraReadParams))
                 p.Add(ds.ExtraReadParams);
-
+            var retType = ds.TypeString;
+            
+            if (isMemoryStreamer && ds.TypeString == typeof(byte).Name && ds.Name == typeof(byte).Name)
+            {
+                retType = "override int";
+            }
             if (!ds.NoLengthParam)
             {
                 var pC = new List<string>(p);
                 pC.Add("out _");
-                Helper.Method(sb, false, ds.TypeString, $"Read{ds.Name}", Sj(pDef), $"Read{ds.Name}({Sj(pC)});", "");
-                //                sb.Append($@"
-                //        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                //        public {ds.TypeString} Read{ds.Name}({Sj(pDef)}) => Read{ds.Name}({Sj(pC)});
-                //");
+                Helper.Method(sb, false, retType, $"Read{ds.Name}", Sj(pDef), $"Read{ds.Name}({Sj(pC)});", "");
                 pDef.Add("out int length");
                 p.Add("out length");
             }
 
 
-            //else
-            //{
-            //    if (!string.IsNullOrWhiteSpace(pP))
-            //        pPNL += ", ";
-            //    pPNL += "out int length";
-            //}
-
             Helper.Method(sb, false, ds.TypeString, $"Read{ds.Name}", Sj(pDef), @$"
-            var ret = SpanUtils.Read{ds.Name}(Span.Slice(_position), {Sj(p)});
+            var ret = SpanUtils.Read{ds.Name}({memory}Span.Slice(_position), {Sj(p)});
             Position += {ds.Size};
             return ret;", "");
 
-            //    sb.Append($@"
-            //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-            //public {ds.TypeString} Read{ds.Name}({Sj(pDef)}) {{
-            //    var ret = SpanUtils.Read{ds.Name}(Span.Slice(_position), {Sj(p)});
-            //    Position += {ds.Size};
-            //    return ret;
-            //}}");
         }
-        private static void GenWriteBody(MethodData ds, StringBuilder sb)
+        private static void GenWriteBody(MethodData ds, StringBuilder sb, bool isMemoryStreamer)
         {
             if (ds.IsAlias || ds.RW == MethodRW.ReadOnly)
                 return;
 
             var name = $"Write{ds.WriteName}";
+            var memory = isMemoryStreamer ? "Memory." : "";
 
             List<string> pDef = new();
             List<string> p = new();
@@ -91,11 +98,6 @@ namespace Tedd.SpanUtils.SourceGenerator
             pDef.Add($"{ds.TypeString} value");
             p.Add("value");
 
-
-            //if (!string.IsNullOrWhiteSpace(ds.ExtraReadParamsDef))
-            //    pDef.Add(ds.ExtraReadParamsDef);
-            //if (!string.IsNullOrWhiteSpace(ds.ExtraReadParams))
-            //    p.Add(ds.ExtraReadParams);
 
             if (!ds.NoLengthParam)
             {
@@ -106,18 +108,11 @@ namespace Tedd.SpanUtils.SourceGenerator
 ");
             pDef.Add("out int length");
             p.Add("out length");
-            //else
-            //{
-            //    if (!string.IsNullOrWhiteSpace(pP))
-            //        pPNL += ", ";
-            //    pPNL += "out int length";
-            //}
-
 
             sb.Append($@"
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void {name}({Sj(pDef)}) {{
-            SpanUtils.{name}(Span.Slice(_position), {Sj(p)});
+            SpanUtils.{name}({memory}Span.Slice(_position), {Sj(p)});
             Position += {ds.Size};
         }}");
         }

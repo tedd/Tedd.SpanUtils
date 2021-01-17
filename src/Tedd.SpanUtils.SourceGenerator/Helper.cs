@@ -10,11 +10,12 @@ namespace Tedd.SpanUtils.SourceGenerator
 }}
 ";
 
-        public static string CreateClass(string name, string content, string description)
+        public static string CreateClass(bool isStatic, string name, string content, string description)
         {
+            var @static = isStatic ? "static " : "";
             if (!description.EndsWith("\r\n"))
                 description += "\r\n";
-            return $@"    public static partial class {name} {{{content}
+            return $@"    public {@static}partial class {name} {{{content}
     }}
 ";
         }

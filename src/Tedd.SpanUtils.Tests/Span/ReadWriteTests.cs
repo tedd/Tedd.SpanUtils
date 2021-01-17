@@ -250,7 +250,7 @@ namespace Tedd.SpanUtilsTests.Span
                 span1.Fill(0);
                 var span2 = new Span<byte>(mem);
 
-                var s = span1.WriteSize(a);
+                span1.WriteSize(a, out var s);
                 // Number of bytes must match
                 Assert.Equal(sr + 1, s);
                 // Size must match
@@ -274,7 +274,7 @@ namespace Tedd.SpanUtilsTests.Span
                 var span2 = new Span<byte>(mem);
 
                 rnd.NextBytes(answer);
-                span1.SizedWrite(answer);
+                span1.WriteSized(answer);
 
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
@@ -286,7 +286,7 @@ namespace Tedd.SpanUtilsTests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.SizedWrite(new byte[mem.Length + 1]);
+                    s.WriteSized(new byte[mem.Length + 1]);
                 });
             }
 
@@ -306,7 +306,7 @@ namespace Tedd.SpanUtilsTests.Span
                 var span2 = new Span<byte>(mem);
 
                 rnd.NextBytes(answer);
-                span1.SizedWrite(aSpan);
+                span1.WriteSized(aSpan);
 
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
@@ -318,7 +318,7 @@ namespace Tedd.SpanUtilsTests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.SizedWrite(new Span<byte>(new byte[mem.Length + 1]));
+                    s.WriteSized(new Span<byte>(new byte[mem.Length + 1]));
                 });
             }
         }
@@ -336,7 +336,7 @@ namespace Tedd.SpanUtilsTests.Span
                 var span2 = new Span<byte>(mem);
 
                 rnd.NextBytes(answer);
-                span1.SizedWrite(aSpan);
+                span1.WriteSized(aSpan);
 
                 // Ensure span is not zero
                 if (memSize > 0 && answer[0] != 0)
@@ -348,7 +348,7 @@ namespace Tedd.SpanUtilsTests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.SizedWrite(new ReadOnlySpan<byte>(new byte[mem.Length + 1]));
+                    s.WriteSized(new ReadOnlySpan<byte>(new byte[mem.Length + 1]));
                 });
             }
         }
@@ -365,7 +365,7 @@ namespace Tedd.SpanUtilsTests.Span
                 var span2 = new Span<byte>(mem);
 
                 var answer = rnd.NextString("abcæøå诶	比西αβγ", memSize);
-                span1.SizedWrite(answer);
+                span1.WriteSized(answer);
 
 
                 // Ensure span is not zero
@@ -378,7 +378,7 @@ namespace Tedd.SpanUtilsTests.Span
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var s = new Span<byte>(mem);
-                    s.SizedWrite(new string('a', mem.Length + 1));
+                    s.WriteSized(new string('a', mem.Length + 1));
                 });
             }
         }
@@ -427,13 +427,13 @@ namespace Tedd.SpanUtilsTests.Span
                 var span2 = new Span<byte>(mem);
                 span1.Fill(0);
 
-                var len = span1.WriteVLQ(answer);
+                span1.WriteVLQ(answer, out var len);
                 var back = span2.ReadVLQInt16(out var len2);
 
                 Assert.Equal(answer, back);
 
-                Assert.Equal(Utils.MeasureVLQ(answer), len);
-                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
             }
         }
         [Fact]
@@ -448,13 +448,13 @@ namespace Tedd.SpanUtilsTests.Span
                 var span2 = new Span<byte>(mem);
                 span1.Fill(0);
 
-                var len = span1.WriteVLQ(answer);
+                span1.WriteVLQ(answer, out var len);
                 var back = span2.ReadVLQUInt16(out var len2);
 
                 Assert.Equal(answer, back);
 
-                Assert.Equal(Utils.MeasureVLQ(answer), len);
-                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
             }
         }
         //[Fact]
@@ -474,8 +474,8 @@ namespace Tedd.SpanUtilsTests.Span
 
         //        Assert.Equal(answer, back);
 
-        //        Assert.Equal(Utils.MeasureVLQ(answer), len);
-        //        Assert.Equal(Utils.MeasureVLQ(answer), len2);
+        //        Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+        //        Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
         //    }
         //}
         //[Fact]
@@ -495,8 +495,8 @@ namespace Tedd.SpanUtilsTests.Span
 
         //        Assert.Equal(answer, back);
 
-        //        Assert.Equal(Utils.MeasureVLQ(answer), len);
-        //        Assert.Equal(Utils.MeasureVLQ(answer), len2);
+        //        Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+        //        Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
         //    }
         //}
         //[Fact]
@@ -516,8 +516,8 @@ namespace Tedd.SpanUtilsTests.Span
 
         //        Assert.Equal(answer, back);
 
-        //        Assert.Equal(Utils.MeasureVLQ(answer), len);
-        //        Assert.Equal(Utils.MeasureVLQ(answer), len2);
+        //        Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+        //        Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
         //    }
         //}
         [Fact]
@@ -532,13 +532,13 @@ namespace Tedd.SpanUtilsTests.Span
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
-                var len = span1.WriteVLQ(answer);
+                span1.WriteVLQ(answer, out var len);
                 var back = span2.ReadVLQInt16(out var len2);
 
                 Assert.Equal(answer, back);
 
-                Assert.Equal(Utils.MeasureVLQ(answer), len);
-                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
 
 
                 // Check overflow
@@ -564,11 +564,11 @@ namespace Tedd.SpanUtilsTests.Span
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
-                var len = span1.WriteVLQ(answer);
+                span1.WriteVLQ(answer, out var len);
                 var back = span2.ReadVLQUInt16(out var len2);
 
-                Assert.Equal(Utils.MeasureVLQ(answer), len);
-                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
 
                 Assert.Equal(answer, back);
 
@@ -595,11 +595,11 @@ namespace Tedd.SpanUtilsTests.Span
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
-                var len = span1.WriteVLQ(answer);
+                span1.WriteVLQ(answer, out var len);
                 var back = span2.ReadVLQUInt24(out var len2);
 
-                Assert.Equal(Utils.MeasureVLQ(answer), len);
-                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
 
                 Assert.Equal(answer, back);
 
@@ -626,11 +626,11 @@ namespace Tedd.SpanUtilsTests.Span
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
-                var len = span1.WriteVLQ(answer);
+                span1.WriteVLQ(answer, out var len);
                 var back = span2.ReadVLQInt32(out var len2);
 
-                Assert.Equal(Utils.MeasureVLQ(answer), len);
-                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
 
                 Assert.Equal(answer, back);
 
@@ -657,11 +657,11 @@ namespace Tedd.SpanUtilsTests.Span
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
-                var len = span1.WriteVLQ(answer);
+                span1.WriteVLQ(answer, out var len);
                 var back = span2.ReadVLQUInt32(out var len2);
 
-                Assert.Equal(Utils.MeasureVLQ(answer), len);
-                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
 
                 Assert.Equal(answer, back);
 
@@ -688,11 +688,11 @@ namespace Tedd.SpanUtilsTests.Span
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
-                var len = span1.WriteVLQ(answer);
+                span1.WriteVLQ(answer, out var len);
                 var back = span2.ReadVLQInt64(out var len2);
 
-                Assert.Equal(Utils.MeasureVLQ(answer), len);
-                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
 
                 Assert.Equal(answer, back);
 
@@ -719,11 +719,11 @@ namespace Tedd.SpanUtilsTests.Span
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 
-                var len = span1.WriteVLQ(answer);
+                span1.WriteVLQ(answer, out var len);
                 var back = span2.ReadVLQUInt64(out var len2);
 
-                Assert.Equal(Utils.MeasureVLQ(answer), len);
-                Assert.Equal(Utils.MeasureVLQ(answer), len2);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len);
+                Assert.Equal(SpanUtils.MeasureVLQ(answer), len2);
 
                 Assert.Equal(answer, back);
 
