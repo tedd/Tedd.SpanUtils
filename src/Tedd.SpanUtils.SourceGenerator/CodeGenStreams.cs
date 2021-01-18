@@ -14,46 +14,53 @@ namespace Tedd.SpanUtils.SourceGenerator
 
 
             {
-                var sb = new StringBuilder();
+                var sbRO = new StringBuilder();
+                var sbW = new StringBuilder();
 
                 foreach (var ds in CodeGenBodies.DataStructures)
                 {
-                    GenReadBody(ds, sb, false);
-                    GenWriteBody(ds, sb, false);
+                    GenReadBody(ds, sbRO, false,true);
+                    GenReadBody(ds, sbW, false,false);
+                    GenWriteBody(ds, sbW, false);
                 }
 
-                var str = Helper.CreateRefStruct("SpanStream", sb.ToString(), "");
-                var ns = Helper.CreateNamespace("Tedd", str, CodeGenBodies.usings);
-                var fn = Path.Combine(root, "SpanStream.generated.cs");
-                if (File.Exists(fn))
-                    File.Delete(fn);
-                File.WriteAllText(fn, ns);
+                var strRW = Helper.CreateRefStruct("SpanStream", sbW.ToString(), "");
+                var nsRW = Helper.CreateNamespace("Tedd", strRW, CodeGenBodies.usings);
+                File.WriteAllText(Path.Combine(root, "SpanStream.generated.cs"), nsRW);
+                var strRO = Helper.CreateRefStruct("ReadOnlySpanStream", sbRO.ToString(), "");
+                var nsRO = Helper.CreateNamespace("Tedd", strRO, CodeGenBodies.usings);
+                File.WriteAllText(Path.Combine(root, "ReadOnlySpanStream.generated.cs"), nsRO);
             }
             {
-                var sb = new StringBuilder();
+                var sbRO = new StringBuilder();
+                var sbW = new StringBuilder();
 
                 foreach (var ds in CodeGenBodies.DataStructures)
                 {
-                    GenReadBody(ds, sb, true);
-                    GenWriteBody(ds, sb, true);
+                    GenReadBody(ds, sbRO, true,true);
+                    GenReadBody(ds, sbW, true,false);
+                    GenWriteBody(ds, sbW, true);
                 }
-                var str = Helper.CreateClass(false, "MemoryStreamer", sb.ToString(), "");
-                var ns = Helper.CreateNamespace("Tedd", str, CodeGenBodies.usings);
-                var fn = Path.Combine(root, "MemoryStreamer.generated.cs");
-                if (File.Exists(fn))
-                    File.Delete(fn);
-                File.WriteAllText(fn, ns);
+                var strRW = Helper.CreateClass(false, "MemoryStreamer", sbW.ToString(), "");
+                var nsRW = Helper.CreateNamespace("Tedd", strRW, CodeGenBodies.usings);
+                File.WriteAllText(Path.Combine(root, "MemoryStreamer.generated.cs"), nsRW);
+                var strRO = Helper.CreateClass(false, "ReadOnlyMemoryStreamer", sbRO.ToString(), "");
+                var nsRO = Helper.CreateNamespace("Tedd", strRO, CodeGenBodies.usings);
+                File.WriteAllText(Path.Combine(root, "ReadOnlyMemoryStreamer.generated.cs"), nsRO);
             }
         }
 
         private static string Sj(List<string> l) => String.Join(", ", l);
 
-        private static void GenReadBody(MethodData ds, StringBuilder sb, bool isMemoryStreamer)
+        private static void GenReadBody(MethodData ds, StringBuilder sb, bool isMemoryStreamer, bool isReadOnly)
         {
             if (ds.RW == MethodRW.WriteOnly)
                 return;
 
-            var memory = isMemoryStreamer ? "ROMemory." : "RO";
+            if (isReadOnly && ds.Name == "Span")
+                return;
+
+            var memory = isMemoryStreamer ? "Memory." : "";
             List<string> pDef = new();
             List<string> p = new();
 
@@ -104,6 +111,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             if (ds.IsAlias || ds.RW == MethodRW.ReadOnly)
                 return;
 
+
             var name = $"Write{ds.WriteName}";
             var memory = isMemoryStreamer ? "Memory." : "";
 
@@ -114,9 +122,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             p.Add("value");
 
 
-            if (!ds.NoLengthParam)
-            {
-            }
+       
             sb.Append($@"
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void {name}({Sj(pDef)}) => {name}({Sj(p)}, out _);
@@ -127,8 +133,6 @@ namespace Tedd.SpanUtils.SourceGenerator
             sb.Append($@"
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void {name}({Sj(pDef)}) {{
-            if (!CanWrite)
-                throw new ReadOnlyException(""Span is read-only."");
             SpanUtils.{name}({memory}Span.Slice(_position), {Sj(p)});
             Position += {ds.Size};
         }}");

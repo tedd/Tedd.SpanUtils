@@ -6,11 +6,11 @@ namespace Tedd
 {
     /// <summary>
     /// A ref struct (allocated on stack) that gives similar functionality as System.IO.Stream.
-    /// Additionally has all the read/write methods of this library. Read/write will progress position.
+    /// Additionally has all the read methods of this library. Read will progress position.
     /// </summary>
-    public ref partial struct SpanStream
+    public ref partial struct ReadOnlySpanStream
     {
-        private Span<byte> Span;
+        private ReadOnlySpan<byte> Span;
         private int _position;
         public int Length;
 
@@ -30,14 +30,12 @@ namespace Tedd
             }
         }
 
-        public SpanStream(Span<byte> span)
+        public ReadOnlySpanStream(ReadOnlySpan<byte> span)
         {
             Span = span;
             _position = 0;
-            Length = 0;
+            Length = span.Length;
         }
-
-        public int MaxLength => Span.Length;
 
         /// <summary>Sets the length of the current stream.</summary>
         /// <param name="value">The desired length of the current stream in bytes.</param>
@@ -56,23 +54,6 @@ namespace Tedd
         public void Flush() { }
 
 
-        /// <summary>
-        /// Fills span with zero.
-        /// </summary>
-        /// <param name="all">Normally only clears until Length, set all to true to clear the whole underlying span.</param>
-        public void Clear(bool all = false)
-        {
-            if (all)
-            {
-                Span.Fill(0);
-                _position = 0;
-                return;
-            }
-
-            Span.Slice(0, _position).Fill(0);
-            _position = 0;
-            Length = 0;
-        }
 
         /// <summary>Gets a value indicating whether the current stream supports reading.</summary>
         /// <returns>true if the stream supports reading; otherwise, false.</returns>
@@ -96,7 +77,7 @@ namespace Tedd
         public bool CanWrite
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => true;
+            get => false;
 
         }
 
@@ -128,25 +109,11 @@ namespace Tedd
         /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset">offset</paramref> or <paramref name="count">count</paramref> is negative, greater than buffer size or greater than remaining destination length.</exception>
         public void Write(byte[] buffer, int offset, int count)
         {
-            if (buffer is null)
-                throw new ArgumentNullException(nameof(buffer));
-
-            var src = ((Span<byte>)buffer).Slice(offset, count);
-            var dst = Span.Slice((int)_position, count);
-            src.CopyTo(dst);
-            _position += count;
+            throw new ReadOnlyException("Span is read-only.");
         }
 
         #endregion
 
-
-        /// <summary>
-        /// Counts how many bytes WriteSize will use for a given value.
-        /// </summary>
-        /// <param name="span"></param>
-        /// <param name="value"></param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public byte MeasureWriteSize(UInt32 value) => value.MeasureWriteSize();
 
     }
 }
