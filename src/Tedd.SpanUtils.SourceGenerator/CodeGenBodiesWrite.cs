@@ -32,13 +32,19 @@ namespace Tedd.SpanUtils.SourceGenerator
         public static string WriteUInt16(bool le) => le switch
         {
             true => @"
-            span[1] = (byte)(value & 0xFF);
-            span[0] = (byte)(value >> (8 * 1));
+//#if !NETSTANDARD
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+//#else
+//            span[1] = (byte)(value >> (8 * 1));
+//            span[0] = (byte)(value & 0xFF);
+//#endif
             [LEN]
             [MOVE]",
             false => @"
-            span[1] = (byte)(value >> (8 * 1));
-            span[0] = (byte)(value & 0xFF);
+            span[1] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 1));
             [LEN]
             [MOVE]"
         };
@@ -46,15 +52,15 @@ namespace Tedd.SpanUtils.SourceGenerator
         {
             true => @"
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
-            span[2] = (byte)((Int32)value & 0xFF);
-            span[0] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
+            span[2] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
+            span[0] = (byte)((Int32)value & 0xFF);
             span[1] = (byte)(((Int32)value >> (8 * 1)) & 0xFF);
             [LEN]
             [MOVE]",
             false => @"
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
-            span[2] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
-            span[0] = (byte)((Int32)value & 0xFF);
+            span[2] = (byte)((Int32)value & 0xFF);
+            span[0] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
             span[1] = (byte)(((Int32)value >> (8 * 1)) & 0xFF);
             [LEN]
             [MOVE]"
@@ -72,19 +78,25 @@ namespace Tedd.SpanUtils.SourceGenerator
         public static string WriteUInt32(bool le) => le switch
         {
             true => @"
+//#if !NETSTANDARD
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+//#else
+//            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+//            span[3] = (byte)(value >> (8 * 3));
+//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
+//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
+//            span[0] = (byte)(value & 0xFF);
+//#endif
+            [LEN]
+            [MOVE]",
+            false => @"
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[3] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 3));
             span[1] = (byte)((value >> (8 * 2)) & 0xFF);
             span[2] = (byte)((value >> (8 * 1)) & 0xFF);
-            [LEN]
-            [MOVE]",
-            false => @"
-            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
-            span[3] = (byte)(value >> (8 * 3));
-            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-            span[0] = (byte)(value & 0xFF);
             [LEN]
             [MOVE]"
         };
@@ -103,6 +115,25 @@ namespace Tedd.SpanUtils.SourceGenerator
         public static string WriteUInt64(bool le) => le switch
         {
             true => @"
+//#if !NETSTANDARD
+            if (span.Length < sizeof(UInt64))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+//#else
+//            // 13% more speed if we write last first, then rest in sequence.
+//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+//            span[7] = (byte)(value >> (8 * 7));
+//            span[6] = (byte)((value >> (8 * 6)) & 0xFF);
+//            span[5] = (byte)((value >> (8 * 5)) & 0xFF);
+//            span[4] = (byte)((value >> (8 * 4)) & 0xFF);
+//            span[3] = (byte)((value >> (8 * 3)) & 0xFF);
+//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
+//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
+//            span[0] = (byte)(value & 0xFF);
+//#endif
+            [LEN]
+            [MOVE]",
+            false => @"
             // 13% more speed if we write last first, then rest in sequence.
             // https://github.com/tedd/Tedd.SpanUtils/issues/3
             span[7] = (byte)(value & 0xFF);
@@ -113,19 +144,6 @@ namespace Tedd.SpanUtils.SourceGenerator
             span[4] = (byte)((value >> (8 * 3)) & 0xFF);
             span[5] = (byte)((value >> (8 * 2)) & 0xFF);
             span[6] = (byte)((value >> (8 * 1)) & 0xFF);
-            [LEN]
-            [MOVE]",
-            false => @"
-            // 13% more speed if we write last first, then rest in sequence.
-            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-            span[7] = (byte)(value >> (8 * 7));
-            span[6] = (byte)((value >> (8 * 6)) & 0xFF);
-            span[5] = (byte)((value >> (8 * 5)) & 0xFF);
-            span[4] = (byte)((value >> (8 * 4)) & 0xFF);
-            span[3] = (byte)((value >> (8 * 3)) & 0xFF);
-            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-            span[0] = (byte)(value & 0xFF);
             [LEN]
             [MOVE]"
         };
