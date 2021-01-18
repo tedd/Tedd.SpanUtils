@@ -15,7 +15,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SByte ReadSByte(out int length) {
-            var ret = SpanUtils.ReadSByte(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadSByte(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(SByte);
             return ret;
         }
@@ -37,7 +37,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Byte ReadByte(out int length) {
-            var ret = SpanUtils.ReadByte(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadByte(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Byte);
             return ret;
         }
@@ -59,7 +59,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt16 ReadUInt16(out int length) {
-            var ret = SpanUtils.ReadUInt16(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadUInt16(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(UInt16);
             return ret;
         }
@@ -81,7 +81,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Int16 ReadInt16(out int length) {
-            var ret = SpanUtils.ReadInt16(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadInt16(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Int16);
             return ret;
         }
@@ -103,7 +103,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt32 ReadUInt32(out int length) {
-            var ret = SpanUtils.ReadUInt32(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadUInt32(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(UInt32);
             return ret;
         }
@@ -125,7 +125,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Int32 ReadInt32(out int length) {
-            var ret = SpanUtils.ReadInt32(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadInt32(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Int32);
             return ret;
         }
@@ -147,7 +147,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt64 ReadUInt64(out int length) {
-            var ret = SpanUtils.ReadUInt64(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadUInt64(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(UInt64);
             return ret;
         }
@@ -169,7 +169,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Int64 ReadInt64(out int length) {
-            var ret = SpanUtils.ReadInt64(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadInt64(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Int64);
             return ret;
         }
@@ -191,7 +191,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Single ReadSingle(out int length) {
-            var ret = SpanUtils.ReadSingle(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadSingle(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Single);
             return ret;
         }
@@ -213,7 +213,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Double ReadDouble(out int length) {
-            var ret = SpanUtils.ReadDouble(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadDouble(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Double);
             return ret;
         }
@@ -235,7 +235,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Decimal ReadDecimal(out int length) {
-            var ret = SpanUtils.ReadDecimal(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadDecimal(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Decimal);
             return ret;
         }
@@ -257,7 +257,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Boolean ReadBoolean(out int length) {
-            var ret = SpanUtils.ReadBoolean(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadBoolean(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Boolean);
             return ret;
         }
@@ -279,7 +279,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Char ReadChar(out int length) {
-            var ret = SpanUtils.ReadChar(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadChar(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Char);
             return ret;
         }
@@ -301,7 +301,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Single ReadFloat(out int length) {
-            var ret = SpanUtils.ReadFloat(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadFloat(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Single);
             return ret;
         }
@@ -313,7 +313,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Int16 ReadShort(out int length) {
-            var ret = SpanUtils.ReadShort(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadShort(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Int16);
             return ret;
         }
@@ -325,7 +325,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt16 ReadUShort(out int length) {
-            var ret = SpanUtils.ReadUShort(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadUShort(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(UInt16);
             return ret;
         }
@@ -337,7 +337,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Int32 ReadInt(out int length) {
-            var ret = SpanUtils.ReadInt(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadInt(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Int32);
             return ret;
         }
@@ -349,7 +349,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt32 ReadUInt(out int length) {
-            var ret = SpanUtils.ReadUInt(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadUInt(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(UInt32);
             return ret;
         }
@@ -361,7 +361,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Int64 ReadLong(out int length) {
-            var ret = SpanUtils.ReadLong(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadLong(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Int64);
             return ret;
         }
@@ -373,7 +373,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt64 ReadULong(out int length) {
-            var ret = SpanUtils.ReadULong(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadULong(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(UInt64);
             return ret;
         }
@@ -385,7 +385,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Boolean ReadBool(out int length) {
-            var ret = SpanUtils.ReadBool(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadBool(ROMemory.Span.Slice(_position), out length);
             Position += sizeof(Boolean);
             return ret;
         }
@@ -397,7 +397,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt16 ReadVLQUInt16(out int length) {
-            var ret = SpanUtils.ReadVLQUInt16(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadVLQUInt16(ROMemory.Span.Slice(_position), out length);
             Position += length;
             return ret;
         }
@@ -419,7 +419,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Int16 ReadVLQInt16(out int length) {
-            var ret = SpanUtils.ReadVLQInt16(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadVLQInt16(ROMemory.Span.Slice(_position), out length);
             Position += length;
             return ret;
         }
@@ -441,7 +441,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt32 ReadVLQUInt32(out int length) {
-            var ret = SpanUtils.ReadVLQUInt32(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadVLQUInt32(ROMemory.Span.Slice(_position), out length);
             Position += length;
             return ret;
         }
@@ -463,7 +463,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Int32 ReadVLQInt32(out int length) {
-            var ret = SpanUtils.ReadVLQInt32(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadVLQInt32(ROMemory.Span.Slice(_position), out length);
             Position += length;
             return ret;
         }
@@ -485,7 +485,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt64 ReadVLQUInt64(out int length) {
-            var ret = SpanUtils.ReadVLQUInt64(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadVLQUInt64(ROMemory.Span.Slice(_position), out length);
             Position += length;
             return ret;
         }
@@ -507,7 +507,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Int64 ReadVLQInt64(out int length) {
-            var ret = SpanUtils.ReadVLQInt64(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadVLQInt64(ROMemory.Span.Slice(_position), out length);
             Position += length;
             return ret;
         }
@@ -529,7 +529,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt24 ReadUInt24(out int length) {
-            var ret = SpanUtils.ReadUInt24(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadUInt24(ROMemory.Span.Slice(_position), out length);
             Position += 3;
             return ret;
         }
@@ -551,7 +551,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt24 ReadVLQUInt24(out int length) {
-            var ret = SpanUtils.ReadVLQUInt24(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadVLQUInt24(ROMemory.Span.Slice(_position), out length);
             Position += length;
             return ret;
         }
@@ -573,7 +573,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Guid ReadGuid(out int length) {
-            var ret = SpanUtils.ReadGuid(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadGuid(ROMemory.Span.Slice(_position), out length);
             Position += 16;
             return ret;
         }
@@ -591,7 +591,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Byte[] ReadBytes(int length) {
-            var ret = SpanUtils.ReadBytes(Memory.Span.Slice(_position), length);
+            var ret = SpanUtils.ReadBytes(ROMemory.Span.Slice(_position), length);
             Position += length;
             return ret;
         }
@@ -609,6 +609,8 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Span<byte> ReadSpan(int length) {
+            if (!CanWrite)
+                throw new ReadOnlyException("Span is read-only, use ReadReadOnlySpan.");
             var ret = SpanUtils.ReadSpan(Memory.Span.Slice(_position), length);
             Position += length;
             return ret;
@@ -627,7 +629,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ReadOnlySpan<byte> ReadReadOnlySpan(int length) {
-            var ret = SpanUtils.ReadReadOnlySpan(Memory.Span.Slice(_position), length);
+            var ret = SpanUtils.ReadReadOnlySpan(ROMemory.Span.Slice(_position), length);
             Position += length;
             return ret;
         }
@@ -649,7 +651,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UInt32 ReadSize(out int length) {
-            var ret = SpanUtils.ReadSize(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadSize(ROMemory.Span.Slice(_position), out length);
             Position += length;
             return ret;
         }
@@ -671,7 +673,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Byte[] ReadSizedBytes(out int length) {
-            var ret = SpanUtils.ReadSizedBytes(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadSizedBytes(ROMemory.Span.Slice(_position), out length);
             Position += length;
             return ret;
         }
@@ -693,7 +695,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public String ReadSizedString(out int length) {
-            var ret = SpanUtils.ReadSizedString(Memory.Span.Slice(_position), out length);
+            var ret = SpanUtils.ReadSizedString(ROMemory.Span.Slice(_position), out length);
             Position += length;
             return ret;
         }

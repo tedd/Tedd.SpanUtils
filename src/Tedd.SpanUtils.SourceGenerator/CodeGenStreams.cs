@@ -53,13 +53,25 @@ namespace Tedd.SpanUtils.SourceGenerator
             if (ds.RW == MethodRW.WriteOnly)
                 return;
 
-            var memory = isMemoryStreamer ? "Memory." : "RO";
+            var memory = isMemoryStreamer ? "ROMemory." : "RO";
             List<string> pDef = new();
             List<string> p = new();
 
+            var checkWriteOk = "";
+
             // Special case for returning span, then we need to read Span only
-            if (!isMemoryStreamer&&ds.Name == "Span")
-                memory = "";
+            if (ds.Name == "Span")
+            {
+                if (!isMemoryStreamer)
+                    memory = "";
+                else
+                {
+                    memory = "Memory.";
+                    checkWriteOk = @"
+            if (!CanWrite)
+                throw new ReadOnlyException(""Span is read-only, use ReadReadOnlySpan."");";
+                }
+            }
 
 
             if (!string.IsNullOrWhiteSpace(ds.ExtraReadParamsDef))
@@ -67,7 +79,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             if (!string.IsNullOrWhiteSpace(ds.ExtraReadParams))
                 p.Add(ds.ExtraReadParams);
             var retType = ds.TypeString;
-            
+
             if (isMemoryStreamer && ds.TypeString == typeof(byte).Name && ds.Name == typeof(byte).Name)
             {
                 retType = "override int";
@@ -81,8 +93,7 @@ namespace Tedd.SpanUtils.SourceGenerator
                 p.Add("out length");
             }
 
-
-            Helper.Method(sb, false, ds.TypeString, $"Read{ds.Name}", Sj(pDef), @$"
+            Helper.Method(sb, false, ds.TypeString, $"Read{ds.Name}", Sj(pDef), @$"{checkWriteOk}
             var ret = SpanUtils.Read{ds.Name}({memory}Span.Slice(_position), {Sj(p)});
             Position += {ds.Size};
             return ret;", "");
