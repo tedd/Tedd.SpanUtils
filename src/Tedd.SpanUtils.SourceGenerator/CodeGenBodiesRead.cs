@@ -23,17 +23,23 @@ namespace Tedd.SpanUtils.SourceGenerator
         public static string ReadUInt16(bool le) => le switch
         {
             true => @"
-           var ret = (UInt16)(
-                  ((UInt16)span[0] << (8 * 1))
-                | ((UInt16)span[1])
-                );
+//#if !NETSTANDARD
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+//#else
+//           var ret = (UInt16)(
+//                  ((UInt16)span[0])
+//                | ((UInt16)span[1] << (8 * 1))
+//                );
+//#endif
             [LEN]
             [MOVE]
             return ret;",
             false => @"
            var ret = (UInt16)(
-                  ((UInt16)span[0])
-                | ((UInt16)span[1] << (8 * 1))
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
                 );
             [LEN]
             [MOVE]
@@ -44,18 +50,18 @@ namespace Tedd.SpanUtils.SourceGenerator
         {
             true => @"
             var ret = (UInt24)(Int32)(
-                ((UInt32)span[2])
+                  ((UInt32)span[2] << (8 * 2))
                 | ((UInt32)span[1] << (8 * 1))
-                | ((UInt32)span[0] << (8 * 2))
+                | ((UInt32)span[0])
                 );
             [LEN]
             [MOVE]
             return ret;",
             false => @"
             var ret = (UInt24)(Int32)(
-                  ((UInt32)span[2] << (8 * 2))
+                  ((UInt32)span[2])
                 | ((UInt32)span[1] << (8 * 1))
-                | ((UInt32)span[0])
+                | ((UInt32)span[0] << (8 * 2))
                 );
             [LEN]
             [MOVE]
@@ -64,6 +70,23 @@ namespace Tedd.SpanUtils.SourceGenerator
         public static string ReadUInt32(bool le) => le switch
         {
             true => @"
+//#if !NETSTANDARD
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+//#else
+//            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
+//            var ret = (UInt32)(
+//                  ((UInt32)span[3] << (8 * 3))
+//                | ((UInt32)span[2] << (8 * 2))
+//                | ((UInt32)span[1] << (8 * 1))
+//                | ((UInt32)span[0])
+//                );
+//#endif
+            [LEN]
+            [MOVE]
+            return ret;",
+            false => @"
             // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
             var ret = (UInt32)(
                   ((UInt32)span[3])
@@ -73,22 +96,34 @@ namespace Tedd.SpanUtils.SourceGenerator
                 );
             [LEN]
             [MOVE]
-            return ret;",
-            false => @"
-            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
-            var ret = (UInt32)(
-                  ((UInt32)span[3] << (8 * 3))
-                | ((UInt32)span[2] << (8 * 2))
-                | ((UInt32)span[1] << (8 * 1))
-                | ((UInt32)span[0])
-                );
-            [LEN]
-            [MOVE]
             return ret;"
         };
         public static string ReadUInt64(bool le) => le switch
         {
             true => @"
+//#if !NETSTANDARD
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+//#else
+//            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
+//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+//            var ret = (UInt64)(
+//                  ((UInt64)span[7] << (8 * 7))
+//                | ((UInt64)span[6] << (8 * 6))
+//                | ((UInt64)span[5] << (8 * 5))
+//                | ((UInt64)span[4] << (8 * 4))
+//                | ((UInt64)span[3] << (8 * 3))
+//                | ((UInt64)span[2] << (8 * 2))
+//                | ((UInt64)span[1] << (8 * 1))
+//                | ((UInt64)span[0])
+//                );
+//#endif
+            [LEN]
+            [MOVE]
+            return ret;",
+            false => @"
             //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
             // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
             // https://github.com/tedd/Tedd.SpanUtils/issues/3
@@ -101,23 +136,6 @@ namespace Tedd.SpanUtils.SourceGenerator
                 | ((UInt64)span[2] << (8 * 5))
                 | ((UInt64)span[1] << (8 * 6))
                 | ((UInt64)span[0] << (8 * 7))
-                );
-            [LEN]
-            [MOVE]
-            return ret;",
-            false => @"
-            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
-            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-            var ret = (UInt64)(
-                  ((UInt64)span[7] << (8 * 7))
-                | ((UInt64)span[6] << (8 * 6))
-                | ((UInt64)span[5] << (8 * 5))
-                | ((UInt64)span[4] << (8 * 4))
-                | ((UInt64)span[3] << (8 * 3))
-                | ((UInt64)span[2] << (8 * 2))
-                | ((UInt64)span[1] << (8 * 1))
-                | ((UInt64)span[0])
                 );
             [LEN]
             [MOVE]
