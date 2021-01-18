@@ -10,19 +10,18 @@ namespace Tedd
     /// It does the same as MemoryStream, but with Memory&lt;byte&gt;.
     /// Additionally has all the read/write methods of this library. Read/write will progress position.
     /// </summary>
-    public partial class MemoryStreamer : Stream
+    public partial class ReadOnlyMemoryStreamer : Stream
     {
- 
-        private Memory<byte> Memory;
+
+        private ReadOnlyMemory<byte> Memory;
         private int _position { get; set; }
         private int _length;
 
-        public MemoryStreamer(Memory<byte> memory)
+        public ReadOnlyMemoryStreamer(ReadOnlyMemory<byte> memory)
         {
             Memory = memory;
-            _length = memory.Length;
+            _length = 0;
         }
-      
         public int MaxLength => Memory.Length;
 
         /// <summary>
@@ -31,16 +30,7 @@ namespace Tedd
         /// <param name="all">Normally only clears until Length, set all to true to clear the whole underlying span.</param>
         public void Clear(bool all = false)
         {
-            if (all)
-            {
-                Memory.Span.Fill(0);
-                _position = 0;
-                return;
-            }
-
-            Memory.Span.Slice(0, _position).Fill(0);
-            _position = 0;
-            _length = 0;
+            throw new ReadOnlyException("Memory is read-only.");
         }
 
         #region Overrides of Stream
@@ -67,7 +57,7 @@ namespace Tedd
         public override bool CanWrite
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => true;
+            get => false;
         }
 
 
@@ -166,34 +156,10 @@ namespace Tedd
         /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset">offset</paramref> or <paramref name="count">count</paramref> is negative, greater than buffer size or greater than remaining destination length.</exception>
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (!CanWrite)
-                throw new ReadOnlyException("Memory is read-only.");
-            //if (offset + count > buffer.Length)
-            //    throw new ArgumentException($"The sum of offset and count is greater than the buffer length.");
-            if (buffer is null)
-                throw new ArgumentNullException(nameof(buffer));
-            //if (offset < 0)
-            //    throw new ArgumentOutOfRangeException(nameof(offset));
-            //if (count < 0)
-            //    throw new ArgumentOutOfRangeException(nameof(count));
-
-            var src = ((Span<byte>)buffer).Slice(offset, count);
-            var dst = Memory.Span.Slice((int)_position, count);
-            src.CopyTo(dst);
-            _position += count;
+            throw new ReadOnlyException("Memory is read-only.");
         }
 
         #endregion
-
-        
-        /// <summary>
-        /// Counts how many bytes WriteSize will use for a given value.
-        /// </summary>
-        /// <param name="span"></param>
-        /// <param name="value"></param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public byte MeasureWriteSize(UInt32 value) => value.MeasureWriteSize();
-        
 
     }
 }
