@@ -25,22 +25,24 @@ namespace Tedd.SpanUtils.SourceGenerator
             // Add generator info for all primitives
             foreach (var p in Primitives)
             {
-                DataStructures.Add(
-                    new MethodData()
-                    {
-                        Name = p.Name,
-                        Type = p,
-                        ReadBody = GetMethod($"Read{p.Name}"),
-                        WriteBody = GetMethod($"Write{p.Name}"),
-                        Size = $"sizeof({p.Name})"
-                    });
+                var ds = new MethodData()
+                {
+                    Name = p.Name,
+                    Type = p,
+                    ReadBody = GetMethod($"Read{p.Name}"),
+                    WriteBody = GetMethod($"Write{p.Name}"),
+                    Size = $"sizeof({p.Name})"
+                };
+                //if (ds.Type == typeof(byte) || ds.Type == typeof(sbyte) || ds.Type == typeof(bool))
+                //    ds.Endian = Endianness.Default;
+                DataStructures.Add(ds);
 
             }
 
             // Add generator info for all aliases
             foreach (var a in Aliases)
             {
-                DataStructures.Add(new MethodData()
+                var ds = new MethodData()
                 {
                     IsAlias = true,
                     //RW = MethodRW.Read,
@@ -49,7 +51,10 @@ namespace Tedd.SpanUtils.SourceGenerator
                     ReadBody = GetMethod($"Read{a.Value.Name}"),
                     WriteBody = GetMethod($"Write{a.Value.Name}"),
                     Size = $"sizeof({a.Value.Name})",
-                });
+                };
+                //if (ds.Type == typeof(byte) || ds.Type == typeof(sbyte) || ds.Type == typeof(bool))
+                //    ds.Endian = Endianness.Default;
+                DataStructures.Add(ds);
             }
 
             // Add VLQ methods
