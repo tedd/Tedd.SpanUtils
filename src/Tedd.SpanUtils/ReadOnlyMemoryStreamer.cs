@@ -20,7 +20,7 @@ namespace Tedd
         public ReadOnlyMemoryStreamer(ReadOnlyMemory<byte> memory)
         {
             Memory = memory;
-            _length = 0;
+            _length = memory.Length;
         }
         public int MaxLength => Memory.Length;
 

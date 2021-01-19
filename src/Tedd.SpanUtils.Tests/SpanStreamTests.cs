@@ -16,6 +16,8 @@ namespace Tedd.SpanUtilsTests.Span
         {
             var mem = new byte[100];
             var ss = new SpanStream(mem);
+            Assert.Equal(100, ss.Length);
+            ss.SetLength(0);
             Assert.Equal(0, ss.Length);
             Assert.Equal(100, ss.MaxLength);
             ss.Write((UInt32)0);

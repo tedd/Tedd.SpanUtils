@@ -34,7 +34,7 @@ namespace Tedd
         {
             Span = span;
             _position = 0;
-            Length = 0;
+            Length = span.Length;
         }
 
         public int MaxLength => Span.Length;
