@@ -31,7 +31,9 @@
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
       <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
-
+  <ItemGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(net4|netcoreapp2|netstandard)'))">
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.4" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE">
       <Pack>True</Pack>
@@ -60,8 +62,9 @@
   <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(netcoreapp|netstandard2\.1|net[56789])'))">
     <DefineConstants>NETCOREAPP</DefineConstants>
   </PropertyGroup>  
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(netcoreapp2|netstandard|net4)'))">
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(net4|netcoreapp2|netstandard)'))">
     <DefineConstants>BEFORENETCOREAPP3</DefineConstants>
   </PropertyGroup>
+
 
 </Project>

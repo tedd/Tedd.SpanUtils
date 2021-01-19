@@ -14,7 +14,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             var root = @"..\..\..\..\Tedd.SpanUtils";
 
             CodeGenBodies.Initialize();
-            CodeGenSpanReadOnlySpan.GenerateSpanMethods("SpanUtils", root);
+            CodeGenSpanUtilsSpanReadOnlySpan.GenerateSpanMethods("SpanUtils", root);
             CodeGenStreams.Generate(root);
             return 0;
         }

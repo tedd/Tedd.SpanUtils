@@ -10,7 +10,7 @@ namespace Tedd.SpanUtils.SourceGenerator
 
         public static void Generate(string root)
         {
-            var le = true;
+            var le = Endianness.Default;
 
 
             {
@@ -19,9 +19,11 @@ namespace Tedd.SpanUtils.SourceGenerator
 
                 foreach (var ds in CodeGenBodies.DataStructures)
                 {
-                    GenReadBody(ds, sbRO, false,true);
-                    GenReadBody(ds, sbW, false,false);
-                    GenWriteBody(ds, sbW, false);
+                    if (!ds.Endian.HasFlag(le))
+                        continue;
+                    GenReadBody(le, ds, sbRO, false, true);
+                    GenReadBody(le, ds, sbW, false, false);
+                    GenWriteBody(le, ds, sbW, false);
                 }
 
                 var strRW = Helper.CreateRefStruct("SpanStream", sbW.ToString(), "");
@@ -37,9 +39,11 @@ namespace Tedd.SpanUtils.SourceGenerator
 
                 foreach (var ds in CodeGenBodies.DataStructures)
                 {
-                    GenReadBody(ds, sbRO, true,true);
-                    GenReadBody(ds, sbW, true,false);
-                    GenWriteBody(ds, sbW, true);
+                    if (!ds.Endian.HasFlag(le))
+                        continue;
+                    GenReadBody(le, ds, sbRO, true, true);
+                    GenReadBody(le, ds, sbW, true, false);
+                    GenWriteBody(le, ds, sbW, true);
                 }
                 var strRW = Helper.CreateClass(false, "MemoryStreamer", sbW.ToString(), "");
                 var nsRW = Helper.CreateNamespace("Tedd", strRW, CodeGenBodies.usings);
@@ -52,7 +56,8 @@ namespace Tedd.SpanUtils.SourceGenerator
 
         private static string Sj(List<string> l) => String.Join(", ", l);
 
-        private static void GenReadBody(MethodData ds, StringBuilder sb, bool isMemoryStreamer, bool isReadOnly)
+        private static void GenReadBody(Endianness le, MethodData ds, StringBuilder sb, bool isMemoryStreamer,
+            bool isReadOnly)
         {
             if (ds.RW == MethodRW.WriteOnly)
                 return;
@@ -80,6 +85,8 @@ namespace Tedd.SpanUtils.SourceGenerator
                 }
             }
 
+            var name = "Read" + ds.Name + CodeGenBodies.EndiannessToMethodExtension(le);
+
 
             if (!string.IsNullOrWhiteSpace(ds.ExtraReadParamsDef))
                 pDef.Add(ds.ExtraReadParamsDef);
@@ -95,24 +102,23 @@ namespace Tedd.SpanUtils.SourceGenerator
             {
                 var pC = new List<string>(p);
                 pC.Add("out _");
-                Helper.Method(sb, false, retType, $"Read{ds.Name}", Sj(pDef), $"Read{ds.Name}({Sj(pC)});", "");
+                Helper.Method(sb, false, retType, $"{name}", Sj(pDef), $"{name}({Sj(pC)});", "");
                 pDef.Add("out int length");
                 p.Add("out length");
             }
 
-            Helper.Method(sb, false, ds.TypeString, $"Read{ds.Name}", Sj(pDef), @$"{checkWriteOk}
-            var ret = SpanUtils.Read{ds.Name}({memory}Span.Slice(_position), {Sj(p)});
+            Helper.Method(sb, false, ds.TypeString, $"{name}", Sj(pDef), @$"{checkWriteOk}
+            var ret = SpanUtils.{name}({memory}Span.Slice(_position), {Sj(p)});
             Position += {ds.Size};
             return ret;", "");
 
         }
-        private static void GenWriteBody(MethodData ds, StringBuilder sb, bool isMemoryStreamer)
+        private static void GenWriteBody(Endianness le, MethodData ds, StringBuilder sb, bool isMemoryStreamer)
         {
             if (ds.IsAlias || ds.RW == MethodRW.ReadOnly)
                 return;
 
-
-            var name = $"Write{ds.WriteName}";
+            var name = $"Write{ds.WriteName}" + CodeGenBodies.EndiannessToMethodExtension(le);
             var memory = isMemoryStreamer ? "Memory." : "";
 
             List<string> pDef = new();
@@ -122,7 +128,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             p.Add("value");
 
 
-       
+
             sb.Append($@"
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void {name}({Sj(pDef)}) => {name}({Sj(p)}, out _);

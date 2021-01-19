@@ -1593,6 +1593,1862 @@ namespace Tedd {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MoveWriteSized(ref this Span<byte>span, ReadOnlySpan<byte> value) => SpanUtils.MoveWriteSized(ref span, value, out _);
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteLE(this Span<byte>span, out int length) => SpanUtils.ReadSByteLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadSByteLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteLE(this Span<byte>span) => SpanUtils.ReadSByteLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadSByteLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteLE(this Span<byte>span, out int length) => SpanUtils.ReadByteLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadByteLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteLE(this Span<byte>span) => SpanUtils.ReadByteLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadByteLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16LE(this Span<byte>span, out int length) => SpanUtils.ReadUInt16LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16LE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUInt16LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16LE(this Span<byte>span) => SpanUtils.ReadUInt16LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16LE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUInt16LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16LE(this Span<byte>span, out int length) => SpanUtils.ReadInt16LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16LE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadInt16LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16LE(this Span<byte>span) => SpanUtils.ReadInt16LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16LE(this ReadOnlySpan<byte>span) => SpanUtils.ReadInt16LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32LE(this Span<byte>span, out int length) => SpanUtils.ReadUInt32LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32LE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUInt32LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32LE(this Span<byte>span) => SpanUtils.ReadUInt32LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32LE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUInt32LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32LE(this Span<byte>span, out int length) => SpanUtils.ReadInt32LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32LE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadInt32LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32LE(this Span<byte>span) => SpanUtils.ReadInt32LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32LE(this ReadOnlySpan<byte>span) => SpanUtils.ReadInt32LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64LE(this Span<byte>span, out int length) => SpanUtils.ReadUInt64LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64LE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUInt64LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64LE(this Span<byte>span) => SpanUtils.ReadUInt64LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64LE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUInt64LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64LE(this Span<byte>span, out int length) => SpanUtils.ReadInt64LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64LE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadInt64LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64LE(this Span<byte>span) => SpanUtils.ReadInt64LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64LE(this ReadOnlySpan<byte>span) => SpanUtils.ReadInt64LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleLE(this Span<byte>span, out int length) => SpanUtils.ReadSingleLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadSingleLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleLE(this Span<byte>span) => SpanUtils.ReadSingleLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadSingleLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleLE(this Span<byte>span, out int length) => SpanUtils.ReadDoubleLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadDoubleLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleLE(this Span<byte>span) => SpanUtils.ReadDoubleLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadDoubleLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalLE(this Span<byte>span, out int length) => SpanUtils.ReadDecimalLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadDecimalLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalLE(this Span<byte>span) => SpanUtils.ReadDecimalLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadDecimalLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanLE(this Span<byte>span, out int length) => SpanUtils.ReadBooleanLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadBooleanLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanLE(this Span<byte>span) => SpanUtils.ReadBooleanLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadBooleanLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharLE(this Span<byte>span, out int length) => SpanUtils.ReadCharLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadCharLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharLE(this Span<byte>span) => SpanUtils.ReadCharLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadCharLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatLE(this Span<byte>span, out int length) => SpanUtils.ReadFloatLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadFloatLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatLE(this Span<byte>span) => SpanUtils.ReadFloatLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadFloatLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortLE(this Span<byte>span, out int length) => SpanUtils.ReadShortLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadShortLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortLE(this Span<byte>span) => SpanUtils.ReadShortLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadShortLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortLE(this Span<byte>span, out int length) => SpanUtils.ReadUShortLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUShortLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortLE(this Span<byte>span) => SpanUtils.ReadUShortLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUShortLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntLE(this Span<byte>span, out int length) => SpanUtils.ReadIntLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadIntLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntLE(this Span<byte>span) => SpanUtils.ReadIntLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadIntLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntLE(this Span<byte>span, out int length) => SpanUtils.ReadUIntLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUIntLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntLE(this Span<byte>span) => SpanUtils.ReadUIntLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUIntLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongLE(this Span<byte>span, out int length) => SpanUtils.ReadLongLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadLongLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongLE(this Span<byte>span) => SpanUtils.ReadLongLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadLongLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongLE(this Span<byte>span, out int length) => SpanUtils.ReadULongLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadULongLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongLE(this Span<byte>span) => SpanUtils.ReadULongLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadULongLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolLE(this Span<byte>span, out int length) => SpanUtils.ReadBoolLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolLE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadBoolLE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolLE(this Span<byte>span) => SpanUtils.ReadBoolLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolLE(this ReadOnlySpan<byte>span) => SpanUtils.ReadBoolLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24LE(this Span<byte>span, out int length) => SpanUtils.ReadUInt24LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24LE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUInt24LE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24LE(this Span<byte>span) => SpanUtils.ReadUInt24LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24LE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUInt24LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadSByteLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadSByteLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteLE(ref this Span<byte>span) => SpanUtils.MoveReadSByteLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadSByteLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadByteLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadByteLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteLE(ref this Span<byte>span) => SpanUtils.MoveReadByteLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadByteLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16LE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUInt16LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16LE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUInt16LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16LE(ref this Span<byte>span) => SpanUtils.MoveReadUInt16LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16LE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt16LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16LE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadInt16LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16LE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadInt16LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16LE(ref this Span<byte>span) => SpanUtils.MoveReadInt16LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16LE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt16LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32LE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUInt32LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32LE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUInt32LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32LE(ref this Span<byte>span) => SpanUtils.MoveReadUInt32LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32LE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt32LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32LE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadInt32LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32LE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadInt32LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32LE(ref this Span<byte>span) => SpanUtils.MoveReadInt32LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32LE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt32LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64LE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUInt64LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64LE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUInt64LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64LE(ref this Span<byte>span) => SpanUtils.MoveReadUInt64LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64LE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt64LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64LE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadInt64LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64LE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadInt64LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64LE(ref this Span<byte>span) => SpanUtils.MoveReadInt64LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64LE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt64LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadSingleLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadSingleLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleLE(ref this Span<byte>span) => SpanUtils.MoveReadSingleLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadSingleLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadDoubleLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadDoubleLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleLE(ref this Span<byte>span) => SpanUtils.MoveReadDoubleLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadDoubleLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadDecimalLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadDecimalLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalLE(ref this Span<byte>span) => SpanUtils.MoveReadDecimalLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadDecimalLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadBooleanLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadBooleanLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanLE(ref this Span<byte>span) => SpanUtils.MoveReadBooleanLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadBooleanLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadCharLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadCharLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharLE(ref this Span<byte>span) => SpanUtils.MoveReadCharLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadCharLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadFloatLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadFloatLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatLE(ref this Span<byte>span) => SpanUtils.MoveReadFloatLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadFloatLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadShortLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadShortLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortLE(ref this Span<byte>span) => SpanUtils.MoveReadShortLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadShortLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUShortLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUShortLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortLE(ref this Span<byte>span) => SpanUtils.MoveReadUShortLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUShortLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadIntLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadIntLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntLE(ref this Span<byte>span) => SpanUtils.MoveReadIntLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadIntLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUIntLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUIntLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntLE(ref this Span<byte>span) => SpanUtils.MoveReadUIntLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUIntLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadLongLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadLongLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongLE(ref this Span<byte>span) => SpanUtils.MoveReadLongLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadLongLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadULongLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadULongLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongLE(ref this Span<byte>span) => SpanUtils.MoveReadULongLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadULongLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolLE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadBoolLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolLE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadBoolLE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolLE(ref this Span<byte>span) => SpanUtils.MoveReadBoolLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolLE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadBoolLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24LE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUInt24LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24LE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUInt24LE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24LE(ref this Span<byte>span) => SpanUtils.MoveReadUInt24LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24LE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt24LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, SByte value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, SByte value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Byte value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Byte value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, UInt16 value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, UInt16 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Int16 value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Int16 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, UInt32 value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, UInt32 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Int32 value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Int32 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, UInt64 value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, UInt64 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Int64 value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Int64 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Single value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Single value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Double value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Double value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Decimal value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Decimal value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Boolean value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Boolean value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Char value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, Char value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, UInt24 value, out int length) => SpanUtils.WriteLE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(this Span<byte>span, UInt24 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, SByte value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, SByte value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Byte value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Byte value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, UInt16 value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, UInt16 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Int16 value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Int16 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, UInt32 value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, UInt32 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Int32 value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Int32 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, UInt64 value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, UInt64 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Int64 value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Int64 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Single value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Single value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Double value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Double value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Decimal value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Decimal value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Boolean value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Boolean value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Char value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, Char value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, UInt24 value, out int length) => SpanUtils.MoveWriteLE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref this Span<byte>span, UInt24 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteBE(this Span<byte>span, out int length) => SpanUtils.ReadSByteBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadSByteBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteBE(this Span<byte>span) => SpanUtils.ReadSByteBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadSByteBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteBE(this Span<byte>span, out int length) => SpanUtils.ReadByteBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadByteBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteBE(this Span<byte>span) => SpanUtils.ReadByteBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadByteBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16BE(this Span<byte>span, out int length) => SpanUtils.ReadUInt16BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16BE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUInt16BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16BE(this Span<byte>span) => SpanUtils.ReadUInt16BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16BE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUInt16BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16BE(this Span<byte>span, out int length) => SpanUtils.ReadInt16BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16BE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadInt16BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16BE(this Span<byte>span) => SpanUtils.ReadInt16BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16BE(this ReadOnlySpan<byte>span) => SpanUtils.ReadInt16BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32BE(this Span<byte>span, out int length) => SpanUtils.ReadUInt32BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32BE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUInt32BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32BE(this Span<byte>span) => SpanUtils.ReadUInt32BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32BE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUInt32BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32BE(this Span<byte>span, out int length) => SpanUtils.ReadInt32BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32BE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadInt32BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32BE(this Span<byte>span) => SpanUtils.ReadInt32BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32BE(this ReadOnlySpan<byte>span) => SpanUtils.ReadInt32BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64BE(this Span<byte>span, out int length) => SpanUtils.ReadUInt64BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64BE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUInt64BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64BE(this Span<byte>span) => SpanUtils.ReadUInt64BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64BE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUInt64BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64BE(this Span<byte>span, out int length) => SpanUtils.ReadInt64BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64BE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadInt64BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64BE(this Span<byte>span) => SpanUtils.ReadInt64BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64BE(this ReadOnlySpan<byte>span) => SpanUtils.ReadInt64BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleBE(this Span<byte>span, out int length) => SpanUtils.ReadSingleBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadSingleBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleBE(this Span<byte>span) => SpanUtils.ReadSingleBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadSingleBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleBE(this Span<byte>span, out int length) => SpanUtils.ReadDoubleBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadDoubleBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleBE(this Span<byte>span) => SpanUtils.ReadDoubleBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadDoubleBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalBE(this Span<byte>span, out int length) => SpanUtils.ReadDecimalBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadDecimalBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalBE(this Span<byte>span) => SpanUtils.ReadDecimalBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadDecimalBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanBE(this Span<byte>span, out int length) => SpanUtils.ReadBooleanBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadBooleanBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanBE(this Span<byte>span) => SpanUtils.ReadBooleanBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadBooleanBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharBE(this Span<byte>span, out int length) => SpanUtils.ReadCharBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadCharBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharBE(this Span<byte>span) => SpanUtils.ReadCharBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadCharBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatBE(this Span<byte>span, out int length) => SpanUtils.ReadFloatBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadFloatBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatBE(this Span<byte>span) => SpanUtils.ReadFloatBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadFloatBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortBE(this Span<byte>span, out int length) => SpanUtils.ReadShortBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadShortBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortBE(this Span<byte>span) => SpanUtils.ReadShortBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadShortBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortBE(this Span<byte>span, out int length) => SpanUtils.ReadUShortBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUShortBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortBE(this Span<byte>span) => SpanUtils.ReadUShortBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUShortBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntBE(this Span<byte>span, out int length) => SpanUtils.ReadIntBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadIntBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntBE(this Span<byte>span) => SpanUtils.ReadIntBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadIntBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntBE(this Span<byte>span, out int length) => SpanUtils.ReadUIntBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUIntBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntBE(this Span<byte>span) => SpanUtils.ReadUIntBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUIntBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongBE(this Span<byte>span, out int length) => SpanUtils.ReadLongBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadLongBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongBE(this Span<byte>span) => SpanUtils.ReadLongBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadLongBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongBE(this Span<byte>span, out int length) => SpanUtils.ReadULongBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadULongBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongBE(this Span<byte>span) => SpanUtils.ReadULongBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadULongBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolBE(this Span<byte>span, out int length) => SpanUtils.ReadBoolBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolBE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadBoolBE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolBE(this Span<byte>span) => SpanUtils.ReadBoolBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolBE(this ReadOnlySpan<byte>span) => SpanUtils.ReadBoolBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24BE(this Span<byte>span, out int length) => SpanUtils.ReadUInt24BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24BE(this ReadOnlySpan<byte>span, out int length) => SpanUtils.ReadUInt24BE(span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24BE(this Span<byte>span) => SpanUtils.ReadUInt24BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24BE(this ReadOnlySpan<byte>span) => SpanUtils.ReadUInt24BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadSByteBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadSByteBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteBE(ref this Span<byte>span) => SpanUtils.MoveReadSByteBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadSByteBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadByteBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadByteBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteBE(ref this Span<byte>span) => SpanUtils.MoveReadByteBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadByteBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16BE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUInt16BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16BE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUInt16BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16BE(ref this Span<byte>span) => SpanUtils.MoveReadUInt16BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16BE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt16BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16BE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadInt16BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16BE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadInt16BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16BE(ref this Span<byte>span) => SpanUtils.MoveReadInt16BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16BE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt16BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32BE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUInt32BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32BE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUInt32BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32BE(ref this Span<byte>span) => SpanUtils.MoveReadUInt32BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32BE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt32BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32BE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadInt32BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32BE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadInt32BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32BE(ref this Span<byte>span) => SpanUtils.MoveReadInt32BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32BE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt32BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64BE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUInt64BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64BE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUInt64BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64BE(ref this Span<byte>span) => SpanUtils.MoveReadUInt64BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64BE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt64BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64BE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadInt64BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64BE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadInt64BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64BE(ref this Span<byte>span) => SpanUtils.MoveReadInt64BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64BE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt64BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadSingleBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadSingleBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleBE(ref this Span<byte>span) => SpanUtils.MoveReadSingleBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadSingleBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadDoubleBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadDoubleBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleBE(ref this Span<byte>span) => SpanUtils.MoveReadDoubleBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadDoubleBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadDecimalBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadDecimalBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalBE(ref this Span<byte>span) => SpanUtils.MoveReadDecimalBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadDecimalBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadBooleanBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadBooleanBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanBE(ref this Span<byte>span) => SpanUtils.MoveReadBooleanBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadBooleanBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadCharBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadCharBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharBE(ref this Span<byte>span) => SpanUtils.MoveReadCharBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadCharBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadFloatBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadFloatBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatBE(ref this Span<byte>span) => SpanUtils.MoveReadFloatBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadFloatBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadShortBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadShortBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortBE(ref this Span<byte>span) => SpanUtils.MoveReadShortBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadShortBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUShortBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUShortBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortBE(ref this Span<byte>span) => SpanUtils.MoveReadUShortBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUShortBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadIntBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadIntBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntBE(ref this Span<byte>span) => SpanUtils.MoveReadIntBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadIntBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUIntBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUIntBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntBE(ref this Span<byte>span) => SpanUtils.MoveReadUIntBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUIntBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadLongBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadLongBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongBE(ref this Span<byte>span) => SpanUtils.MoveReadLongBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadLongBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadULongBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadULongBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongBE(ref this Span<byte>span) => SpanUtils.MoveReadULongBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadULongBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolBE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadBoolBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolBE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadBoolBE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolBE(ref this Span<byte>span) => SpanUtils.MoveReadBoolBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolBE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadBoolBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24BE(ref this Span<byte>span, out int length) => SpanUtils.MoveReadUInt24BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24BE(ref this ReadOnlySpan<byte>span, out int length) => SpanUtils.MoveReadUInt24BE(ref span, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24BE(ref this Span<byte>span) => SpanUtils.MoveReadUInt24BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24BE(ref this ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt24BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, SByte value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, SByte value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Byte value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Byte value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, UInt16 value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, UInt16 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Int16 value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Int16 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, UInt32 value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, UInt32 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Int32 value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Int32 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, UInt64 value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, UInt64 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Int64 value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Int64 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Single value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Single value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Double value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Double value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Decimal value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Decimal value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Boolean value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Boolean value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Char value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, Char value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, UInt24 value, out int length) => SpanUtils.WriteBE(span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(this Span<byte>span, UInt24 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, SByte value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, SByte value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Byte value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Byte value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, UInt16 value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, UInt16 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Int16 value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Int16 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, UInt32 value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, UInt32 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Int32 value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Int32 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, UInt64 value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, UInt64 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Int64 value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Int64 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Single value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Single value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Double value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Double value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Decimal value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Decimal value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Boolean value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Boolean value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Char value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, Char value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, UInt24 value, out int length) => SpanUtils.MoveWriteBE(ref span, value, out length);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref this Span<byte>span, UInt24 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
     }
 
 }

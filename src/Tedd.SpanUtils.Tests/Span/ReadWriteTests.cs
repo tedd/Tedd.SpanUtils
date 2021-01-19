@@ -228,23 +228,13 @@ namespace Tedd.SpanUtilsTests.Span
             for (var c = 0; c < count * 10_000; c++)
             {
                 var sr = rnd.Next(0, 4);
-                uint a;
-                switch (sr)
+                var a = (UInt32)(sr switch
                 {
-                    case 0:
-                        a = (UInt32)rnd.Next(0, 0b00111111);
-                        break;
-                    case 1:
-                        a = (UInt32)rnd.Next(0b01000000, 0b00111111_11111111);
-                        break;
-                    case 2:
-                        a = (UInt32)rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111);
-                        break;
-                    //case 3:
-                    default:
-                        a = (UInt32)rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111);
-                        break;
-                }
+                    0 => rnd.Next(0, 0b00111111),
+                    1 => rnd.Next(0b01000000, 0b00111111_11111111),
+                    2 => rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111),
+                    _ => rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111)
+                });
 
                 var span1 = new Span<byte>(mem);
                 span1.Fill(0);

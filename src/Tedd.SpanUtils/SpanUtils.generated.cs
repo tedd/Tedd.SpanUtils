@@ -71,16 +71,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt16 ReadUInt16(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(UInt16);
             
             return ret;
@@ -89,16 +82,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt16 ReadUInt16(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(UInt16);
             
             return ret;
@@ -115,16 +101,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int16 ReadInt16(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(Int16);
             
             return (Int16)ret;
@@ -133,16 +112,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int16 ReadInt16(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(Int16);
             
             return (Int16)ret;
@@ -159,19 +131,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt32 ReadUInt32(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(UInt32);
             
             return ret;
@@ -180,19 +142,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt32 ReadUInt32(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(UInt32);
             
             return ret;
@@ -209,19 +161,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int32 ReadInt32(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(Int32);
             
             return (Int32)ret;
@@ -230,19 +172,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int32 ReadInt32(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(Int32);
             
             return (Int32)ret;
@@ -259,25 +191,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt64 ReadUInt64(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(UInt64);
             
             return ret;
@@ -286,25 +202,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt64 ReadUInt64(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(UInt64);
             
             return ret;
@@ -321,25 +221,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int64 ReadInt64(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(Int64);
             
             return (Int64)ret;
@@ -348,25 +232,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int64 ReadInt64(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(Int64);
             
             return (Int64)ret;
@@ -559,16 +427,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int16 ReadShort(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(Int16);
             
             return (Int16)ret;
@@ -577,16 +438,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int16 ReadShort(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(Int16);
             
             return (Int16)ret;
@@ -603,16 +457,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt16 ReadUShort(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(UInt16);
             
             return ret;
@@ -621,16 +468,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt16 ReadUShort(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(UInt16);
             
             return ret;
@@ -647,19 +487,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int32 ReadInt(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(Int32);
             
             return (Int32)ret;
@@ -668,19 +498,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int32 ReadInt(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(Int32);
             
             return (Int32)ret;
@@ -697,19 +517,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt32 ReadUInt(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(UInt32);
             
             return ret;
@@ -718,19 +528,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt32 ReadUInt(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(UInt32);
             
             return ret;
@@ -747,25 +547,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int64 ReadLong(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(Int64);
             
             return (Int64)ret;
@@ -774,25 +558,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int64 ReadLong(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(Int64);
             
             return (Int64)ret;
@@ -809,25 +577,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt64 ReadULong(Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(UInt64);
             
             return ret;
@@ -836,25 +588,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt64 ReadULong(ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(UInt64);
             
             return ret;
@@ -1443,13 +1179,12 @@ namespace Tedd {
             var ret = s switch
             {
                 0b00 => (UInt32)b1 & 0b00111111,
-                0b01 => (UInt32)SpanUtils.ReadUInt16(span) & 0b00111111_11111111,
-                0b10 => (UInt32)SpanUtils.ReadUInt24(span) & 0b00111111_11111111_11111111,
+                0b01 => (UInt32)SpanUtils.ReadUInt16BE(span) & 0b00111111_11111111,
+                0b10 => (UInt32)SpanUtils.ReadUInt24BE(span) & 0b00111111_11111111_11111111,
                 //case 0b11:
-                _ => (UInt32)SpanUtils.ReadUInt32(span) & 0b00111111_11111111_11111111_11111111
+                _ => (UInt32)SpanUtils.ReadUInt32BE(span) & 0b00111111_11111111_11111111_11111111
             };
-            All size parameters assume BigEndian, but we are now on LittleEndian.
-            Need to call BE-version of read/write
+            
             return ret;
         }
 
@@ -1463,10 +1198,10 @@ namespace Tedd {
             var ret = s switch
             {
                 0b00 => (UInt32)b1 & 0b00111111,
-                0b01 => (UInt32)SpanUtils.ReadUInt16(span) & 0b00111111_11111111,
-                0b10 => (UInt32)SpanUtils.ReadUInt24(span) & 0b00111111_11111111_11111111,
+                0b01 => (UInt32)SpanUtils.ReadUInt16BE(span) & 0b00111111_11111111,
+                0b10 => (UInt32)SpanUtils.ReadUInt24BE(span) & 0b00111111_11111111_11111111,
                 //case 0b11:
-                _ => (UInt32)SpanUtils.ReadUInt32(span) & 0b00111111_11111111_11111111_11111111
+                _ => (UInt32)SpanUtils.ReadUInt32BE(span) & 0b00111111_11111111_11111111_11111111
             };
             
             return ret;
@@ -1611,16 +1346,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt16 MoveReadUInt16(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
             return ret;
@@ -1629,16 +1357,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt16 MoveReadUInt16(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
             return ret;
@@ -1655,16 +1376,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int16 MoveReadInt16(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
             return (Int16)ret;
@@ -1673,16 +1387,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int16 MoveReadInt16(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
             return (Int16)ret;
@@ -1699,19 +1406,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt32 MoveReadUInt32(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
             return ret;
@@ -1720,19 +1417,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt32 MoveReadUInt32(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
             return ret;
@@ -1749,19 +1436,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int32 MoveReadInt32(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
             return (Int32)ret;
@@ -1770,19 +1447,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int32 MoveReadInt32(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
             return (Int32)ret;
@@ -1799,25 +1466,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt64 MoveReadUInt64(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
             return ret;
@@ -1826,25 +1477,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt64 MoveReadUInt64(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
             return ret;
@@ -1861,25 +1496,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int64 MoveReadInt64(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
             return (Int64)ret;
@@ -1888,25 +1507,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int64 MoveReadInt64(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
             return (Int64)ret;
@@ -2099,16 +1702,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int16 MoveReadShort(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
             return (Int16)ret;
@@ -2117,16 +1713,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int16 MoveReadShort(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
             return (Int16)ret;
@@ -2143,16 +1732,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt16 MoveReadUShort(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
             return ret;
@@ -2161,16 +1743,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt16 MoveReadUShort(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
-//#else
-//           var ret = (UInt16)(
-//                  ((UInt16)span[0])
-//                | ((UInt16)span[1] << (8 * 1))
-//                );
-//#endif
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
             return ret;
@@ -2187,19 +1762,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int32 MoveReadInt(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
             return (Int32)ret;
@@ -2208,19 +1773,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int32 MoveReadInt(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
             return (Int32)ret;
@@ -2237,19 +1792,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt32 MoveReadUInt(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
             return ret;
@@ -2258,19 +1803,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt32 MoveReadUInt(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
-//#else
-//            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
-//            var ret = (UInt32)(
-//                  ((UInt32)span[3] << (8 * 3))
-//                | ((UInt32)span[2] << (8 * 2))
-//                | ((UInt32)span[1] << (8 * 1))
-//                | ((UInt32)span[0])
-//                );
-//#endif
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
             return ret;
@@ -2287,25 +1822,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int64 MoveReadLong(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
             return (Int64)ret;
@@ -2314,25 +1833,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Int64 MoveReadLong(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
             return (Int64)ret;
@@ -2349,25 +1852,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt64 MoveReadULong(ref Span<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
             return ret;
@@ -2376,25 +1863,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UInt64 MoveReadULong(ref ReadOnlySpan<byte> span, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
-//#else
-//            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
-//            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            var ret = (UInt64)(
-//                  ((UInt64)span[7] << (8 * 7))
-//                | ((UInt64)span[6] << (8 * 6))
-//                | ((UInt64)span[5] << (8 * 5))
-//                | ((UInt64)span[4] << (8 * 4))
-//                | ((UInt64)span[3] << (8 * 3))
-//                | ((UInt64)span[2] << (8 * 2))
-//                | ((UInt64)span[1] << (8 * 1))
-//                | ((UInt64)span[0])
-//                );
-//#endif
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
             return ret;
@@ -2983,10 +2454,10 @@ namespace Tedd {
             var ret = s switch
             {
                 0b00 => (UInt32)b1 & 0b00111111,
-                0b01 => (UInt32)SpanUtils.ReadUInt16(span) & 0b00111111_11111111,
-                0b10 => (UInt32)SpanUtils.ReadUInt24(span) & 0b00111111_11111111_11111111,
+                0b01 => (UInt32)SpanUtils.ReadUInt16BE(span) & 0b00111111_11111111,
+                0b10 => (UInt32)SpanUtils.ReadUInt24BE(span) & 0b00111111_11111111_11111111,
                 //case 0b11:
-                _ => (UInt32)SpanUtils.ReadUInt32(span) & 0b00111111_11111111_11111111_11111111
+                _ => (UInt32)SpanUtils.ReadUInt32BE(span) & 0b00111111_11111111_11111111_11111111
             };
             span = span.Slice(length);
             return ret;
@@ -3002,10 +2473,10 @@ namespace Tedd {
             var ret = s switch
             {
                 0b00 => (UInt32)b1 & 0b00111111,
-                0b01 => (UInt32)SpanUtils.ReadUInt16(span) & 0b00111111_11111111,
-                0b10 => (UInt32)SpanUtils.ReadUInt24(span) & 0b00111111_11111111_11111111,
+                0b01 => (UInt32)SpanUtils.ReadUInt16BE(span) & 0b00111111_11111111,
+                0b10 => (UInt32)SpanUtils.ReadUInt24BE(span) & 0b00111111_11111111_11111111,
                 //case 0b11:
-                _ => (UInt32)SpanUtils.ReadUInt32(span) & 0b00111111_11111111_11111111_11111111
+                _ => (UInt32)SpanUtils.ReadUInt32BE(span) & 0b00111111_11111111_11111111_11111111
             };
             span = span.Slice(length);
             return ret;
@@ -3110,14 +2581,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Write(Span<byte>span, UInt16 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            span[1] = (byte)(value >> (8 * 1));
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(UInt16);
             
         }
@@ -3129,14 +2595,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Write(Span<byte>span, Int16 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            span[1] = (byte)(value >> (8 * 1));
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(Int16);
             
         }
@@ -3148,17 +2609,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Write(Span<byte>span, UInt32 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
-//            span[3] = (byte)(value >> (8 * 3));
-//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(UInt32);
             
         }
@@ -3170,17 +2623,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Write(Span<byte>span, Int32 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
-//            span[3] = (byte)(value >> (8 * 3));
-//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(Int32);
             
         }
@@ -3192,22 +2637,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Write(Span<byte>span, UInt64 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt64))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            // 13% more speed if we write last first, then rest in sequence.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            span[7] = (byte)(value >> (8 * 7));
-//            span[6] = (byte)((value >> (8 * 6)) & 0xFF);
-//            span[5] = (byte)((value >> (8 * 5)) & 0xFF);
-//            span[4] = (byte)((value >> (8 * 4)) & 0xFF);
-//            span[3] = (byte)((value >> (8 * 3)) & 0xFF);
-//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(UInt64);
             
         }
@@ -3219,22 +2651,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Write(Span<byte>span, Int64 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt64))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            // 13% more speed if we write last first, then rest in sequence.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            span[7] = (byte)(value >> (8 * 7));
-//            span[6] = (byte)((value >> (8 * 6)) & 0xFF);
-//            span[5] = (byte)((value >> (8 * 5)) & 0xFF);
-//            span[4] = (byte)((value >> (8 * 4)) & 0xFF);
-//            span[3] = (byte)((value >> (8 * 3)) & 0xFF);
-//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(Int64);
             
         }
@@ -3578,12 +2997,12 @@ namespace Tedd {
             if (length == 1)
                 SpanUtils.Write(span, (Byte)value);
             else if (length == 2)
-                SpanUtils.Write(span, (UInt16)((UInt16)value | (0b01 << 14)));
+                SpanUtils.WriteBE(span, (UInt16)((UInt16)value | (0b01 << 14)));
             // Even larger (up to 4,2M) we store length as 3 bytes
             else if (length == 3)
-                SpanUtils.Write(span, (UInt24)((UInt32)value | (0b10 << 22)));
+                SpanUtils.WriteBE(span, (UInt24)((UInt32)value | (0b10 << 22)));
             else if (length == 4)
-                SpanUtils.Write(span, (UInt32)((UInt32)value | (0b11 << 30)));
+                SpanUtils.WriteBE(span, (UInt32)((UInt32)value | (0b11 << 30)));
 
             
             
@@ -3711,14 +3130,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MoveWrite(ref Span<byte>span, UInt16 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            span[1] = (byte)(value >> (8 * 1));
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
         }
@@ -3730,14 +3144,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MoveWrite(ref Span<byte>span, Int16 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            span[1] = (byte)(value >> (8 * 1));
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
         }
@@ -3749,17 +3158,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MoveWrite(ref Span<byte>span, UInt32 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
-//            span[3] = (byte)(value >> (8 * 3));
-//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
         }
@@ -3771,17 +3172,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MoveWrite(ref Span<byte>span, Int32 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
-//            span[3] = (byte)(value >> (8 * 3));
-//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
         }
@@ -3793,22 +3186,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MoveWrite(ref Span<byte>span, UInt64 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt64))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            // 13% more speed if we write last first, then rest in sequence.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            span[7] = (byte)(value >> (8 * 7));
-//            span[6] = (byte)((value >> (8 * 6)) & 0xFF);
-//            span[5] = (byte)((value >> (8 * 5)) & 0xFF);
-//            span[4] = (byte)((value >> (8 * 4)) & 0xFF);
-//            span[3] = (byte)((value >> (8 * 3)) & 0xFF);
-//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
         }
@@ -3820,22 +3200,9 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MoveWrite(ref Span<byte>span, Int64 value, out int length) {
-//#if !NETSTANDARD
             if (span.Length < sizeof(UInt64))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            // 13% more speed if we write last first, then rest in sequence.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            span[7] = (byte)(value >> (8 * 7));
-//            span[6] = (byte)((value >> (8 * 6)) & 0xFF);
-//            span[5] = (byte)((value >> (8 * 5)) & 0xFF);
-//            span[4] = (byte)((value >> (8 * 4)) & 0xFF);
-//            span[3] = (byte)((value >> (8 * 3)) & 0xFF);
-//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
         }
@@ -4179,12 +3546,12 @@ namespace Tedd {
             if (length == 1)
                 SpanUtils.Write(span, (Byte)value);
             else if (length == 2)
-                SpanUtils.Write(span, (UInt16)((UInt16)value | (0b01 << 14)));
+                SpanUtils.WriteBE(span, (UInt16)((UInt16)value | (0b01 << 14)));
             // Even larger (up to 4,2M) we store length as 3 bytes
             else if (length == 3)
-                SpanUtils.Write(span, (UInt24)((UInt32)value | (0b10 << 22)));
+                SpanUtils.WriteBE(span, (UInt24)((UInt32)value | (0b10 << 22)));
             else if (length == 4)
-                SpanUtils.Write(span, (UInt32)((UInt32)value | (0b11 << 30)));
+                SpanUtils.WriteBE(span, (UInt32)((UInt32)value | (0b11 << 30)));
 
             
             span = span.Slice(length);
@@ -4279,6 +3646,3634 @@ namespace Tedd {
             length = len;
             
             span = span.Slice(length);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteLE( Span<byte>span) => SpanUtils.ReadSByteLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteLE( ReadOnlySpan<byte>span) => SpanUtils.ReadSByteLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteLE(Span<byte> span, out int length) {
+            var ret = (SByte)span[0];
+            length = sizeof(SByte);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteLE(ReadOnlySpan<byte> span, out int length) {
+            var ret = (SByte)span[0];
+            length = sizeof(SByte);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteLE( Span<byte>span) => SpanUtils.ReadByteLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteLE( ReadOnlySpan<byte>span) => SpanUtils.ReadByteLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteLE(Span<byte> span, out int length) {
+            var ret = span[0];
+            length = sizeof(Byte);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteLE(ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0];
+            length = sizeof(Byte);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16LE( Span<byte>span) => SpanUtils.ReadUInt16LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16LE( ReadOnlySpan<byte>span) => SpanUtils.ReadUInt16LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16LE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt16);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16LE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt16);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16LE( Span<byte>span) => SpanUtils.ReadInt16LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16LE( ReadOnlySpan<byte>span) => SpanUtils.ReadInt16LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16LE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int16);
+            
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16LE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int16);
+            
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32LE( Span<byte>span) => SpanUtils.ReadUInt32LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32LE( ReadOnlySpan<byte>span) => SpanUtils.ReadUInt32LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32LE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt32);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32LE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt32);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32LE( Span<byte>span) => SpanUtils.ReadInt32LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32LE( ReadOnlySpan<byte>span) => SpanUtils.ReadInt32LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32LE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int32);
+            
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32LE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int32);
+            
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64LE( Span<byte>span) => SpanUtils.ReadUInt64LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64LE( ReadOnlySpan<byte>span) => SpanUtils.ReadUInt64LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64LE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt64);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64LE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt64);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64LE( Span<byte>span) => SpanUtils.ReadInt64LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64LE( ReadOnlySpan<byte>span) => SpanUtils.ReadInt64LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64LE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int64);
+            
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64LE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int64);
+            
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleLE( Span<byte>span) => SpanUtils.ReadSingleLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleLE( ReadOnlySpan<byte>span) => SpanUtils.ReadSingleLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleLE(Span<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleLE(ReadOnlySpan<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleLE( Span<byte>span) => SpanUtils.ReadDoubleLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleLE( ReadOnlySpan<byte>span) => SpanUtils.ReadDoubleLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleLE(Span<byte> span, out int length) {
+            Span<double> a = stackalloc double[1];
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            span.Slice(0, sizeof(double)).CopyTo(ab);
+            length = sizeof(Double);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleLE(ReadOnlySpan<byte> span, out int length) {
+            Span<double> a = stackalloc double[1];
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            span.Slice(0, sizeof(double)).CopyTo(ab);
+            length = sizeof(Double);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalLE( Span<byte>span) => SpanUtils.ReadDecimalLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalLE( ReadOnlySpan<byte>span) => SpanUtils.ReadDecimalLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalLE(Span<byte> span, out int length) {
+            Span<decimal> a = stackalloc decimal[1];
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            span.Slice(0, sizeof(decimal)).CopyTo(ab);
+            length = sizeof(Decimal);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalLE(ReadOnlySpan<byte> span, out int length) {
+            Span<decimal> a = stackalloc decimal[1];
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            span.Slice(0, sizeof(decimal)).CopyTo(ab);
+            length = sizeof(Decimal);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanLE( Span<byte>span) => SpanUtils.ReadBooleanLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanLE( ReadOnlySpan<byte>span) => SpanUtils.ReadBooleanLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanLE(Span<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanLE(ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharLE( Span<byte>span) => SpanUtils.ReadCharLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharLE( ReadOnlySpan<byte>span) => SpanUtils.ReadCharLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharLE(Span<byte> span, out int length) {
+            Span<char> a = stackalloc char[1];
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            span.Slice(0, sizeof(char)).CopyTo(ab);
+            length = sizeof(Char);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharLE(ReadOnlySpan<byte> span, out int length) {
+            Span<char> a = stackalloc char[1];
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            span.Slice(0, sizeof(char)).CopyTo(ab);
+            length = sizeof(Char);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatLE( Span<byte>span) => SpanUtils.ReadFloatLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatLE( ReadOnlySpan<byte>span) => SpanUtils.ReadFloatLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatLE(Span<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatLE(ReadOnlySpan<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortLE( Span<byte>span) => SpanUtils.ReadShortLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortLE( ReadOnlySpan<byte>span) => SpanUtils.ReadShortLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortLE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int16);
+            
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortLE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int16);
+            
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortLE( Span<byte>span) => SpanUtils.ReadUShortLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortLE( ReadOnlySpan<byte>span) => SpanUtils.ReadUShortLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortLE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt16);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortLE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt16);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntLE( Span<byte>span) => SpanUtils.ReadIntLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntLE( ReadOnlySpan<byte>span) => SpanUtils.ReadIntLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntLE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int32);
+            
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntLE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int32);
+            
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntLE( Span<byte>span) => SpanUtils.ReadUIntLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntLE( ReadOnlySpan<byte>span) => SpanUtils.ReadUIntLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntLE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt32);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntLE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt32);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongLE( Span<byte>span) => SpanUtils.ReadLongLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongLE( ReadOnlySpan<byte>span) => SpanUtils.ReadLongLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongLE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int64);
+            
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongLE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int64);
+            
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongLE( Span<byte>span) => SpanUtils.ReadULongLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongLE( ReadOnlySpan<byte>span) => SpanUtils.ReadULongLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongLE(Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt64);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongLE(ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt64);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolLE( Span<byte>span) => SpanUtils.ReadBoolLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolLE( ReadOnlySpan<byte>span) => SpanUtils.ReadBoolLE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolLE(Span<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolLE(ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24LE( Span<byte>span) => SpanUtils.ReadUInt24LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24LE( ReadOnlySpan<byte>span) => SpanUtils.ReadUInt24LE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24LE(Span<byte> span, out int length) {
+            var ret = (UInt24)(Int32)(
+                  ((UInt32)span[2] << (8 * 2))
+                | ((UInt32)span[1] << (8 * 1))
+                | ((UInt32)span[0])
+                );
+            length = 3;
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24LE(ReadOnlySpan<byte> span, out int length) {
+            var ret = (UInt24)(Int32)(
+                  ((UInt32)span[2] << (8 * 2))
+                | ((UInt32)span[1] << (8 * 1))
+                | ((UInt32)span[0])
+                );
+            length = 3;
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteLE(ref  Span<byte>span) => SpanUtils.MoveReadSByteLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadSByteLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteLE(ref Span<byte> span, out int length) {
+            var ret = (SByte)span[0];
+            length = sizeof(SByte);
+            span = span.Slice(sizeof(SByte));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteLE(ref ReadOnlySpan<byte> span, out int length) {
+            var ret = (SByte)span[0];
+            length = sizeof(SByte);
+            span = span.Slice(sizeof(SByte));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteLE(ref  Span<byte>span) => SpanUtils.MoveReadByteLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadByteLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteLE(ref Span<byte> span, out int length) {
+            var ret = span[0];
+            length = sizeof(Byte);
+            span = span.Slice(sizeof(Byte));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteLE(ref ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0];
+            length = sizeof(Byte);
+            span = span.Slice(sizeof(Byte));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16LE(ref  Span<byte>span) => SpanUtils.MoveReadUInt16LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16LE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt16LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16LE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt16);
+            span = span.Slice(sizeof(UInt16));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16LE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt16);
+            span = span.Slice(sizeof(UInt16));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16LE(ref  Span<byte>span) => SpanUtils.MoveReadInt16LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16LE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt16LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16LE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int16);
+            span = span.Slice(sizeof(Int16));
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16LE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int16);
+            span = span.Slice(sizeof(Int16));
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32LE(ref  Span<byte>span) => SpanUtils.MoveReadUInt32LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32LE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt32LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32LE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt32);
+            span = span.Slice(sizeof(UInt32));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32LE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt32);
+            span = span.Slice(sizeof(UInt32));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32LE(ref  Span<byte>span) => SpanUtils.MoveReadInt32LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32LE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt32LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32LE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int32);
+            span = span.Slice(sizeof(Int32));
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32LE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int32);
+            span = span.Slice(sizeof(Int32));
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64LE(ref  Span<byte>span) => SpanUtils.MoveReadUInt64LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64LE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt64LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64LE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt64);
+            span = span.Slice(sizeof(UInt64));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64LE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt64);
+            span = span.Slice(sizeof(UInt64));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64LE(ref  Span<byte>span) => SpanUtils.MoveReadInt64LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64LE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt64LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64LE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int64);
+            span = span.Slice(sizeof(Int64));
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64LE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int64);
+            span = span.Slice(sizeof(Int64));
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleLE(ref  Span<byte>span) => SpanUtils.MoveReadSingleLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadSingleLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleLE(ref Span<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            span = span.Slice(sizeof(Single));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleLE(ref ReadOnlySpan<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            span = span.Slice(sizeof(Single));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleLE(ref  Span<byte>span) => SpanUtils.MoveReadDoubleLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadDoubleLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleLE(ref Span<byte> span, out int length) {
+            Span<double> a = stackalloc double[1];
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            span.Slice(0, sizeof(double)).CopyTo(ab);
+            length = sizeof(Double);
+            span = span.Slice(sizeof(Double));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleLE(ref ReadOnlySpan<byte> span, out int length) {
+            Span<double> a = stackalloc double[1];
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            span.Slice(0, sizeof(double)).CopyTo(ab);
+            length = sizeof(Double);
+            span = span.Slice(sizeof(Double));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalLE(ref  Span<byte>span) => SpanUtils.MoveReadDecimalLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadDecimalLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalLE(ref Span<byte> span, out int length) {
+            Span<decimal> a = stackalloc decimal[1];
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            span.Slice(0, sizeof(decimal)).CopyTo(ab);
+            length = sizeof(Decimal);
+            span = span.Slice(sizeof(Decimal));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalLE(ref ReadOnlySpan<byte> span, out int length) {
+            Span<decimal> a = stackalloc decimal[1];
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            span.Slice(0, sizeof(decimal)).CopyTo(ab);
+            length = sizeof(Decimal);
+            span = span.Slice(sizeof(Decimal));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanLE(ref  Span<byte>span) => SpanUtils.MoveReadBooleanLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadBooleanLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanLE(ref Span<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            span = span.Slice(sizeof(Boolean));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanLE(ref ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            span = span.Slice(sizeof(Boolean));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharLE(ref  Span<byte>span) => SpanUtils.MoveReadCharLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadCharLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharLE(ref Span<byte> span, out int length) {
+            Span<char> a = stackalloc char[1];
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            span.Slice(0, sizeof(char)).CopyTo(ab);
+            length = sizeof(Char);
+            span = span.Slice(sizeof(Char));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharLE(ref ReadOnlySpan<byte> span, out int length) {
+            Span<char> a = stackalloc char[1];
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            span.Slice(0, sizeof(char)).CopyTo(ab);
+            length = sizeof(Char);
+            span = span.Slice(sizeof(Char));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatLE(ref  Span<byte>span) => SpanUtils.MoveReadFloatLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadFloatLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatLE(ref Span<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            span = span.Slice(sizeof(Single));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatLE(ref ReadOnlySpan<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            span = span.Slice(sizeof(Single));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortLE(ref  Span<byte>span) => SpanUtils.MoveReadShortLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadShortLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortLE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int16);
+            span = span.Slice(sizeof(Int16));
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortLE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int16);
+            span = span.Slice(sizeof(Int16));
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortLE(ref  Span<byte>span) => SpanUtils.MoveReadUShortLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUShortLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortLE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt16);
+            span = span.Slice(sizeof(UInt16));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortLE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt16);
+            span = span.Slice(sizeof(UInt16));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntLE(ref  Span<byte>span) => SpanUtils.MoveReadIntLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadIntLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntLE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int32);
+            span = span.Slice(sizeof(Int32));
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntLE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int32);
+            span = span.Slice(sizeof(Int32));
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntLE(ref  Span<byte>span) => SpanUtils.MoveReadUIntLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUIntLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntLE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt32);
+            span = span.Slice(sizeof(UInt32));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntLE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt32);
+            span = span.Slice(sizeof(UInt32));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongLE(ref  Span<byte>span) => SpanUtils.MoveReadLongLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadLongLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongLE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int64);
+            span = span.Slice(sizeof(Int64));
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongLE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(Int64);
+            span = span.Slice(sizeof(Int64));
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongLE(ref  Span<byte>span) => SpanUtils.MoveReadULongLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadULongLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongLE(ref Span<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt64);
+            span = span.Slice(sizeof(UInt64));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongLE(ref ReadOnlySpan<byte> span, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
+            length = sizeof(UInt64);
+            span = span.Slice(sizeof(UInt64));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolLE(ref  Span<byte>span) => SpanUtils.MoveReadBoolLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolLE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadBoolLE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolLE(ref Span<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            span = span.Slice(sizeof(Boolean));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolLE(ref ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            span = span.Slice(sizeof(Boolean));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24LE(ref  Span<byte>span) => SpanUtils.MoveReadUInt24LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24LE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt24LE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24LE(ref Span<byte> span, out int length) {
+            var ret = (UInt24)(Int32)(
+                  ((UInt32)span[2] << (8 * 2))
+                | ((UInt32)span[1] << (8 * 1))
+                | ((UInt32)span[0])
+                );
+            length = 3;
+            span = span.Slice(3);
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24LE(ref ReadOnlySpan<byte> span, out int length) {
+            var ret = (UInt24)(Int32)(
+                  ((UInt32)span[2] << (8 * 2))
+                | ((UInt32)span[1] << (8 * 1))
+                | ((UInt32)span[0])
+                );
+            length = 3;
+            span = span.Slice(3);
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, SByte value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, SByte value, out int length) {
+        span[0] = (byte)value;
+        length = sizeof(SByte);
+        
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Byte value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Byte value, out int length) {
+        span[0] = value;
+        length = sizeof(Byte);
+        
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, UInt16 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, UInt16 value, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(UInt16);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Int16 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Int16 value, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(Int16);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, UInt32 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, UInt32 value, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(UInt32);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Int32 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Int32 value, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(Int32);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, UInt64 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, UInt64 value, out int length) {
+            if (span.Length < sizeof(UInt64))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(UInt64);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Int64 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Int64 value, out int length) {
+            if (span.Length < sizeof(UInt64))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(Int64);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Single value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Single value, out int length) {
+            Span<float> a = stackalloc float[1] { value };
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Single);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Double value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Double value, out int length) {
+            Span<double> a = stackalloc double[1] { value };
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Double);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Decimal value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Decimal value, out int length) {
+            Span<decimal> a = stackalloc decimal[1] { value };
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Decimal);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Boolean value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Boolean value, out int length) {
+            span[0] = (byte)(value ? 1 : 0);
+            length = sizeof(Boolean);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Char value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, Char value, out int length) {
+            Span<char> a = stackalloc char[1] { value };
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Char);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, UInt24 value) => SpanUtils.WriteLE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteLE(Span<byte>span, UInt24 value, out int length) {
+            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[2] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
+            span[0] = (byte)((Int32)value & 0xFF);
+            span[1] = (byte)(((Int32)value >> (8 * 1)) & 0xFF);
+            length = 3;
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, SByte value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, SByte value, out int length) {
+        span[0] = (byte)value;
+        length = sizeof(SByte);
+        span = span.Slice(sizeof(SByte));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Byte value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Byte value, out int length) {
+        span[0] = value;
+        length = sizeof(Byte);
+        span = span.Slice(sizeof(Byte));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, UInt16 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, UInt16 value, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(UInt16);
+            span = span.Slice(sizeof(UInt16));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Int16 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Int16 value, out int length) {
+            if (span.Length < sizeof(UInt16))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(Int16);
+            span = span.Slice(sizeof(Int16));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, UInt32 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, UInt32 value, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(UInt32);
+            span = span.Slice(sizeof(UInt32));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Int32 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Int32 value, out int length) {
+            if (span.Length < sizeof(UInt32))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(Int32);
+            span = span.Slice(sizeof(Int32));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, UInt64 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, UInt64 value, out int length) {
+            if (span.Length < sizeof(UInt64))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(UInt64);
+            span = span.Slice(sizeof(UInt64));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Int64 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Int64 value, out int length) {
+            if (span.Length < sizeof(UInt64))
+                throw new ArgumentOutOfRangeException();
+            Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
+            length = sizeof(Int64);
+            span = span.Slice(sizeof(Int64));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Single value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Single value, out int length) {
+            Span<float> a = stackalloc float[1] { value };
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Single);
+            span = span.Slice(sizeof(Single));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Double value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Double value, out int length) {
+            Span<double> a = stackalloc double[1] { value };
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Double);
+            span = span.Slice(sizeof(Double));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Decimal value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Decimal value, out int length) {
+            Span<decimal> a = stackalloc decimal[1] { value };
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Decimal);
+            span = span.Slice(sizeof(Decimal));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Boolean value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Boolean value, out int length) {
+            span[0] = (byte)(value ? 1 : 0);
+            length = sizeof(Boolean);
+            span = span.Slice(sizeof(Boolean));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Char value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, Char value, out int length) {
+            Span<char> a = stackalloc char[1] { value };
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Char);
+            span = span.Slice(sizeof(Char));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, UInt24 value) => SpanUtils.MoveWriteLE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteLE(ref Span<byte>span, UInt24 value, out int length) {
+            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[2] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
+            span[0] = (byte)((Int32)value & 0xFF);
+            span[1] = (byte)(((Int32)value >> (8 * 1)) & 0xFF);
+            length = 3;
+            span = span.Slice(3);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteBE( Span<byte>span) => SpanUtils.ReadSByteBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteBE( ReadOnlySpan<byte>span) => SpanUtils.ReadSByteBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteBE(Span<byte> span, out int length) {
+            var ret = (SByte)span[0];
+            length = sizeof(SByte);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte ReadSByteBE(ReadOnlySpan<byte> span, out int length) {
+            var ret = (SByte)span[0];
+            length = sizeof(SByte);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteBE( Span<byte>span) => SpanUtils.ReadByteBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteBE( ReadOnlySpan<byte>span) => SpanUtils.ReadByteBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteBE(Span<byte> span, out int length) {
+            var ret = span[0];
+            length = sizeof(Byte);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ReadByteBE(ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0];
+            length = sizeof(Byte);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16BE( Span<byte>span) => SpanUtils.ReadUInt16BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16BE( ReadOnlySpan<byte>span) => SpanUtils.ReadUInt16BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16BE(Span<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(UInt16);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUInt16BE(ReadOnlySpan<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(UInt16);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16BE( Span<byte>span) => SpanUtils.ReadInt16BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16BE( ReadOnlySpan<byte>span) => SpanUtils.ReadInt16BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16BE(Span<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(Int16);
+            
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadInt16BE(ReadOnlySpan<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(Int16);
+            
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32BE( Span<byte>span) => SpanUtils.ReadUInt32BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32BE( ReadOnlySpan<byte>span) => SpanUtils.ReadUInt32BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32BE(Span<byte> span, out int length) {
+            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(UInt32);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUInt32BE(ReadOnlySpan<byte> span, out int length) {
+            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(UInt32);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32BE( Span<byte>span) => SpanUtils.ReadInt32BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32BE( ReadOnlySpan<byte>span) => SpanUtils.ReadInt32BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32BE(Span<byte> span, out int length) {
+            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(Int32);
+            
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadInt32BE(ReadOnlySpan<byte> span, out int length) {
+            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(Int32);
+            
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64BE( Span<byte>span) => SpanUtils.ReadUInt64BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64BE( ReadOnlySpan<byte>span) => SpanUtils.ReadUInt64BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64BE(Span<byte> span, out int length) {
+            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(UInt64);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadUInt64BE(ReadOnlySpan<byte> span, out int length) {
+            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(UInt64);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64BE( Span<byte>span) => SpanUtils.ReadInt64BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64BE( ReadOnlySpan<byte>span) => SpanUtils.ReadInt64BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64BE(Span<byte> span, out int length) {
+            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(Int64);
+            
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadInt64BE(ReadOnlySpan<byte> span, out int length) {
+            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(Int64);
+            
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleBE( Span<byte>span) => SpanUtils.ReadSingleBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleBE( ReadOnlySpan<byte>span) => SpanUtils.ReadSingleBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleBE(Span<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadSingleBE(ReadOnlySpan<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleBE( Span<byte>span) => SpanUtils.ReadDoubleBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleBE( ReadOnlySpan<byte>span) => SpanUtils.ReadDoubleBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleBE(Span<byte> span, out int length) {
+            Span<double> a = stackalloc double[1];
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            span.Slice(0, sizeof(double)).CopyTo(ab);
+            length = sizeof(Double);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double ReadDoubleBE(ReadOnlySpan<byte> span, out int length) {
+            Span<double> a = stackalloc double[1];
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            span.Slice(0, sizeof(double)).CopyTo(ab);
+            length = sizeof(Double);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalBE( Span<byte>span) => SpanUtils.ReadDecimalBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalBE( ReadOnlySpan<byte>span) => SpanUtils.ReadDecimalBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalBE(Span<byte> span, out int length) {
+            Span<decimal> a = stackalloc decimal[1];
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            span.Slice(0, sizeof(decimal)).CopyTo(ab);
+            length = sizeof(Decimal);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal ReadDecimalBE(ReadOnlySpan<byte> span, out int length) {
+            Span<decimal> a = stackalloc decimal[1];
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            span.Slice(0, sizeof(decimal)).CopyTo(ab);
+            length = sizeof(Decimal);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanBE( Span<byte>span) => SpanUtils.ReadBooleanBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanBE( ReadOnlySpan<byte>span) => SpanUtils.ReadBooleanBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanBE(Span<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBooleanBE(ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharBE( Span<byte>span) => SpanUtils.ReadCharBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharBE( ReadOnlySpan<byte>span) => SpanUtils.ReadCharBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharBE(Span<byte> span, out int length) {
+            Span<char> a = stackalloc char[1];
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            span.Slice(0, sizeof(char)).CopyTo(ab);
+            length = sizeof(Char);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char ReadCharBE(ReadOnlySpan<byte> span, out int length) {
+            Span<char> a = stackalloc char[1];
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            span.Slice(0, sizeof(char)).CopyTo(ab);
+            length = sizeof(Char);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatBE( Span<byte>span) => SpanUtils.ReadFloatBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatBE( ReadOnlySpan<byte>span) => SpanUtils.ReadFloatBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatBE(Span<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ReadFloatBE(ReadOnlySpan<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortBE( Span<byte>span) => SpanUtils.ReadShortBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortBE( ReadOnlySpan<byte>span) => SpanUtils.ReadShortBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortBE(Span<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(Int16);
+            
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 ReadShortBE(ReadOnlySpan<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(Int16);
+            
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortBE( Span<byte>span) => SpanUtils.ReadUShortBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortBE( ReadOnlySpan<byte>span) => SpanUtils.ReadUShortBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortBE(Span<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(UInt16);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 ReadUShortBE(ReadOnlySpan<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(UInt16);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntBE( Span<byte>span) => SpanUtils.ReadIntBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntBE( ReadOnlySpan<byte>span) => SpanUtils.ReadIntBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntBE(Span<byte> span, out int length) {
+            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(Int32);
+            
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 ReadIntBE(ReadOnlySpan<byte> span, out int length) {
+            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(Int32);
+            
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntBE( Span<byte>span) => SpanUtils.ReadUIntBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntBE( ReadOnlySpan<byte>span) => SpanUtils.ReadUIntBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntBE(Span<byte> span, out int length) {
+            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(UInt32);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 ReadUIntBE(ReadOnlySpan<byte> span, out int length) {
+            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(UInt32);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongBE( Span<byte>span) => SpanUtils.ReadLongBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongBE( ReadOnlySpan<byte>span) => SpanUtils.ReadLongBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongBE(Span<byte> span, out int length) {
+            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(Int64);
+            
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 ReadLongBE(ReadOnlySpan<byte> span, out int length) {
+            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(Int64);
+            
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongBE( Span<byte>span) => SpanUtils.ReadULongBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongBE( ReadOnlySpan<byte>span) => SpanUtils.ReadULongBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongBE(Span<byte> span, out int length) {
+            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(UInt64);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 ReadULongBE(ReadOnlySpan<byte> span, out int length) {
+            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(UInt64);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolBE( Span<byte>span) => SpanUtils.ReadBoolBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolBE( ReadOnlySpan<byte>span) => SpanUtils.ReadBoolBE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolBE(Span<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean ReadBoolBE(ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24BE( Span<byte>span) => SpanUtils.ReadUInt24BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24BE( ReadOnlySpan<byte>span) => SpanUtils.ReadUInt24BE(span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24BE(Span<byte> span, out int length) {
+            var ret = (UInt24)(Int32)(
+                  ((UInt32)span[2])
+                | ((UInt32)span[1] << (8 * 1))
+                | ((UInt32)span[0] << (8 * 2))
+                );
+            length = 3;
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 ReadUInt24BE(ReadOnlySpan<byte> span, out int length) {
+            var ret = (UInt24)(Int32)(
+                  ((UInt32)span[2])
+                | ((UInt32)span[1] << (8 * 1))
+                | ((UInt32)span[0] << (8 * 2))
+                );
+            length = 3;
+            
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteBE(ref  Span<byte>span) => SpanUtils.MoveReadSByteBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadSByteBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteBE(ref Span<byte> span, out int length) {
+            var ret = (SByte)span[0];
+            length = sizeof(SByte);
+            span = span.Slice(sizeof(SByte));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SByte MoveReadSByteBE(ref ReadOnlySpan<byte> span, out int length) {
+            var ret = (SByte)span[0];
+            length = sizeof(SByte);
+            span = span.Slice(sizeof(SByte));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteBE(ref  Span<byte>span) => SpanUtils.MoveReadByteBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadByteBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteBE(ref Span<byte> span, out int length) {
+            var ret = span[0];
+            length = sizeof(Byte);
+            span = span.Slice(sizeof(Byte));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte MoveReadByteBE(ref ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0];
+            length = sizeof(Byte);
+            span = span.Slice(sizeof(Byte));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16BE(ref  Span<byte>span) => SpanUtils.MoveReadUInt16BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16BE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt16BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16BE(ref Span<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(UInt16);
+            span = span.Slice(sizeof(UInt16));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUInt16BE(ref ReadOnlySpan<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(UInt16);
+            span = span.Slice(sizeof(UInt16));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16BE(ref  Span<byte>span) => SpanUtils.MoveReadInt16BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16BE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt16BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16BE(ref Span<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(Int16);
+            span = span.Slice(sizeof(Int16));
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadInt16BE(ref ReadOnlySpan<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(Int16);
+            span = span.Slice(sizeof(Int16));
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32BE(ref  Span<byte>span) => SpanUtils.MoveReadUInt32BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32BE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt32BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32BE(ref Span<byte> span, out int length) {
+            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(UInt32);
+            span = span.Slice(sizeof(UInt32));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUInt32BE(ref ReadOnlySpan<byte> span, out int length) {
+            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(UInt32);
+            span = span.Slice(sizeof(UInt32));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32BE(ref  Span<byte>span) => SpanUtils.MoveReadInt32BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32BE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt32BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32BE(ref Span<byte> span, out int length) {
+            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(Int32);
+            span = span.Slice(sizeof(Int32));
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadInt32BE(ref ReadOnlySpan<byte> span, out int length) {
+            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(Int32);
+            span = span.Slice(sizeof(Int32));
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64BE(ref  Span<byte>span) => SpanUtils.MoveReadUInt64BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64BE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt64BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64BE(ref Span<byte> span, out int length) {
+            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(UInt64);
+            span = span.Slice(sizeof(UInt64));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadUInt64BE(ref ReadOnlySpan<byte> span, out int length) {
+            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(UInt64);
+            span = span.Slice(sizeof(UInt64));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64BE(ref  Span<byte>span) => SpanUtils.MoveReadInt64BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64BE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadInt64BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64BE(ref Span<byte> span, out int length) {
+            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(Int64);
+            span = span.Slice(sizeof(Int64));
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadInt64BE(ref ReadOnlySpan<byte> span, out int length) {
+            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(Int64);
+            span = span.Slice(sizeof(Int64));
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleBE(ref  Span<byte>span) => SpanUtils.MoveReadSingleBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadSingleBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleBE(ref Span<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            span = span.Slice(sizeof(Single));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadSingleBE(ref ReadOnlySpan<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            span = span.Slice(sizeof(Single));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleBE(ref  Span<byte>span) => SpanUtils.MoveReadDoubleBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadDoubleBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleBE(ref Span<byte> span, out int length) {
+            Span<double> a = stackalloc double[1];
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            span.Slice(0, sizeof(double)).CopyTo(ab);
+            length = sizeof(Double);
+            span = span.Slice(sizeof(Double));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Double MoveReadDoubleBE(ref ReadOnlySpan<byte> span, out int length) {
+            Span<double> a = stackalloc double[1];
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            span.Slice(0, sizeof(double)).CopyTo(ab);
+            length = sizeof(Double);
+            span = span.Slice(sizeof(Double));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalBE(ref  Span<byte>span) => SpanUtils.MoveReadDecimalBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadDecimalBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalBE(ref Span<byte> span, out int length) {
+            Span<decimal> a = stackalloc decimal[1];
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            span.Slice(0, sizeof(decimal)).CopyTo(ab);
+            length = sizeof(Decimal);
+            span = span.Slice(sizeof(Decimal));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Decimal MoveReadDecimalBE(ref ReadOnlySpan<byte> span, out int length) {
+            Span<decimal> a = stackalloc decimal[1];
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            span.Slice(0, sizeof(decimal)).CopyTo(ab);
+            length = sizeof(Decimal);
+            span = span.Slice(sizeof(Decimal));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanBE(ref  Span<byte>span) => SpanUtils.MoveReadBooleanBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadBooleanBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanBE(ref Span<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            span = span.Slice(sizeof(Boolean));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBooleanBE(ref ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            span = span.Slice(sizeof(Boolean));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharBE(ref  Span<byte>span) => SpanUtils.MoveReadCharBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadCharBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharBE(ref Span<byte> span, out int length) {
+            Span<char> a = stackalloc char[1];
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            span.Slice(0, sizeof(char)).CopyTo(ab);
+            length = sizeof(Char);
+            span = span.Slice(sizeof(Char));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Char MoveReadCharBE(ref ReadOnlySpan<byte> span, out int length) {
+            Span<char> a = stackalloc char[1];
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            span.Slice(0, sizeof(char)).CopyTo(ab);
+            length = sizeof(Char);
+            span = span.Slice(sizeof(Char));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatBE(ref  Span<byte>span) => SpanUtils.MoveReadFloatBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadFloatBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatBE(ref Span<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            span = span.Slice(sizeof(Single));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single MoveReadFloatBE(ref ReadOnlySpan<byte> span, out int length) {
+            Span<float> a = stackalloc float[1];
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            span.Slice(0, sizeof(float)).CopyTo(ab);
+            length = sizeof(Single);
+            span = span.Slice(sizeof(Single));
+            return a[0];
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortBE(ref  Span<byte>span) => SpanUtils.MoveReadShortBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadShortBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortBE(ref Span<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(Int16);
+            span = span.Slice(sizeof(Int16));
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int16 MoveReadShortBE(ref ReadOnlySpan<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(Int16);
+            span = span.Slice(sizeof(Int16));
+            return (Int16)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortBE(ref  Span<byte>span) => SpanUtils.MoveReadUShortBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUShortBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortBE(ref Span<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(UInt16);
+            span = span.Slice(sizeof(UInt16));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt16 MoveReadUShortBE(ref ReadOnlySpan<byte> span, out int length) {
+           var ret = (UInt16)(
+                  ((UInt16)span[0] << (8 * 1))
+                | ((UInt16)span[1])
+                );
+            length = sizeof(UInt16);
+            span = span.Slice(sizeof(UInt16));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntBE(ref  Span<byte>span) => SpanUtils.MoveReadIntBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadIntBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntBE(ref Span<byte> span, out int length) {
+            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(Int32);
+            span = span.Slice(sizeof(Int32));
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32 MoveReadIntBE(ref ReadOnlySpan<byte> span, out int length) {
+            // return (Int32)MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(Int32);
+            span = span.Slice(sizeof(Int32));
+            return (Int32)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntBE(ref  Span<byte>span) => SpanUtils.MoveReadUIntBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUIntBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntBE(ref Span<byte> span, out int length) {
+            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(UInt32);
+            span = span.Slice(sizeof(UInt32));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt32 MoveReadUIntBE(ref ReadOnlySpan<byte> span, out int length) {
+            // return MemoryMarshal.Cast<byte, UInt32>(span)[0];
+            var ret = (UInt32)(
+                  ((UInt32)span[3])
+                | ((UInt32)span[2] << (8 * 1))
+                | ((UInt32)span[1] << (8 * 2))
+                | ((UInt32)span[0] << (8 * 3))
+                );
+            length = sizeof(UInt32);
+            span = span.Slice(sizeof(UInt32));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongBE(ref  Span<byte>span) => SpanUtils.MoveReadLongBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadLongBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongBE(ref Span<byte> span, out int length) {
+            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(Int64);
+            span = span.Slice(sizeof(Int64));
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int64 MoveReadLongBE(ref ReadOnlySpan<byte> span, out int length) {
+            //return (Int64)MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(Int64);
+            span = span.Slice(sizeof(Int64));
+            return (Int64)ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongBE(ref  Span<byte>span) => SpanUtils.MoveReadULongBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadULongBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongBE(ref Span<byte> span, out int length) {
+            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(UInt64);
+            span = span.Slice(sizeof(UInt64));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt64 MoveReadULongBE(ref ReadOnlySpan<byte> span, out int length) {
+            //return MemoryMarshal.Cast<byte, UInt64>(span)[0];
+            // 16% more speed if we read in reverse order due to removal of redundant compiler checks.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            var ret = (UInt64)(
+                  ((UInt64)span[7])
+                | ((UInt64)span[6] << (8 * 1))
+                | ((UInt64)span[5] << (8 * 2))
+                | ((UInt64)span[4] << (8 * 3))
+                | ((UInt64)span[3] << (8 * 4))
+                | ((UInt64)span[2] << (8 * 5))
+                | ((UInt64)span[1] << (8 * 6))
+                | ((UInt64)span[0] << (8 * 7))
+                );
+            length = sizeof(UInt64);
+            span = span.Slice(sizeof(UInt64));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolBE(ref  Span<byte>span) => SpanUtils.MoveReadBoolBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolBE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadBoolBE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolBE(ref Span<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            span = span.Slice(sizeof(Boolean));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean MoveReadBoolBE(ref ReadOnlySpan<byte> span, out int length) {
+            var ret = span[0] != 0;
+            length = sizeof(Boolean);
+            span = span.Slice(sizeof(Boolean));
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24BE(ref  Span<byte>span) => SpanUtils.MoveReadUInt24BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24BE(ref  ReadOnlySpan<byte>span) => SpanUtils.MoveReadUInt24BE(ref span, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24BE(ref Span<byte> span, out int length) {
+            var ret = (UInt24)(Int32)(
+                  ((UInt32)span[2])
+                | ((UInt32)span[1] << (8 * 1))
+                | ((UInt32)span[0] << (8 * 2))
+                );
+            length = 3;
+            span = span.Slice(3);
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UInt24 MoveReadUInt24BE(ref ReadOnlySpan<byte> span, out int length) {
+            var ret = (UInt24)(Int32)(
+                  ((UInt32)span[2])
+                | ((UInt32)span[1] << (8 * 1))
+                | ((UInt32)span[0] << (8 * 2))
+                );
+            length = 3;
+            span = span.Slice(3);
+            return ret;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, SByte value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, SByte value, out int length) {
+        span[0] = (byte)value;
+        length = sizeof(SByte);
+        
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Byte value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Byte value, out int length) {
+        span[0] = value;
+        length = sizeof(Byte);
+        
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, UInt16 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, UInt16 value, out int length) {
+            span[1] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 1));
+            length = sizeof(UInt16);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Int16 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Int16 value, out int length) {
+            span[1] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 1));
+            length = sizeof(Int16);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, UInt32 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, UInt32 value, out int length) {
+            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[3] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 3));
+            span[1] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 1)) & 0xFF);
+            length = sizeof(UInt32);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Int32 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Int32 value, out int length) {
+            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[3] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 3));
+            span[1] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 1)) & 0xFF);
+            length = sizeof(Int32);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, UInt64 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, UInt64 value, out int length) {
+            // 13% more speed if we write last first, then rest in sequence.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            span[7] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 7));
+            span[1] = (byte)((value >> (8 * 6)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 5)) & 0xFF);
+            span[3] = (byte)((value >> (8 * 4)) & 0xFF);
+            span[4] = (byte)((value >> (8 * 3)) & 0xFF);
+            span[5] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[6] = (byte)((value >> (8 * 1)) & 0xFF);
+            length = sizeof(UInt64);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Int64 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Int64 value, out int length) {
+            // 13% more speed if we write last first, then rest in sequence.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            span[7] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 7));
+            span[1] = (byte)((value >> (8 * 6)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 5)) & 0xFF);
+            span[3] = (byte)((value >> (8 * 4)) & 0xFF);
+            span[4] = (byte)((value >> (8 * 3)) & 0xFF);
+            span[5] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[6] = (byte)((value >> (8 * 1)) & 0xFF);
+            length = sizeof(Int64);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Single value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Single value, out int length) {
+            Span<float> a = stackalloc float[1] { value };
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Single);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Double value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Double value, out int length) {
+            Span<double> a = stackalloc double[1] { value };
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Double);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Decimal value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Decimal value, out int length) {
+            Span<decimal> a = stackalloc decimal[1] { value };
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Decimal);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Boolean value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Boolean value, out int length) {
+            span[0] = (byte)(value ? 1 : 0);
+            length = sizeof(Boolean);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Char value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, Char value, out int length) {
+            Span<char> a = stackalloc char[1] { value };
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Char);
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, UInt24 value) => SpanUtils.WriteBE(span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBE(Span<byte>span, UInt24 value, out int length) {
+            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[2] = (byte)((Int32)value & 0xFF);
+            span[0] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
+            span[1] = (byte)(((Int32)value >> (8 * 1)) & 0xFF);
+            length = 3;
+            
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, SByte value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, SByte value, out int length) {
+        span[0] = (byte)value;
+        length = sizeof(SByte);
+        span = span.Slice(sizeof(SByte));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Byte value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Byte value, out int length) {
+        span[0] = value;
+        length = sizeof(Byte);
+        span = span.Slice(sizeof(Byte));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, UInt16 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, UInt16 value, out int length) {
+            span[1] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 1));
+            length = sizeof(UInt16);
+            span = span.Slice(sizeof(UInt16));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Int16 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Int16 value, out int length) {
+            span[1] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 1));
+            length = sizeof(Int16);
+            span = span.Slice(sizeof(Int16));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, UInt32 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, UInt32 value, out int length) {
+            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[3] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 3));
+            span[1] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 1)) & 0xFF);
+            length = sizeof(UInt32);
+            span = span.Slice(sizeof(UInt32));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Int32 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Int32 value, out int length) {
+            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[3] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 3));
+            span[1] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 1)) & 0xFF);
+            length = sizeof(Int32);
+            span = span.Slice(sizeof(Int32));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, UInt64 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, UInt64 value, out int length) {
+            // 13% more speed if we write last first, then rest in sequence.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            span[7] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 7));
+            span[1] = (byte)((value >> (8 * 6)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 5)) & 0xFF);
+            span[3] = (byte)((value >> (8 * 4)) & 0xFF);
+            span[4] = (byte)((value >> (8 * 3)) & 0xFF);
+            span[5] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[6] = (byte)((value >> (8 * 1)) & 0xFF);
+            length = sizeof(UInt64);
+            span = span.Slice(sizeof(UInt64));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Int64 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Int64 value, out int length) {
+            // 13% more speed if we write last first, then rest in sequence.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            span[7] = (byte)(value & 0xFF);
+            span[0] = (byte)(value >> (8 * 7));
+            span[1] = (byte)((value >> (8 * 6)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 5)) & 0xFF);
+            span[3] = (byte)((value >> (8 * 4)) & 0xFF);
+            span[4] = (byte)((value >> (8 * 3)) & 0xFF);
+            span[5] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[6] = (byte)((value >> (8 * 1)) & 0xFF);
+            length = sizeof(Int64);
+            span = span.Slice(sizeof(Int64));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Single value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Single value, out int length) {
+            Span<float> a = stackalloc float[1] { value };
+            var ab = MemoryMarshal.Cast<float, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Single);
+            span = span.Slice(sizeof(Single));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Double value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Double value, out int length) {
+            Span<double> a = stackalloc double[1] { value };
+            var ab = MemoryMarshal.Cast<double, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Double);
+            span = span.Slice(sizeof(Double));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Decimal value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Decimal value, out int length) {
+            Span<decimal> a = stackalloc decimal[1] { value };
+            var ab = MemoryMarshal.Cast<decimal, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Decimal);
+            span = span.Slice(sizeof(Decimal));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Boolean value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Boolean value, out int length) {
+            span[0] = (byte)(value ? 1 : 0);
+            length = sizeof(Boolean);
+            span = span.Slice(sizeof(Boolean));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Char value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, Char value, out int length) {
+            Span<char> a = stackalloc char[1] { value };
+            var ab = MemoryMarshal.Cast<char, byte>(a);
+            ab.CopyTo(span);
+            length = sizeof(Char);
+            span = span.Slice(sizeof(Char));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, UInt24 value) => SpanUtils.MoveWriteBE(ref span, value, out _);
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveWriteBE(ref Span<byte>span, UInt24 value, out int length) {
+            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[2] = (byte)((Int32)value & 0xFF);
+            span[0] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
+            span[1] = (byte)(((Int32)value >> (8 * 1)) & 0xFF);
+            length = 3;
+            span = span.Slice(3);
         }
 
     }
