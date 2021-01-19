@@ -6,10 +6,20 @@ using System.Reflection.Metadata;
 
 namespace Tedd.SpanUtils.SourceGenerator
 {
+    [Flags]
+    public enum Endianness
+    {
+        None = 0,
+        Default = 1,
+        LE = 2,
+        BE = 4,
+        All = Default | LE | BE
+    }
+
     public static partial class CodeGenBodies
     {
         public static List<MethodData> DataStructures = new();
-        
+
         public static void Initialize()
         {
             // Add generator info for all primitives
@@ -54,7 +64,8 @@ namespace Tedd.SpanUtils.SourceGenerator
                     Type = t,
                     ReadBody = GetMethod($"ReadVLQ{t.Name}"),
                     WriteBody = GetMethod($"WriteVLQ{t.Name}"),
-                    Size = $"length"
+                    Size = $"length",
+                    Endian = Endianness.Default
                 });
             }
 
@@ -76,7 +87,8 @@ namespace Tedd.SpanUtils.SourceGenerator
                 TypeString = "UInt24",
                 ReadBody = GetMethod($"ReadVLQUInt24"),
                 WriteBody = GetMethod($"WriteVLQUInt24"),
-                Size = $"length"
+                Size = $"length",
+                Endian = Endianness.Default
             });
             DataStructures.Add(new MethodData()
             {
@@ -84,7 +96,8 @@ namespace Tedd.SpanUtils.SourceGenerator
                 Type = typeof(Guid),
                 ReadBody = GetMethod($"ReadGuid"),
                 WriteBody = GetMethod($"WriteGuid"),
-                Size = "16"
+                Size = "16",
+                Endian = Endianness.Default
             });
             DataStructures.Add(new MethodData()
             {
@@ -95,8 +108,9 @@ namespace Tedd.SpanUtils.SourceGenerator
                 ExtraReadParamsDef = "int length",
                 ExtraReadParams = "length",
                 Size = "length",
-                NoLengthParam = true
-            });   
+                NoLengthParam = true,
+                Endian = Endianness.Default
+            });
             DataStructures.Add(new MethodData()
             {
                 Name = $"Span",
@@ -106,8 +120,9 @@ namespace Tedd.SpanUtils.SourceGenerator
                 ExtraReadParamsDef = "int length",
                 ExtraReadParams = "length",
                 Size = "length",
-                NoLengthParam = true
-            });            
+                NoLengthParam = true,
+                Endian = Endianness.Default
+            });
             DataStructures.Add(new MethodData()
             {
                 Name = $"ReadOnlySpan",
@@ -117,7 +132,8 @@ namespace Tedd.SpanUtils.SourceGenerator
                 ExtraReadParamsDef = "int length",
                 ExtraReadParams = "length",
                 Size = "length",
-                NoLengthParam = true
+                NoLengthParam = true,
+                Endian = Endianness.Default
             });
             DataStructures.Add(new MethodData()
             {
@@ -127,7 +143,8 @@ namespace Tedd.SpanUtils.SourceGenerator
                 Type = typeof(UInt32),
                 ReadBody = GetMethod($"ReadSize"),
                 WriteBody = GetMethod($"WriteSize"),
-                Size = "length"
+                Size = "length",
+                Endian = Endianness.Default
             });
             DataStructures.Add(new MethodData()
             {
@@ -137,7 +154,8 @@ namespace Tedd.SpanUtils.SourceGenerator
                 Type = typeof(byte[]),
                 ReadBody = GetMethod($"ReadSizedBytes"),
                 WriteBody = GetMethod($"WriteSizedBytes"),
-                Size = "length"
+                Size = "length",
+                Endian = Endianness.Default
             });
             DataStructures.Add(new MethodData()
             {
@@ -147,31 +165,34 @@ namespace Tedd.SpanUtils.SourceGenerator
                 Type = typeof(string),
                 ReadBody = GetMethod($"ReadSizedString"),
                 WriteBody = GetMethod($"WriteSizedString"),
-                Size = "length"
-            });  
+                Size = "length",
+                Endian = Endianness.Default
+            });
             DataStructures.Add(new MethodData()
             {
                 Name = $"SizedSpan",
-                RW= MethodRW.WriteOnly,
+                RW = MethodRW.WriteOnly,
                 WriteName = $"Sized",
-                TypeString="Span<byte>",
+                TypeString = "Span<byte>",
                 //WriteNameOnly = false,
                 //Type = typeof(string),
                 //ReadBody = GetMethod($"ReadSizedSpan"),
                 WriteBody = GetMethod($"WriteSizedSpan"),
-                Size = "length"
+                Size = "length",
+                Endian = Endianness.Default
             });
             DataStructures.Add(new MethodData()
             {
                 Name = $"SizedReadOnlySpan",
-                RW= MethodRW.WriteOnly,
+                RW = MethodRW.WriteOnly,
                 WriteName = $"Sized",
-                TypeString="ReadOnlySpan<byte>",
+                TypeString = "ReadOnlySpan<byte>",
                 //WriteNameOnly = false,
                 //Type = typeof(string),
                 //ReadBody = GetMethod($"ReadSizedSpan"),
                 WriteBody = GetMethod($"WriteSizedSpan"),
-                Size = "length"
+                Size = "length",
+                Endian = Endianness.Default
             });
         }
 
@@ -204,6 +225,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             typeof(UInt32), typeof(Int32),
             typeof(UInt64), typeof(Int64)
         };
+
         public static Dictionary<string, Type> Aliases = new()
         {
             { "Float", typeof(float) },
@@ -224,5 +246,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Data;
 ";
+
+        public static string EndiannessToMethodExtension(Endianness e) => e switch
+        {
+            Endianness.BE => "BE",
+            Endianness.LE => "LE",
+            _ => ""
+        };
     }
 }

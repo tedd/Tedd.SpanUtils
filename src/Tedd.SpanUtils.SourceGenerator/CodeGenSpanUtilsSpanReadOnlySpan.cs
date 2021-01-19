@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Tedd.SpanUtils.SourceGenerator
 {
-    public static class CodeGenSpanReadOnlySpan
+    public static class CodeGenSpanUtilsSpanReadOnlySpan
     {
         public static void GenerateSpanMethods(string className, string dir)
         {
@@ -13,14 +14,16 @@ namespace Tedd.SpanUtils.SourceGenerator
             extensions.AppendLine("");
 
 
-            var le = true;
+            //var le = Endianness.Default;
+            foreach (var le in new Endianness[] {Endianness.Default, Endianness.LE, Endianness.BE}) {
 
-            // Read
-            GenerateReadMethods(le, methods, extensions, false);
-            GenerateReadMethods(le, methods, extensions, true);
-            // Write
-            GenerateWriteMethods(le, methods, extensions, false);
-            GenerateWriteMethods(le, methods, extensions, true);
+                // Read
+                GenerateReadMethods(le, methods, extensions, false);
+                GenerateReadMethods(le, methods, extensions, true);
+                // Write
+                GenerateWriteMethods(le, methods, extensions, false);
+                GenerateWriteMethods(le, methods, extensions, true);
+            }
             var class1 = Helper.CreateClass(true, className, methods.ToString(), @"");
             var class2 = Helper.CreateClass(true, className + "ExtensionMethods", extensions.ToString(), @"");
             var file = Helper.CreateNamespace("Tedd", class1 + "\r\n\r\n" + class2, CodeGenBodies.usings);
@@ -30,7 +33,7 @@ namespace Tedd.SpanUtils.SourceGenerator
                 Helper.CreateNamespace("Tedd", class2, CodeGenBodies.usings));
         }
 
-        private static void GenerateReadMethods(bool le, StringBuilder methods, StringBuilder extensions, bool move)
+        private static void GenerateReadMethods(Endianness le, StringBuilder methods, StringBuilder extensions, bool move)
         {
             string CreateBody(string body, MethodData ds, string len, string move)
             {
@@ -44,7 +47,7 @@ namespace Tedd.SpanUtils.SourceGenerator
                 return b;
             }
 
-            if (move)
+            if (move && le == Endianness.Default)
             {
                 Helper.Method(extensions, true, "void", "Move", "ref this Span<byte> span, int length", "span = span.Slice(length);", "");
                 Helper.Method(extensions, true, "void", "Move", "ref this ReadOnlySpan<byte> span, int length", "span = span.Slice(length);", "");
@@ -53,9 +56,11 @@ namespace Tedd.SpanUtils.SourceGenerator
             }
 
             // Since extension methods causes defensive copying we duplicate the code instead of forming a chain.
-            string methodName(string t) => (move ? "Move" : "") + $"Read{t}" + (!le ? "BE" : "");
+            string methodName(string t) => (move ? "Move" : "") + $"Read{t}" + CodeGenBodies.EndiannessToMethodExtension(le);
             foreach (var ds in CodeGenBodies.DataStructures)
             {
+                if (!ds.Endian.HasFlag(le))
+                    continue;
                 if (ds.RW == MethodRW.WriteOnly)
                     continue;
 
@@ -122,7 +127,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             }
 
         }
-        private static void GenerateWriteMethods(bool le, StringBuilder methods, StringBuilder extensions, bool move)
+        private static void GenerateWriteMethods(Endianness le, StringBuilder methods, StringBuilder extensions, bool move)
         {
             string CreateBody(string body, MethodData ds, string len, string move)
             {
@@ -137,9 +142,11 @@ namespace Tedd.SpanUtils.SourceGenerator
             }
 
             // Since extension methods causes defensive copying we duplicate the code instead of forming a chain.
-            string methodName(string t) => (move ? "Move" : "") + $"Write{t}" + (!le ? "BE" : "");
+            string methodName(string t) => (move ? "Move" : "") + $"Write{t}" + CodeGenBodies.EndiannessToMethodExtension(le);
             foreach (var ds in CodeGenBodies.DataStructures)
             {
+                if (!ds.Endian.HasFlag(le))
+                    continue;
                 // We skip aliases
                 if (ds.IsAlias || ds.RW == MethodRW.ReadOnly)
                     continue;

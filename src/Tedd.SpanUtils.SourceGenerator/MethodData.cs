@@ -23,6 +23,8 @@ namespace Tedd.SpanUtils.SourceGenerator
             set => _typeString = value;
         }
 
+        public Endianness Endian = Endianness.All;
+      
         public string WriteName;
 
         //public bool WriteNameOnly=true;
@@ -34,8 +36,28 @@ namespace Tedd.SpanUtils.SourceGenerator
         public MethodRW RW = MethodRW.Both;
         public bool IsAlias=false;
 
-        public string GetReadBody(bool le) => (string)ReadBody.Invoke(null, new object[] { le });
-        public string GetWriteBody(bool le) => (string)WriteBody.Invoke(null, new object[] { le });
+        public string GetReadBody(Endianness le)
+        {
+#if BIGENDIAN
+            if (le == Endianness.BE)
+                le = Endianness.Default;
+#else
+            if (le == Endianness.LE)
+                le = Endianness.Default;
+#endif
+            return (string) ReadBody.Invoke(null, new object[] {le});
+        }
 
+        public string GetWriteBody(Endianness le)
+        {
+#if BIGENDIAN
+            if (le == Endianness.BE)
+                le = Endianness.Default;
+#else
+            if (le == Endianness.LE)
+                le = Endianness.Default;
+#endif
+            return (string) WriteBody.Invoke(null, new object[] {le});
+        }
     }
 }

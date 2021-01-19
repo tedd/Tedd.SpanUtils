@@ -5,17 +5,17 @@ namespace Tedd.SpanUtils.SourceGenerator
 {
     public static partial class CodeGenBodies
     {
-        public static string WriteSByte(bool le) => @"
+        public static string WriteSByte(Endianness le) => @"
         span[0] = (byte)value;
         [LEN]
         [MOVE]";
 
-        public static string WriteByte(bool le) => @"
+        public static string WriteByte(Endianness le) => @"
         span[0] = value;
         [LEN]
         [MOVE]";
 
-        //public static string WriteInt16(bool le) => le switch
+        //public static string WriteInt16(Endianness le) => le switch
         //{
         //    true => @"
         //    span[1] = (byte)(value & 0xFF);
@@ -29,35 +29,36 @@ namespace Tedd.SpanUtils.SourceGenerator
         //    [MOVE]"
         //};
 
-        public static string WriteUInt16(bool le) => le switch
+        public static string WriteUInt16(Endianness le) => le switch
         {
-            true => @"
-//#if !NETSTANDARD
+            Endianness.Default => @"
             if (span.Length < sizeof(UInt16))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            span[1] = (byte)(value >> (8 * 1));
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             [LEN]
             [MOVE]",
-            false => @"
+            Endianness.LE => @"
+            span[1] = (byte)(value >> (8 * 1));
+            span[0] = (byte)(value & 0xFF);
+            [LEN]
+            [MOVE]",
+            Endianness.BE => @"
             span[1] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 1));
             [LEN]
             [MOVE]"
         };
-        public static string WriteUInt24(bool le) => le switch
+        public static string WriteUInt24(Endianness le) => le switch
         {
-            true => @"
+            var x when x == Endianness.Default || x == Endianness.LE
+                => @"
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[2] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
             span[0] = (byte)((Int32)value & 0xFF);
             span[1] = (byte)(((Int32)value >> (8 * 1)) & 0xFF);
             [LEN]
             [MOVE]",
-            false => @"
+            Endianness.BE => @"
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[2] = (byte)((Int32)value & 0xFF);
             span[0] = (byte)(((Int32)value >> (8 * 2)) & 0xFF);
@@ -67,7 +68,7 @@ namespace Tedd.SpanUtils.SourceGenerator
         };
 
 
-//        public static string WriteInt32(bool le) => le switch
+//        public static string WriteInt32(Endianness le) => le switch
 //        {
 //            true => @"
 //",
@@ -75,23 +76,23 @@ namespace Tedd.SpanUtils.SourceGenerator
 //"
 //        };
 
-        public static string WriteUInt32(bool le) => le switch
+        public static string WriteUInt32(Endianness le) => le switch
         {
-            true => @"
-//#if !NETSTANDARD
+            Endianness.Default => @"
             if (span.Length < sizeof(UInt32))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
-//            span[3] = (byte)(value >> (8 * 3));
-//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             [LEN]
             [MOVE]",
-            false => @"
+            Endianness.LE => @"
+            //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
+            span[3] = (byte)(value >> (8 * 3));
+            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
+            span[0] = (byte)(value & 0xFF);
+            [LEN]
+            [MOVE]",
+            Endianness.BE => @"
             //MemoryMarshal.Cast<byte, UInt32>(span)[0] = value;
             span[3] = (byte)(value & 0xFF);
             span[0] = (byte)(value >> (8 * 3));
@@ -101,7 +102,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             [MOVE]"
         };
 
-        //public static string WriteInt64(bool le) => le switch
+        //public static string WriteInt64(Endianness le) => le switch
         //{
         //    true => @"
         //    [LEN]
@@ -112,28 +113,28 @@ namespace Tedd.SpanUtils.SourceGenerator
         //};
 
 
-        public static string WriteUInt64(bool le) => le switch
+        public static string WriteUInt64(Endianness le) => le switch
         {
-            true => @"
-//#if !NETSTANDARD
+            Endianness.Default => @"
             if (span.Length < sizeof(UInt64))
                 throw new ArgumentOutOfRangeException();
             Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(span), value);
-//#else
-//            // 13% more speed if we write last first, then rest in sequence.
-//            // https://github.com/tedd/Tedd.SpanUtils/issues/3
-//            span[7] = (byte)(value >> (8 * 7));
-//            span[6] = (byte)((value >> (8 * 6)) & 0xFF);
-//            span[5] = (byte)((value >> (8 * 5)) & 0xFF);
-//            span[4] = (byte)((value >> (8 * 4)) & 0xFF);
-//            span[3] = (byte)((value >> (8 * 3)) & 0xFF);
-//            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
-//            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
-//            span[0] = (byte)(value & 0xFF);
-//#endif
             [LEN]
             [MOVE]",
-            false => @"
+            Endianness.LE => @"
+            // 13% more speed if we write last first, then rest in sequence.
+            // https://github.com/tedd/Tedd.SpanUtils/issues/3
+            span[7] = (byte)(value >> (8 * 7));
+            span[6] = (byte)((value >> (8 * 6)) & 0xFF);
+            span[5] = (byte)((value >> (8 * 5)) & 0xFF);
+            span[4] = (byte)((value >> (8 * 4)) & 0xFF);
+            span[3] = (byte)((value >> (8 * 3)) & 0xFF);
+            span[2] = (byte)((value >> (8 * 2)) & 0xFF);
+            span[1] = (byte)((value >> (8 * 1)) & 0xFF);
+            span[0] = (byte)(value & 0xFF);
+            [LEN]
+            [MOVE]",
+            Endianness.BE => @"
             // 13% more speed if we write last first, then rest in sequence.
             // https://github.com/tedd/Tedd.SpanUtils/issues/3
             span[7] = (byte)(value & 0xFF);
@@ -149,59 +150,59 @@ namespace Tedd.SpanUtils.SourceGenerator
         };
 
 
-        public static string WriteSingle(bool le) => @"
+        public static string WriteSingle(Endianness le) => @"
             Span<float> a = stackalloc float[1] { value };
             var ab = MemoryMarshal.Cast<float, byte>(a);
             ab.CopyTo(span);
             [LEN]
             [MOVE]";
 
-        public static string WriteDouble(bool le) => @"
+        public static string WriteDouble(Endianness le) => @"
             Span<double> a = stackalloc double[1] { value };
             var ab = MemoryMarshal.Cast<double, byte>(a);
             ab.CopyTo(span);
             [LEN]
             [MOVE]";
 
-        public static string WriteDecimal(bool le) => @"
+        public static string WriteDecimal(Endianness le) => @"
             Span<decimal> a = stackalloc decimal[1] { value };
             var ab = MemoryMarshal.Cast<decimal, byte>(a);
             ab.CopyTo(span);
             [LEN]
             [MOVE]";
 
-        public static string WriteBoolean(bool le) => @"
+        public static string WriteBoolean(Endianness le) => @"
             span[0] = (byte)(value ? 1 : 0);
             [LEN]
             [MOVE]";
 
-        public static string WriteChar(bool le) => @"
+        public static string WriteChar(Endianness le) => @"
             Span<char> a = stackalloc char[1] { value };
             var ab = MemoryMarshal.Cast<char, byte>(a);
             ab.CopyTo(span);
             [LEN]
             [MOVE]";
 
-        public static string WriteGuid(bool le) => @"
+        public static string WriteGuid(Endianness le) => @"
             var array = new Span<byte>(value.ToByteArray());
             array.CopyTo(span);
             length = array.Length;
             [LEN]
             [MOVE]";
 
-        public static string WriteBytes(bool le) => @"
+        public static string WriteBytes(Endianness le) => @"
             value.CopyTo(span);
             length = value.Length;
             [LEN]
             [MOVE]";
 
-        public static string WriteSpan(bool le) => @"
+        public static string WriteSpan(Endianness le) => @"
             value.CopyTo(span);
             length = value.Length;
             [LEN]
             [MOVE]";
 
-        public static string WriteVLQInt16(bool le) => @"
+        public static string WriteVLQInt16(Endianness le) => @"
             length = 0;
             if (value < 0)
             {
@@ -235,7 +236,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             [LEN]
             [MOVE]";
 
-        public static string WriteVLQUInt16(bool le) => @"
+        public static string WriteVLQUInt16(Endianness le) => @"
             length = 0;
             while (value >= 0x80)
             {
@@ -246,7 +247,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             [LEN]
             [MOVE]";
 
-        public static string WriteVLQUInt24(bool le) => @"
+        public static string WriteVLQUInt24(Endianness le) => @"
             length = 0;
             value = (UInt24)((UInt32)value & 0b11111111_11111111_11111111);
             while ((UInt32)value >= 0x80)
@@ -258,7 +259,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             [LEN]
             [MOVE]";
 
-        public static string WriteVLQInt32(bool le) => @"
+        public static string WriteVLQInt32(Endianness le) => @"
             length = 0;
             if (value < 0)
             {
@@ -290,7 +291,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             [LEN]
             [MOVE]";
 
-        public static string WriteVLQUInt32(bool le) => @"
+        public static string WriteVLQUInt32(Endianness le) => @"
             length = 0;
             while (value >= 0x80)
             {
@@ -301,7 +302,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             [LEN]
             [MOVE]";
 
-        public static string WriteVLQInt64(bool le) => @"
+        public static string WriteVLQInt64(Endianness le) => @"
             length = 0;
             if (value < 0)
             {
@@ -333,7 +334,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             [LEN]
             [MOVE]";
 
-        public static string WriteVLQUInt64(bool le) => @"
+        public static string WriteVLQUInt64(Endianness le) => @"
             length = 0;
             while (value >= 0x80)
             {
@@ -344,22 +345,22 @@ namespace Tedd.SpanUtils.SourceGenerator
             [LEN]
             [MOVE]";
 
-        public static string WriteSize(bool le) => @"
+        public static string WriteSize(Endianness le) => @"
             length = SpanUtils.MeasureWriteSize(value);
             if (length == 1)
                 SpanUtils.Write(span, (Byte)value);
             else if (length == 2)
-                SpanUtils.Write(span, (UInt16)((UInt16)value | (0b01 << 14)));
+                SpanUtils.WriteBE(span, (UInt16)((UInt16)value | (0b01 << 14)));
             // Even larger (up to 4,2M) we store length as 3 bytes
             else if (length == 3)
-                SpanUtils.Write(span, (UInt24)((UInt32)value | (0b10 << 22)));
+                SpanUtils.WriteBE(span, (UInt24)((UInt32)value | (0b10 << 22)));
             else if (length == 4)
-                SpanUtils.Write(span, (UInt32)((UInt32)value | (0b11 << 30)));
+                SpanUtils.WriteBE(span, (UInt32)((UInt32)value | (0b11 << 30)));
 
             [LEN]
             [MOVE]";
 
-        public static string WriteSizedBytes(bool le) => @"
+        public static string WriteSizedBytes(Endianness le) => @"
             var mbs = SpanUtils.MeasureWriteSize((UInt32)value.Length);
             var len = mbs + value.Length;
             if (len > span.Length)
@@ -370,7 +371,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             length = len;
             [LEN]
             [MOVE]";
-        public static string WriteSizedSpan(bool le) => @"
+        public static string WriteSizedSpan(Endianness le) => @"
             var mbs = SpanUtils.MeasureWriteSize((UInt32)value.Length);
             var len = mbs + value.Length;
             if (len > span.Length)
@@ -382,7 +383,7 @@ namespace Tedd.SpanUtils.SourceGenerator
             [LEN]
             [MOVE]";
 
-        public static string WriteSizedString(bool le) => @"
+        public static string WriteSizedString(Endianness le) => @"
 #if NETCOREAPP || NETSTANDARD21
             // We use GetByteCount followed by direct copy to avoid creating a byte array (avoid GC).
             // For larger strings this could cause 
@@ -410,9 +411,9 @@ namespace Tedd.SpanUtils.SourceGenerator
             [MOVE]";
 
 
-        public static string WriteInt16(bool le) => WriteUInt16(le);
-        public static string WriteInt32(bool le) => WriteUInt32(le);
-        public static string WriteInt64(bool le) => WriteUInt64(le);
+        public static string WriteInt16(Endianness le) => WriteUInt16(le);
+        public static string WriteInt32(Endianness le) => WriteUInt32(le);
+        public static string WriteInt64(Endianness le) => WriteUInt64(le);
 
 
     }
