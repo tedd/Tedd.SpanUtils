@@ -10,22 +10,22 @@ namespace Tedd.SpanUtils.SourceGenerator
 
         public static void Generate(string root)
         {
-            var le = Endianness.Default;
-
-
+            //var le = Endianness.Default;
             {
                 var sbRO = new StringBuilder();
                 var sbW = new StringBuilder();
 
-                foreach (var ds in CodeGenBodies.DataStructures)
+                foreach (var le in new Endianness[] { Endianness.Default, Endianness.LE, Endianness.BE })
                 {
-                    if (!ds.Endian.HasFlag(le))
-                        continue;
-                    GenReadBody(le, ds, sbRO, false, true);
-                    GenReadBody(le, ds, sbW, false, false);
-                    GenWriteBody(le, ds, sbW, false);
+                    foreach (var ds in CodeGenBodies.DataStructures)
+                    {
+                        if (!ds.Endian.HasFlag(le))
+                            continue;
+                        GenReadBody(le, ds, sbRO, false, true);
+                        GenReadBody(le, ds, sbW, false, false);
+                        GenWriteBody(le, ds, sbW, false);
+                    }
                 }
-
                 var strRW = Helper.CreateRefStruct("SpanStream", sbW.ToString(), "");
                 var nsRW = Helper.CreateNamespace("Tedd", strRW, CodeGenBodies.usings);
                 File.WriteAllText(Path.Combine(root, "SpanStream.generated.cs"), nsRW);
@@ -37,13 +37,16 @@ namespace Tedd.SpanUtils.SourceGenerator
                 var sbRO = new StringBuilder();
                 var sbW = new StringBuilder();
 
-                foreach (var ds in CodeGenBodies.DataStructures)
+                foreach (var le in new Endianness[] { Endianness.Default, Endianness.LE, Endianness.BE })
                 {
-                    if (!ds.Endian.HasFlag(le))
-                        continue;
-                    GenReadBody(le, ds, sbRO, true, true);
-                    GenReadBody(le, ds, sbW, true, false);
-                    GenWriteBody(le, ds, sbW, true);
+                    foreach (var ds in CodeGenBodies.DataStructures)
+                    {
+                        if (!ds.Endian.HasFlag(le))
+                            continue;
+                        GenReadBody(le, ds, sbRO, true, true);
+                        GenReadBody(le, ds, sbW, true, false);
+                        GenWriteBody(le, ds, sbW, true);
+                    }
                 }
                 var strRW = Helper.CreateClass(false, "MemoryStreamer", sbW.ToString(), "");
                 var nsRW = Helper.CreateNamespace("Tedd", strRW, CodeGenBodies.usings);
@@ -94,7 +97,8 @@ namespace Tedd.SpanUtils.SourceGenerator
                 p.Add(ds.ExtraReadParams);
             var retType = ds.TypeString;
 
-            if (isMemoryStreamer && ds.TypeString == typeof(byte).Name && ds.Name == typeof(byte).Name)
+            if (isMemoryStreamer && ds.Endian == Endianness.Default
+                && ds.TypeString == typeof(byte).Name && ds.Name == typeof(byte).Name)
             {
                 retType = "override int";
             }
