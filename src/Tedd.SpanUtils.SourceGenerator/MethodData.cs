@@ -24,7 +24,7 @@ namespace Tedd.SpanUtils.SourceGenerator
         }
 
         public Endianness Endian = Endianness.All;
-      
+
         public string WriteName;
 
         //public bool WriteNameOnly=true;
@@ -34,18 +34,20 @@ namespace Tedd.SpanUtils.SourceGenerator
         public bool NoLengthParam;
         public string ExtraReadParamsDef;
         public MethodRW RW = MethodRW.Both;
-        public bool IsAlias=false;
+        public bool IsAlias = false;
 
         public string GetReadBody(Endianness le)
         {
-#if BIGENDIAN
-            if (le == Endianness.BE)
+            if (BitConverter.IsLittleEndian)
+            {
+                if (le == Endianness.LE)
+                    le = Endianness.Default;
+            }
+            else
+                if (le == Endianness.BE)
                 le = Endianness.Default;
-#else
-            if (le == Endianness.LE)
-                le = Endianness.Default;
-#endif
-            var body= (string) ReadBody.Invoke(null, new object[] {le});
+
+            var body = (string)ReadBody.Invoke(null, new object[] { le });
             body = le switch
             {
                 Endianness.BE => body.Replace("[LEBE]", "BE"),
@@ -57,14 +59,16 @@ namespace Tedd.SpanUtils.SourceGenerator
 
         public string GetWriteBody(Endianness le)
         {
-#if BIGENDIAN
-            if (le == Endianness.BE)
+            if (BitConverter.IsLittleEndian)
+            {
+                if (le == Endianness.LE)
+                    le = Endianness.Default;
+            }
+            else
+                if (le == Endianness.BE)
                 le = Endianness.Default;
-#else
-            if (le == Endianness.LE)
-                le = Endianness.Default;
-#endif
-            var body= (string) WriteBody.Invoke(null, new object[] {le});
+
+            var body = (string)WriteBody.Invoke(null, new object[] { le });
             body = le switch
             {
                 Endianness.BE => body.Replace("[LEBE]", "BE"),

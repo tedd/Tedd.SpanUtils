@@ -25,7 +25,7 @@ namespace Tedd.SpanUtils.Benchmark
                 .Dry
                 .WithJit(Jit.RyuJit)
                 .WithPlatform(Platform.X64)
-                .WithRuntime(CoreRuntime.Core31)
+                .WithRuntime(CoreRuntime.Core50)
                 .WithIterationCount(10_000)
                 .WithWarmupCount(1_000)
             );

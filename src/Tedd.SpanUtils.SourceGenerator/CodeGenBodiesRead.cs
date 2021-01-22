@@ -23,8 +23,6 @@ namespace Tedd.SpanUtils.SourceGenerator
         public static string ReadUInt16(Endianness le) => le switch
         {
             Endianness.Default => @"
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             [LEN]
             [MOVE]
@@ -71,8 +69,6 @@ namespace Tedd.SpanUtils.SourceGenerator
         public static string ReadUInt32(Endianness le) => le switch
         {
             Endianness.Default => @"
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             [LEN]
             [MOVE]
@@ -103,8 +99,6 @@ namespace Tedd.SpanUtils.SourceGenerator
         public static string ReadUInt64(Endianness le) => le switch
         {
             Endianness.Default => @"
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             [LEN]
             [MOVE]
@@ -151,12 +145,10 @@ namespace Tedd.SpanUtils.SourceGenerator
             [MOVE]
             return ret;";
         public static string ReadChar(Endianness le) => @"
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             [LEN]
             [MOVE]
-            return a[0];"; // TODO: Endianness
+            return r;"; // TODO: Endianness
 
         public static string ReadHalf(Endianness le) => @"
             Span<half> a = stackalloc half[1];
@@ -205,7 +197,11 @@ namespace Tedd.SpanUtils.SourceGenerator
             return a[0];";
 
         public static string ReadGuid(Endianness le) => @"
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            var ret = new Guid(span.Slice(0, 16));
+#else
             var ret = new Guid(span.Slice(0, 16).ToArray());
+#endif
             [LEN]
             [MOVE]
             return ret;"; // TODO: ToArray creates object

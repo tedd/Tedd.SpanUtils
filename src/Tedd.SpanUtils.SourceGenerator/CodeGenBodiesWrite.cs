@@ -188,16 +188,18 @@ namespace Tedd.SpanUtils.SourceGenerator
             [MOVE]";
 
         public static string WriteChar(Endianness le) => @"
-            Span<char> a = stackalloc char[1] { value };
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            ab.CopyTo(span);
+            MemoryMarshal.Write(span, ref value);
             [LEN]
             [MOVE]";
 
         public static string WriteGuid(Endianness le) => @"
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            if (!value.TryWriteBytes(span))
+                throw new ArgumentOutOfRangeException();
+#else
             var array = new Span<byte>(value.ToByteArray());
             array.CopyTo(span);
-            length = array.Length;
+#endif
             [LEN]
             [MOVE]";
 

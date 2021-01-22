@@ -75,8 +75,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 ReadUInt16(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             
@@ -86,8 +84,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 ReadUInt16(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             
@@ -105,8 +101,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 ReadInt16(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             
@@ -116,8 +110,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 ReadInt16(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             
@@ -135,8 +127,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 ReadUInt32(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             
@@ -146,8 +136,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 ReadUInt32(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             
@@ -165,8 +153,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 ReadInt32(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             
@@ -176,8 +162,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 ReadInt32(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             
@@ -195,8 +179,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 ReadUInt64(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             
@@ -206,8 +188,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 ReadUInt64(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             
@@ -225,8 +205,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 ReadInt64(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             
@@ -236,8 +214,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 ReadInt64(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             
@@ -399,23 +375,19 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char ReadChar(Span<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             
-            return a[0];
+            return r;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char ReadChar(ReadOnlySpan<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             
-            return a[0];
+            return r;
         }
 
 
@@ -473,8 +445,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 ReadShort(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             
@@ -484,8 +454,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 ReadShort(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             
@@ -503,8 +471,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 ReadUShort(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             
@@ -514,8 +480,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 ReadUShort(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             
@@ -533,8 +497,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 ReadInt(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             
@@ -544,8 +506,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 ReadInt(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             
@@ -563,8 +523,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 ReadUInt(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             
@@ -574,8 +532,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 ReadUInt(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             
@@ -593,8 +549,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 ReadLong(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             
@@ -604,8 +558,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 ReadLong(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             
@@ -623,8 +575,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 ReadULong(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             
@@ -634,8 +584,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 ReadULong(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             
@@ -1147,7 +1095,11 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Guid ReadGuid(Span<byte> span, out int length) {
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            var ret = new Guid(span.Slice(0, 16));
+#else
             var ret = new Guid(span.Slice(0, 16).ToArray());
+#endif
             length = 16;
             
             return ret;
@@ -1156,7 +1108,11 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Guid ReadGuid(ReadOnlySpan<byte> span, out int length) {
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            var ret = new Guid(span.Slice(0, 16));
+#else
             var ret = new Guid(span.Slice(0, 16).ToArray());
+#endif
             length = 16;
             
             return ret;
@@ -1392,8 +1348,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 MoveReadUInt16(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
@@ -1403,8 +1357,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 MoveReadUInt16(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
@@ -1422,8 +1374,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 MoveReadInt16(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
@@ -1433,8 +1383,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 MoveReadInt16(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
@@ -1452,8 +1400,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 MoveReadUInt32(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
@@ -1463,8 +1409,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 MoveReadUInt32(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
@@ -1482,8 +1426,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 MoveReadInt32(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
@@ -1493,8 +1435,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 MoveReadInt32(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
@@ -1512,8 +1452,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 MoveReadUInt64(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
@@ -1523,8 +1461,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 MoveReadUInt64(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
@@ -1542,8 +1478,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 MoveReadInt64(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
@@ -1553,8 +1487,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 MoveReadInt64(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
@@ -1716,23 +1648,19 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char MoveReadChar(ref Span<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             span = span.Slice(sizeof(Char));
-            return a[0];
+            return r;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char MoveReadChar(ref ReadOnlySpan<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             span = span.Slice(sizeof(Char));
-            return a[0];
+            return r;
         }
 
 
@@ -1790,8 +1718,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 MoveReadShort(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
@@ -1801,8 +1727,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 MoveReadShort(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
@@ -1820,8 +1744,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 MoveReadUShort(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
@@ -1831,8 +1753,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 MoveReadUShort(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
@@ -1850,8 +1770,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 MoveReadInt(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
@@ -1861,8 +1779,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 MoveReadInt(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
@@ -1880,8 +1796,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 MoveReadUInt(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
@@ -1891,8 +1805,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 MoveReadUInt(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
@@ -1910,8 +1822,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 MoveReadLong(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
@@ -1921,8 +1831,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 MoveReadLong(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
@@ -1940,8 +1848,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 MoveReadULong(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
@@ -1951,8 +1857,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 MoveReadULong(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
@@ -2464,7 +2368,11 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Guid MoveReadGuid(ref Span<byte> span, out int length) {
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            var ret = new Guid(span.Slice(0, 16));
+#else
             var ret = new Guid(span.Slice(0, 16).ToArray());
+#endif
             length = 16;
             span = span.Slice(16);
             return ret;
@@ -2473,7 +2381,11 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Guid MoveReadGuid(ref ReadOnlySpan<byte> span, out int length) {
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            var ret = new Guid(span.Slice(0, 16));
+#else
             var ret = new Guid(span.Slice(0, 16).ToArray());
+#endif
             length = 16;
             span = span.Slice(16);
             return ret;
@@ -2819,9 +2731,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void Write(Span<byte>span, Char value, out int length) {
-            Span<char> a = stackalloc char[1] { value };
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            ab.CopyTo(span);
+            MemoryMarshal.Write(span, ref value);
             length = sizeof(Char);
             
         }
@@ -3040,9 +2950,13 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void Write(Span<byte>span, Guid value, out int length) {
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            if (!value.TryWriteBytes(span))
+                throw new ArgumentOutOfRangeException();
+#else
             var array = new Span<byte>(value.ToByteArray());
             array.CopyTo(span);
-            length = array.Length;
+#endif
             length = 16;
             
         }
@@ -3380,9 +3294,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void MoveWrite(ref Span<byte>span, Char value, out int length) {
-            Span<char> a = stackalloc char[1] { value };
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            ab.CopyTo(span);
+            MemoryMarshal.Write(span, ref value);
             length = sizeof(Char);
             span = span.Slice(sizeof(Char));
         }
@@ -3601,9 +3513,13 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void MoveWrite(ref Span<byte>span, Guid value, out int length) {
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            if (!value.TryWriteBytes(span))
+                throw new ArgumentOutOfRangeException();
+#else
             var array = new Span<byte>(value.ToByteArray());
             array.CopyTo(span);
-            length = array.Length;
+#endif
             length = 16;
             span = span.Slice(16);
         }
@@ -3823,8 +3739,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 ReadUInt16LE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             
@@ -3834,8 +3748,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 ReadUInt16LE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             
@@ -3853,8 +3765,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 ReadInt16LE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             
@@ -3864,8 +3774,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 ReadInt16LE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             
@@ -3883,8 +3791,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 ReadUInt32LE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             
@@ -3894,8 +3800,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 ReadUInt32LE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             
@@ -3913,8 +3817,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 ReadInt32LE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             
@@ -3924,8 +3826,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 ReadInt32LE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             
@@ -3943,8 +3843,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 ReadUInt64LE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             
@@ -3954,8 +3852,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 ReadUInt64LE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             
@@ -3973,8 +3869,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 ReadInt64LE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             
@@ -3984,8 +3878,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 ReadInt64LE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             
@@ -4147,23 +4039,19 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char ReadCharLE(Span<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             
-            return a[0];
+            return r;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char ReadCharLE(ReadOnlySpan<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             
-            return a[0];
+            return r;
         }
 
 
@@ -4221,8 +4109,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 ReadShortLE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             
@@ -4232,8 +4118,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 ReadShortLE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             
@@ -4251,8 +4135,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 ReadUShortLE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             
@@ -4262,8 +4144,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 ReadUShortLE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             
@@ -4281,8 +4161,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 ReadIntLE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             
@@ -4292,8 +4170,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 ReadIntLE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             
@@ -4311,8 +4187,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 ReadUIntLE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             
@@ -4322,8 +4196,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 ReadUIntLE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             
@@ -4341,8 +4213,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 ReadLongLE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             
@@ -4352,8 +4222,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 ReadLongLE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             
@@ -4371,8 +4239,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 ReadULongLE(Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             
@@ -4382,8 +4248,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 ReadULongLE(ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             
@@ -4513,8 +4377,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 MoveReadUInt16LE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
@@ -4524,8 +4386,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 MoveReadUInt16LE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
@@ -4543,8 +4403,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 MoveReadInt16LE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
@@ -4554,8 +4412,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 MoveReadInt16LE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
@@ -4573,8 +4429,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 MoveReadUInt32LE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
@@ -4584,8 +4438,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 MoveReadUInt32LE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
@@ -4603,8 +4455,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 MoveReadInt32LE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
@@ -4614,8 +4464,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 MoveReadInt32LE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
@@ -4633,8 +4481,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 MoveReadUInt64LE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
@@ -4644,8 +4490,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 MoveReadUInt64LE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
@@ -4663,8 +4507,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 MoveReadInt64LE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
@@ -4674,8 +4516,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 MoveReadInt64LE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
@@ -4837,23 +4677,19 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char MoveReadCharLE(ref Span<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             span = span.Slice(sizeof(Char));
-            return a[0];
+            return r;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char MoveReadCharLE(ref ReadOnlySpan<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             span = span.Slice(sizeof(Char));
-            return a[0];
+            return r;
         }
 
 
@@ -4911,8 +4747,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 MoveReadShortLE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
@@ -4922,8 +4756,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int16 MoveReadShortLE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int16);
             span = span.Slice(sizeof(Int16));
@@ -4941,8 +4773,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 MoveReadUShortLE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
@@ -4952,8 +4782,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt16 MoveReadUShortLE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt16))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt16>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt16);
             span = span.Slice(sizeof(UInt16));
@@ -4971,8 +4799,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 MoveReadIntLE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
@@ -4982,8 +4808,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int32 MoveReadIntLE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int32);
             span = span.Slice(sizeof(Int32));
@@ -5001,8 +4825,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 MoveReadUIntLE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
@@ -5012,8 +4834,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt32 MoveReadUIntLE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt32>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt32);
             span = span.Slice(sizeof(UInt32));
@@ -5031,8 +4851,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 MoveReadLongLE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
@@ -5042,8 +4860,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Int64 MoveReadLongLE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(Int64);
             span = span.Slice(sizeof(Int64));
@@ -5061,8 +4877,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 MoveReadULongLE(ref Span<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
@@ -5072,8 +4886,6 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UInt64 MoveReadULongLE(ref ReadOnlySpan<byte> span, out int length) {
-            if (span.Length < sizeof(UInt32))
-                throw new ArgumentOutOfRangeException();
             var ret = Unsafe.ReadUnaligned<UInt64>(ref MemoryMarshal.GetReference(span));
             length = sizeof(UInt64);
             span = span.Slice(sizeof(UInt64));
@@ -5321,9 +5133,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void WriteLE(Span<byte>span, Char value, out int length) {
-            Span<char> a = stackalloc char[1] { value };
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            ab.CopyTo(span);
+            MemoryMarshal.Write(span, ref value);
             length = sizeof(Char);
             
         }
@@ -5524,9 +5334,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void MoveWriteLE(ref Span<byte>span, Char value, out int length) {
-            Span<char> a = stackalloc char[1] { value };
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            ab.CopyTo(span);
+            MemoryMarshal.Write(span, ref value);
             length = sizeof(Char);
             span = span.Slice(sizeof(Char));
         }
@@ -5993,23 +5801,19 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char ReadCharBE(Span<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             
-            return a[0];
+            return r;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char ReadCharBE(ReadOnlySpan<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             
-            return a[0];
+            return r;
         }
 
 
@@ -6803,23 +6607,19 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char MoveReadCharBE(ref Span<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             span = span.Slice(sizeof(Char));
-            return a[0];
+            return r;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe Char MoveReadCharBE(ref ReadOnlySpan<byte> span, out int length) {
-            Span<char> a = stackalloc char[1];
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            span.Slice(0, sizeof(char)).CopyTo(ab);
+            var r = MemoryMarshal.Read<Char>(span);
             length = sizeof(Char);
             span = span.Slice(sizeof(Char));
-            return a[0];
+            return r;
         }
 
 
@@ -7363,9 +7163,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void WriteBE(Span<byte>span, Char value, out int length) {
-            Span<char> a = stackalloc char[1] { value };
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            ab.CopyTo(span);
+            MemoryMarshal.Write(span, ref value);
             length = sizeof(Char);
             
         }
@@ -7582,9 +7380,7 @@ namespace Tedd {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void MoveWriteBE(ref Span<byte>span, Char value, out int length) {
-            Span<char> a = stackalloc char[1] { value };
-            var ab = MemoryMarshal.Cast<char, byte>(a);
-            ab.CopyTo(span);
+            MemoryMarshal.Write(span, ref value);
             length = sizeof(Char);
             span = span.Slice(sizeof(Char));
         }
