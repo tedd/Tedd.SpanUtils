@@ -250,6 +250,10 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Data;
+#if !BEFORENETCOREAPP3
+using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.X86;
+#endif
 ";
 
         public static string EndiannessToMethodExtension(Endianness e) => e switch

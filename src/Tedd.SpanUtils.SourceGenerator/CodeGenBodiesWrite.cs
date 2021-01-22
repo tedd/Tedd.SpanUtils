@@ -149,18 +149,29 @@ namespace Tedd.SpanUtils.SourceGenerator
             [MOVE]"
         };
 
-
         public static string WriteSingle(Endianness le) => @"
-            Span<float> a = stackalloc float[1] { value };
-            var ab = MemoryMarshal.Cast<float, byte>(a);
-            ab.CopyTo(span);
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            SpanUtils.Write[LEBE](span, BitConverter.SingleToInt32Bits(value), out _);
+#else
+            //Span<float> a = stackalloc float[1] { value };
+            //var ab = MemoryMarshal.Cast<float, byte>(a);
+            //ab.CopyTo(span);
+            var i = *(int*)(&value);
+            SpanUtils.Write[LEBE](span, i, out _);
+#endif
             [LEN]
             [MOVE]";
 
         public static string WriteDouble(Endianness le) => @"
-            Span<double> a = stackalloc double[1] { value };
-            var ab = MemoryMarshal.Cast<double, byte>(a);
-            ab.CopyTo(span);
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            SpanUtils.Write[LEBE](span, BitConverter.DoubleToInt64Bits(value), out _);
+#else
+            //Span<double> a = stackalloc double[1] { value };
+            //var ab = MemoryMarshal.Cast<double, byte>(a);
+            //ab.CopyTo(span);
+            var i = *(long*)(&value);
+            SpanUtils.Write[LEBE](span, i, out _);
+#endif
             [LEN]
             [MOVE]";
 

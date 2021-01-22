@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net462;netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0</TargetFrameworks>
     <!--<TargetFramework>net462</TargetFramework>-->
-    <!--<TargetFramework>netcoreapp3.1</TargetFramework>-->
+    <!--<TargetFramework>netstandard2.1</TargetFramework>-->
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable> 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -57,14 +57,16 @@
   </ItemGroup>-->
 
   <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net4'))">
-    <DefineConstants>NETFRAMEWORK</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETFRAMEWORK</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(netcoreapp|netstandard2\.1|net[56789])'))">
-    <DefineConstants>NETCOREAPP</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETCOREAPP</DefineConstants>
   </PropertyGroup>  
   <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(net4|netcoreapp2|netstandard)'))">
-    <DefineConstants>BEFORENETCOREAPP3</DefineConstants>
+    <DefineConstants>$(DefineConstants);BEFORENETCOREAPP3</DefineConstants>
   </PropertyGroup>
-
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^netstandard2\.1'))">
+    <DefineConstants>$(DefineConstants);NETSTANDARD21</DefineConstants>
+  </PropertyGroup>
 
 </Project>

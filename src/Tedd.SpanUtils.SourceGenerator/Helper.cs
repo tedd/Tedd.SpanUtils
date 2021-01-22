@@ -35,13 +35,13 @@ namespace Tedd.SpanUtils.SourceGenerator
             if (body.Contains("\r\n"))
             sb.Append($@"
 {description}        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public {@static}{returnType} {name}({@params}) {{{body}
+        public {@static}unsafe {returnType} {name}({@params}) {{{body}
         }}
 ");
             else
                 sb.Append($@"
 {description}        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public {@static}{returnType} {name}({@params}) => {body}
+        public {@static}unsafe {returnType} {name}({@params}) => {body}
 ");
         }
     }

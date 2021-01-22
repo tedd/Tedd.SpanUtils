@@ -52,6 +52,12 @@ namespace Tedd
         }
         #endregion
 
+//        public static Single ReadSingle2(this Span<byte> span)
+//        {
+//#if NETSTANDARD21 || AFTERNETCOREAPP3
+//            return BitConverter.Int32BitsToSingle(SpanUtils.ReadInt32(span));
+//#endif
+//        }
         //#region aliases
         ///// <summary>
         ///// Alias for ReadShort()
