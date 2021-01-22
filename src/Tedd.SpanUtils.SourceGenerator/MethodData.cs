@@ -45,7 +45,14 @@ namespace Tedd.SpanUtils.SourceGenerator
             if (le == Endianness.LE)
                 le = Endianness.Default;
 #endif
-            return (string) ReadBody.Invoke(null, new object[] {le});
+            var body= (string) ReadBody.Invoke(null, new object[] {le});
+            body = le switch
+            {
+                Endianness.BE => body.Replace("[LEBE]", "BE"),
+                Endianness.LE => body.Replace("[LEBE]", "LE"),
+                Endianness.Default => body.Replace("[LEBE]", "")
+            };
+            return body;
         }
 
         public string GetWriteBody(Endianness le)
@@ -57,7 +64,14 @@ namespace Tedd.SpanUtils.SourceGenerator
             if (le == Endianness.LE)
                 le = Endianness.Default;
 #endif
-            return (string) WriteBody.Invoke(null, new object[] {le});
+            var body= (string) WriteBody.Invoke(null, new object[] {le});
+            body = le switch
+            {
+                Endianness.BE => body.Replace("[LEBE]", "BE"),
+                Endianness.LE => body.Replace("[LEBE]", "LE"),
+                Endianness.Default => body.Replace("[LEBE]", "")
+            };
+            return body;
         }
     }
 }

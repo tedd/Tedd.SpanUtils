@@ -167,20 +167,34 @@ namespace Tedd.SpanUtils.SourceGenerator
             return a[0];";
 
         public static string ReadSingle(Endianness le) => @"
-            Span<float> a = stackalloc float[1];
-            var ab = MemoryMarshal.Cast<float, byte>(a);
-            span.Slice(0, sizeof(float)).CopyTo(ab);
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            var r = BitConverter.Int32BitsToSingle(SpanUtils.ReadInt32[LEBE](span, out _));
+#else
+            //Span<float> a = stackalloc float[1];
+            //var ab = MemoryMarshal.Cast<float, byte>(a);
+            //span.Slice(0, sizeof(float)).CopyTo(ab);
+            //var r = a[0];
+            var i = SpanUtils.ReadInt32[LEBE](span, out _);
+            var r = *(float*)(&i);
+#endif
             [LEN]
             [MOVE]
-            return a[0];";
+            return r;";
 
         public static string ReadDouble(Endianness le) => @"
-            Span<double> a = stackalloc double[1];
-            var ab = MemoryMarshal.Cast<double, byte>(a);
-            span.Slice(0, sizeof(double)).CopyTo(ab);
+#if NETSTANDARD21 || !BEFORENETCOREAPP3
+            var r = BitConverter.Int64BitsToDouble(SpanUtils.ReadInt64[LEBE](span, out _));
+#else
+            //Span<double> a = stackalloc double[1];
+            //var ab = MemoryMarshal.Cast<double, byte>(a);
+            //span.Slice(0, sizeof(double)).CopyTo(ab);
+            //var r = a[0];
+            var i = SpanUtils.ReadInt64[LEBE](span, out _);
+            var r = *(double*)(&i);
+#endif
             [LEN]
             [MOVE]
-            return a[0];";
+            return r;";
 
         public static string ReadDecimal(Endianness le) => @"
             Span<decimal> a = stackalloc decimal[1];
