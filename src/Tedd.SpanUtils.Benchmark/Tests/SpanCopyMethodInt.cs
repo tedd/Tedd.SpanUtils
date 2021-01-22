@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using BenchmarkDotNet.Attributes;
@@ -235,6 +236,37 @@ namespace Tedd.SpanUtils.Benchmark.Tests
             span[1] = b[1];
             span[2] = b[2];
             span[3] = b[3];
+        }
+
+        [Benchmark()]
+        public void UnsafeWriteUnaligned()
+        {
+            var m = ((Span<byte>)Memory);
+            for (var i = 0; i < AlignmentCount; i++)
+            {
+                var s = m.Slice(i, sizeof(int));
+                Unsafe.WriteUnaligned(ref MemoryMarshal.GetReference(s), i);
+            }
+        }
+        [Benchmark()]
+        public void UnsafeWriteAs()
+        {
+            var m = ((Span<byte>)Memory);
+            for (var i = 0; i < AlignmentCount; i++)
+            {
+                var s = m.Slice(i, sizeof(int));
+                Unsafe.As<byte, Int64>(ref MemoryMarshal.GetReference(s)) = i;
+            }
+        } 
+        [Benchmark()]
+        public void UnsafeWriteAsFirstByte()
+        {
+            var m = ((Span<byte>)Memory);
+            for (var i = 0; i < AlignmentCount; i++)
+            {
+                var s = m.Slice(i, sizeof(int));
+                Unsafe.As<byte, Int64>(ref s[0]) = i;
+            }
         }
     }
 }
