@@ -19,14 +19,14 @@ namespace Tedd
 #endif
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int LzCntSoftwareFallback(UInt64 value)
+        internal static int LzCntSoftwareFallback(UInt64 value)
         {
             // Unguarded fallback contract is 0->63
             if (value == 0)
                 return 64;
 
             var n = Log2SoftwareFallback((UInt32)(value >> 32));
-            if (n > 0)
+            if ((value >> 32) > 0)
                 n += 32;
             else
                 n = Log2SoftwareFallback((UInt32)value);
@@ -45,7 +45,7 @@ namespace Tedd
             08, 12, 20, 28, 15, 17, 24, 07,
             19, 27, 23, 06, 26, 05, 04, 31
         };
-        private static int Log2SoftwareFallback(uint value)
+        internal static int Log2SoftwareFallback(uint value)
         {
             // No AggressiveInlining due to large method size
             // Has conventional contract 0->0 (Log(0) is undefined)
