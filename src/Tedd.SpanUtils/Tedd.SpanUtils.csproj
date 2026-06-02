@@ -1,67 +1,49 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0</TargetFrameworks>
-    <!--<TargetFramework>net462</TargetFramework>-->
-    <!--<TargetFramework>net5.0</TargetFramework>-->
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable> 
+    <TargetFrameworks>net462;netstandard2.0;netstandard2.1;net8.0;net10.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Tedd Hansen</Authors>
+    <Authors>tedd</Authors>
     <Company>Tedd Hansen</Company>
-    <Description>Extension methods to read/write different datatypes to Span&lt;byte&gt; (tested, benchmarked, optimized). Plus SpanStream and MemoryStreamer for stream-like behavior on Span&lt;byte&gt; and Memory&lt;byte&gt;. See documentation on GitHub for examples.</Description>
-    <PackageTags>Span ReadOnlySpan Read Write SByte Byte Int16 UInt16 UInt24 Int32 UInt32 Int64 UInt64 String Bytes VLQ VariableLengthQuantity SpanStream MemoryStream</PackageTags>
+    <Description>Extension methods to read/write different datatypes to Span<byte> (tested, benchmarked, optimized). Plus SpanStream and MemoryStreamer for stream-like behavior on Span<byte> and Memory<byte>.</Description>
+    <PackageTags>Span;ReadOnlySpan;Read;Write;Performance;BitUtils;MemoryStream;SpanStream</PackageTags>
     <Copyright>Tedd Hansen</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/tedd/Tedd.SpanUtils</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/tedd/Tedd.SpanUtils</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
+    <RepositoryUrl>https://github.com/tedd/Tedd.SpanUtils.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <Version>1.1.0-beta.7</Version>
-    <PackageLicenseExpression></PackageLicenseExpression>
-    <SignAssembly>false</SignAssembly>
-    <DelaySign>false</DelaySign>
-    <AssemblyOriginatorKeyFile>NuGet Signing Key.pfx</AssemblyOriginatorKeyFile>
-    <PackageReleaseNotes>SpanStream and MemoryStreamer (which is Stream for Memory&lt;byte&gt;). Variable-lenght quantity datatypes. Optimized read/write methods. All primitive types implemented. .Net Standard 2.0.</PackageReleaseNotes>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>latest-all</AnalysisLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
       <PackageReference Include="System.Memory" Version="4.5.4" />
-  </ItemGroup> 
+  </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
       <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
   <ItemGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(net4|netcoreapp2|netstandard)'))">
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="..\..\LICENSE">
+    <None Include="../../LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.2.0-beta.7">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="ErrorProne.NET.Structs" Version="0.2.0-beta.7">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <!--<ItemGroup>
-    <ProjectReference Include="..\Tedd.SpanUtils.SourceGenerator\Tedd.SpanUtils.SourceGenerator.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-  </ItemGroup>-->
-
   <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net4'))">
     <DefineConstants>$(DefineConstants);NETFRAMEWORK</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(netcoreapp|netstandard2\.1|net[56789])'))">
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(netcoreapp|netstandard2\.1|net[56789])'))">     
     <DefineConstants>$(DefineConstants);NETCOREAPP</DefineConstants>
-  </PropertyGroup>  
+  </PropertyGroup>
   <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(net4|netcoreapp2|netstandard)'))">
     <DefineConstants>$(DefineConstants);BEFORENETCOREAPP3</DefineConstants>
   </PropertyGroup>
