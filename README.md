@@ -10,50 +10,68 @@ There is also an UInt24 type which can be cast to/from UInt32 and used for readi
 
 100% code coverate in unit tests.
 
+## Architecture
+
+This project serves as a low-level .NET library optimized for memory-safe `Span<byte>` and `Memory<byte>` manipulation. The internal mechanics rely on direct memory transposition via `MoveRead*` and `MoveWrite*` extension methods, or sequentially via the `SpanStream` and `MemoryStreamer` abstractions.
+
+**Architectural Boundaries & Hypotheses:**
+It is an established empirical fact that the current framework provides robust, memory-contiguous data manipulation. Speculative assumptions regarding higher-level integration must be explicitly mitigated: the framework's internal mechanics **do not** currently contain high-level UI architecture. Features such as hierarchical data binding and routed event infrastructure represent hypotheses for planned future enhancements, rather than established operational capabilities.
+
 # Example
 ```csharp
-var mem = new byte[1000];
-var span = new Span<byte>(mem);
+using System;
+using Tedd;
 
-Int32 a = 1234;
-span.Write(a);
-var b = span.ReadInt32(i);
-// a == b
+class Program {
+    static void Main() {
+        var mem = new byte[1000];
+        var span = new Span<byte>(mem);
+
+        Int32 a = 1234;
+        span.Write(a);
+        var b = span.ReadInt32();
+        // a == b
 
 
-// Move* methods moves Span-pointer as they read or write.
-Int16 a1 = 10;
-Int32 a2 = 20;
-Int64 a3 = 30;
-span.MoveWrite(a1);
-span.MoveWrite(a2);
-span.MoveWrite(a3);
+        // Move* methods moves Span-pointer as they read or write.
+        Int16 a1 = 10;
+        Int32 a2 = 20;
+        Int64 a3 = 30;
+        span.MoveWrite(a1);
+        span.MoveWrite(a2);
+        span.MoveWrite(a3);
 
-// To start reading from start we need a new reference for reader pointing to start of memory area.
-var span2 = new Span<byte(mem);
+        // To start reading from start we need a new reference for reader pointing to start of memory area.
+        var span2 = new Span<byte>(mem);
 
-var b1 = span2.MoveReadInt16();
-var b2 = span2.MoveReadInt32();
-var b3 = span2.MoveReadInt64();
+        var b1 = span2.MoveReadInt16();
+        var b2 = span2.MoveReadInt32();
+        var b3 = span2.MoveReadInt64();
 
-// a1 == b1
-// a2 == b2
-// a3 == b3
-
+        // a1 == b1
+        // a2 == b2
+        // a3 == b3
+    }
+}
 ```
-
-
 
 # Move read/write
 Move read/write will slice the current span so that it moves forward in memory area.
 ## Example
 ```csharp
-var mem = new byte[10];
-var span = new Span<byte>(mem);
-// span now points to position 0 of mem. Span is 10 bytes long.
-var i = span.MoveReadInt32();
-// Since Int32 is 4 bytes span was moved ahead 4 bytes.
-// span now points to position 4 of mem and is 6 bytes long.
+using System;
+using Tedd;
+
+class Program {
+    static void Main() {
+        var mem = new byte[10];
+        var span = new Span<byte>(mem);
+        // span now points to position 0 of mem. Span is 10 bytes long.
+        var i = span.MoveReadInt32();
+        // Since Int32 is 4 bytes span was moved ahead 4 bytes.
+        // span now points to position 4 of mem and is 6 bytes long.
+    }
+}
 ```
 
 # WriteSize() / ReadSize()
@@ -64,12 +82,32 @@ If the number is 14 bits or less (less than 16K) then 2 bytes is used.<br />
 If the number is 22 bits or less (less than 4M) then 3 bytes is used.<br />
 If the number is 30 bits or less (less than 1B) then 4 bytes is used.<br />
 
-This means that if you use `SizedWrite("hello")` then 1 byte is used for size header and 4 bytes are used for the string. While if you to `SizedWrite(new byte[20_000])` then 3 bytes are used for size header;
+This means that if you use `WriteSized("hello")` then 1 byte is used for size header and 4 bytes are used for the string. While if you to `WriteSized(new byte[20_000])` then 3 bytes are used for size header.
 
 If you want to know how many bytes the number is, simply do (firstByte>>6)+1. The result is 1-4.
 
 # Sized writes
-String, byte\[\], Span<> and ReadOnlySpan<> can be written using `SizedWrite()`. This will put a 1-4 byte size descriptor in front of the actual data, meaning you do not have to know the size when you read it back using `SizedRead*()`;
+String, byte\[\], Span<> and ReadOnlySpan<> can be written using `WriteSized()`. This will put a 1-4 byte size descriptor in front of the actual data, meaning you do not have to know the size when you read it back using `ReadSized*()`;
+
+```csharp
+using System;
+using Tedd;
+
+class Program {
+    static void Main() {
+        var mem = new byte[30000];
+        var span = new Span<byte>(mem);
+
+        span.WriteSized("hello");
+        span.WriteSized(new byte[20_000]);
+
+        // Reading requires a new span reference from the beginning
+        var span2 = new Span<byte>(mem);
+        var v1 = span2.MoveReadSizedString();
+        var v2 = span2.MoveReadSizedBytes();
+    }
+}
+```
 
 # Variable-Length Quantity
 Sized writes give an advantage when processing data, since you only need the first two bits to know length. So on first byte you know how much data you need to read for the full number. It is though capped at 30-bit integers since two bits are used for size description.
