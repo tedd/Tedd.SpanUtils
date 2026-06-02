@@ -1,0 +1,7 @@
+## 2024-06-02 - Code Example API Drift
+**Observation:** Discovered significant documentation drift where `README.md` referenced deprecated API patterns. Specifically, `span.ReadInt32(i)` contained an invalid argument, and `SizedWrite`/`SizedRead*` methods have been empirically renamed to `WriteSized`/`ReadSized*` in the contemporary implementation. Code blocks also lacked proper namespace inclusions (`using Tedd;`), failing basic syntactic validation.
+**Strategic Action:** Synchronized `README.md` to reflect the operational reality by correcting method signatures to `span.ReadInt32()` and updating all references to `WriteSized`/`ReadSized*`. Inserted deterministic `using Tedd;` directives into all executable examples.
+
+## 2024-06-02 - Architectural Clarification
+**Observation:** The documentation contained epistemological deficits regarding the structural limits of the framework, leaving ambiguity regarding higher-level UI paradigms such as hierarchical data binding and routed events.
+**Strategic Action:** Inserted a dedicated `Architecture` section explicitly delineating the internal mechanics of `SpanStream`, `MemoryStreamer`, and `MoveRead*`/`MoveWrite*`. Articulated a strict boundary establishing that hierarchical data binding and routed event infrastructure are not established capabilities, but rather hypotheses for future roadmaps, effectively eliminating speculative assumptions without fabricating capabilities.
