@@ -2,50 +2,44 @@ name: .NET
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, main ]
 
 jobs:
-  build-net-latest:
+  build-test-publish:
     runs-on: windows-latest
-    defaults:
-      run:
-        working-directory: src
-    env:
-      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages    
     steps:
-    - uses: actions/checkout@v2
-    - uses: microsoft/setup-msbuild@v1.0.2
-    - uses: actions/cache@v2
+    - uses: actions/checkout@v4
       with:
-        path: ${{ github.workspace }}/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
-
-    - name: Setup .NET latest
-      uses: actions/setup-dotnet@v1
+        fetch-depth: 0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          6.0.x
+          8.0.x
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
+    - name: Setup Nuget
+      uses: Nuget/setup-nuget@v2
 
     - name: Restore dependencies
+      working-directory: src
       run: dotnet restore
-
+      
     - name: Build
-      run: dotnet build --no-restore    
+      working-directory: src
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: Test
+      working-directory: src
+      run: dotnet test --no-build --verbosity normal --configuration Release
 
-    - name: Test .Net
-      run: dotnet test Tedd.SpanUtils.Tests/Tedd.SpanUtils.Tests.csproj --no-build --verbosity normal
-
-    - name: Build .Net Framework tests (legacy)
-      run: dotnet build --no-restore Tedd.SpanUtils.DotNet4Tests\Tedd.SpanUtils.DotNet4Tests.csproj
-
-    - name: Test .Net Framework (legacy)
-      run: ../xunit/xunit.console.exe Tedd.SpanUtils.DotNet4Tests\bin\Debug\net462\Tedd.SpanUtils.DotNet4Tests.dll
-
-
-    #- name: Create Build Directory
-    #  run: mkdir Build
-    #- name: Build
-    #  run: |
-    #    msbuild.exe Tedd.SpanUtils.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="Build"
-
+    - name: publish on version change
+      id: publish_nuget
+      uses: tedd/publish-nuget-neo@v1
+      with:
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+        INCLUDE_SYMBOLS: true
+        TAG_COMMIT: true
