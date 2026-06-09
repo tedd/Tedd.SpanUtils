@@ -8,7 +8,13 @@ There is also an UInt24 type which can be cast to/from UInt32 and used for readi
 
 `MoveWrite()` and `MoveRead*()` moves Span pointer ahead so that the span function as a stream streamwriter and streamreader.
 
-100% code coverate in unit tests.
+100% code coverage in unit tests.
+
+## Architectural Execution Flow
+Tedd.SpanUtils operates as a low-level memory manipulation framework engineered to provide memory-safe `Span<byte>` and `Memory<byte>` operations. The framework is strictly optimized for performance and determinism via structural components like `SpanStream` and `MemoryStreamer`, enabling sequential stream-like behavior over contiguous memory areas.
+
+**Architectural Boundaries:**
+It must be explicitly stated that this project functions strictly as a low-level binary processor. Developers should not construct speculative assumptions regarding high-level UI capabilities; the project explicitly **does not** contain hierarchical data binding infrastructures, routed event mechanisms, or cross-platform view bindings. These remain theoretical roadmap hypotheses outside the current operational scope.
 
 # Example
 ```csharp
@@ -17,7 +23,7 @@ var span = new Span<byte>(mem);
 
 Int32 a = 1234;
 span.Write(a);
-var b = span.ReadInt32(i);
+var b = span.ReadInt32();
 // a == b
 
 
@@ -30,7 +36,7 @@ span.MoveWrite(a2);
 span.MoveWrite(a3);
 
 // To start reading from start we need a new reference for reader pointing to start of memory area.
-var span2 = new Span<byte(mem);
+var span2 = new Span<byte>(mem);
 
 var b1 = span2.MoveReadInt16();
 var b2 = span2.MoveReadInt32();

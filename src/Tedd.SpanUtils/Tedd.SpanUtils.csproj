@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>tedd</Authors>
     <Company>Tedd Hansen</Company>
-    <Description>Extension methods to read/write different datatypes to Span<byte> (tested, benchmarked, optimized). Plus SpanStream and MemoryStreamer for stream-like behavior on Span<byte> and Memory<byte>.</Description>
+    <Description>Extension methods to read/write different datatypes to Span&lt;byte&gt; (tested, benchmarked, optimized). Plus SpanStream and MemoryStreamer for stream-like behavior on Span&lt;byte&gt; and Memory&lt;byte&gt;.</Description>
     <PackageTags>Span;ReadOnlySpan;Read;Write;Performance;BitUtils;MemoryStream;SpanStream</PackageTags>
     <Copyright>Tedd Hansen</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
