@@ -2,7 +2,7 @@ using System;
 using Xunit;
 using Tedd;
 
-namespace Tedd.Tests
+namespace Tedd.SpanUtilsTests
 {
     public class BitUtilsTests
     {
