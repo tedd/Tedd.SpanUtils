@@ -64,7 +64,7 @@ If the number is 14 bits or less (less than 16K) then 2 bytes is used.<br />
 If the number is 22 bits or less (less than 4M) then 3 bytes is used.<br />
 If the number is 30 bits or less (less than 1B) then 4 bytes is used.<br />
 
-This means that if you use `WriteSized("hello")` then 1 byte is used for size header and 4 bytes are used for the string. While if you to `WriteSized(new byte[20_000])` then 3 bytes are used for size header;
+This means that if you use `WriteSized("hello")` then 1 byte is used for size header and 5 bytes are used for the string. While if you do `WriteSized(new byte[20_000])` then 3 bytes are used for size header;
 
 If you want to know how many bytes the number is, simply do (firstByte>>6)+1. The result is 1-4.
 
