@@ -20,6 +20,9 @@ To mitigate speculative assumptions, it must be explicitly delineated that the f
 
 # Example
 ```csharp
+using System;
+using Tedd;
+
 var mem = new byte[1000];
 var span = new Span<byte>(mem);
 
@@ -56,6 +59,9 @@ var b3 = span2.MoveReadInt64();
 Move read/write will slice the current span so that it moves forward in memory area.
 ## Example
 ```csharp
+using System;
+using Tedd;
+
 var mem = new byte[10];
 var span = new Span<byte>(mem);
 // span now points to position 0 of mem. Span is 10 bytes long.
