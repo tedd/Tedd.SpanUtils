@@ -20,6 +20,9 @@ To mitigate speculative assumptions, it must be explicitly delineated that the f
 
 # Example
 ```csharp
+using System;
+using Tedd;
+
 var mem = new byte[1000];
 var span = new Span<byte>(mem);
 
@@ -56,6 +59,9 @@ var b3 = span2.MoveReadInt64();
 Move read/write will slice the current span so that it moves forward in memory area.
 ## Example
 ```csharp
+using System;
+using Tedd;
+
 var mem = new byte[10];
 var span = new Span<byte>(mem);
 // span now points to position 0 of mem. Span is 10 bytes long.
@@ -72,12 +78,12 @@ If the number is 14 bits or less (less than 16K) then 2 bytes is used.<br />
 If the number is 22 bits or less (less than 4M) then 3 bytes is used.<br />
 If the number is 30 bits or less (less than 1B) then 4 bytes is used.<br />
 
-This means that if you use `SizedWrite("hello")` then 1 byte is used for size header and 4 bytes are used for the string. While if you to `SizedWrite(new byte[20_000])` then 3 bytes are used for size header;
+This means that if you use `WriteSized("hello")` then 1 byte is used for size header and 4 bytes are used for the string. While if you do `WriteSized(new byte[20_000])` then 3 bytes are used for size header;
 
 If you want to know how many bytes the number is, simply do (firstByte>>6)+1. The result is 1-4.
 
 # Sized writes
-String, byte\[\], Span<> and ReadOnlySpan<> can be written using `SizedWrite()`. This will put a 1-4 byte size descriptor in front of the actual data, meaning you do not have to know the size when you read it back using `SizedRead*()`;
+String, byte\[\], Span<> and ReadOnlySpan<> can be written using `WriteSized()`. This will put a 1-4 byte size descriptor in front of the actual data, meaning you do not have to know the size when you read it back using `ReadSized*()`;
 
 # Variable-Length Quantity
 Sized writes give an advantage when processing data, since you only need the first two bits to know length. So on first byte you know how much data you need to read for the full number. It is though capped at 30-bit integers since two bits are used for size description.
