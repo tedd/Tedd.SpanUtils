@@ -52,39 +52,37 @@ namespace Tedd
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureVLQ(UInt32 value) => MeasureVLQ((UInt64)value);
 
+        /// <summary>
+        /// Measures size of VLQ in O(1) time complexity and O(1) space complexity.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureVLQ(Int64 value)
         {
-            // Lower bound special case
             if (value == Int64.MinValue)
                 return 1;
 
             if (value < 0)
                 value *= -1;
-            byte i = 1;
-            if (value >= 0b01000000)
-            {
-                i++;
-                value >>= 6;
-            }
-            while (value >= 0b10000000)
-            {
-                i++;
-                value >>= 7;
-            }
-            return i;
+
+            if (value < 64)
+                return 1;
+
+            UInt64 uval = (UInt64)value;
+            int log2 = 63 - BitUtils.LeadingZeroCount(ref uval);
+
+            return (byte)(((log2 - 6) / 7) + 2);
         }
 
+        /// <summary>
+        /// Measures size of VLQ in O(1) time complexity and O(1) space complexity.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureVLQ(UInt64 value)
         {
-            byte i = 1;
-            while (value >= 0b10000000)
-            {
-                i++;
-                value >>= 7;
-            }
-            return i;
+            if (value < 128)
+                return 1;
+
+            return (byte)(((63 - BitUtils.LeadingZeroCount(ref value)) / 7) + 1);
         }
 
     }
