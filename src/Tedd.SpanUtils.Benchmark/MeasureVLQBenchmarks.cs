@@ -34,7 +34,7 @@ namespace Tedd.Benchmark
         public int New_UInt64()
         {
             int sum = 0;
-            foreach (var val in _uValues) sum += global::Tedd.SpanUtils.MeasureVLQ(val);
+            foreach (var val in _uValues) sum += Tedd.SpanUtils.MeasureVLQ(val);
             return sum;
         }
 
@@ -50,7 +50,7 @@ namespace Tedd.Benchmark
         public int New_Int64()
         {
             int sum = 0;
-            foreach (var val in _iValues) sum += global::Tedd.SpanUtils.MeasureVLQ(val);
+            foreach (var val in _iValues) sum += Tedd.SpanUtils.MeasureVLQ(val);
             return sum;
         }
 
@@ -66,7 +66,7 @@ namespace Tedd.Benchmark
         public int New_UInt32()
         {
             int sum = 0;
-            foreach (var val in _u32Values) sum += global::Tedd.SpanUtils.MeasureVLQ(val);
+            foreach (var val in _u32Values) sum += Tedd.SpanUtils.MeasureVLQ(val);
             return sum;
         }
 
@@ -82,7 +82,7 @@ namespace Tedd.Benchmark
         public int New_Int32()
         {
             int sum = 0;
-            foreach (var val in _i32Values) sum += global::Tedd.SpanUtils.MeasureVLQ(val);
+            foreach (var val in _i32Values) sum += Tedd.SpanUtils.MeasureVLQ(val);
             return sum;
         }
 
@@ -98,7 +98,7 @@ namespace Tedd.Benchmark
         public int New_Int16()
         {
             int sum = 0;
-            foreach (var val in _i16Values) sum += global::Tedd.SpanUtils.MeasureVLQ(val);
+            foreach (var val in _i16Values) sum += Tedd.SpanUtils.MeasureVLQ(val);
             return sum;
         }
     }
