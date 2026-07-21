@@ -1,11 +1,13 @@
-﻿namespace Tedd
+using System;
+
+namespace Tedd
 {
-    public readonly struct VInt
+    public readonly struct VInt : IEquatable<VInt>
     {
-        public readonly int Length;
-        public readonly ulong EncodedValue;
-        public readonly ulong Value;
-        public readonly int Size;
+        public int Length { get; }
+        public ulong EncodedValue { get; }
+        public ulong Value { get; }
+        public int Size { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VInt"/> struct.
@@ -40,6 +42,39 @@
         public override string ToString()
         {
             return $"VInt, value = {Value}, length = {Length}, encoded = {EncodedValue:X}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is VInt other && Equals(other);
+        }
+
+        public bool Equals(VInt other)
+        {
+            return Length == other.Length &&
+                   EncodedValue == other.EncodedValue &&
+                   Value == other.Value &&
+                   Size == other.Size;
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+            hash = hash * 31 + Length.GetHashCode();
+            hash = hash * 31 + EncodedValue.GetHashCode();
+            hash = hash * 31 + Value.GetHashCode();
+            hash = hash * 31 + Size.GetHashCode();
+            return hash;
+        }
+
+        public static bool operator ==(VInt left, VInt right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(VInt left, VInt right)
+        {
+            return !(left == right);
         }
     }
 }
