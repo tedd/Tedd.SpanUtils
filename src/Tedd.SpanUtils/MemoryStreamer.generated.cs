@@ -34,7 +34,7 @@ namespace Tedd {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe Byte ReadByte() => ReadByte(out _);
+        public new unsafe Byte ReadByte() => ReadByte(out _);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
