@@ -20,6 +20,9 @@ To mitigate speculative assumptions, it must be explicitly delineated that the f
 
 # Example
 ```csharp
+using System;
+using Tedd;
+
 var mem = new byte[1000];
 var span = new Span<byte>(mem);
 
@@ -29,7 +32,7 @@ var b = span.ReadInt32();
 // a == b
 
 
-// Move* methods moves Span-pointer as they read or write.
+// Move* methods advance the Span pointer during read or write operations.
 Int16 a1 = 10;
 Int32 a2 = 20;
 Int64 a3 = 30;
@@ -37,7 +40,7 @@ span.MoveWrite(a1);
 span.MoveWrite(a2);
 span.MoveWrite(a3);
 
-// To start reading from start we need a new reference for reader pointing to start of memory area.
+// To recommence reading from the origin, a new Span reference pointing to the memory area's beginning is required.
 var span2 = new Span<byte>(mem);
 
 var b1 = span2.MoveReadInt16();
@@ -56,33 +59,36 @@ var b3 = span2.MoveReadInt64();
 Move read/write will slice the current span so that it moves forward in memory area.
 ## Example
 ```csharp
+using System;
+using Tedd;
+
 var mem = new byte[10];
 var span = new Span<byte>(mem);
-// span now points to position 0 of mem. Span is 10 bytes long.
+// span is initialized to point to index 0 of mem, with a length of 10 bytes.
 var i = span.MoveReadInt32();
-// Since Int32 is 4 bytes span was moved ahead 4 bytes.
-// span now points to position 4 of mem and is 6 bytes long.
+// As Int32 occupies 4 bytes, the span pointer is advanced by 4 bytes.
+// span now points to index 4 of mem, with a residual length of 6 bytes.
 ```
 
 # WriteSize() / ReadSize()
-`WriteSize()` and `ReadSize()` to write and read size to span. These use a simple compression technique where the 2 first bits are used to describe how many bytes are used for size.
+`WriteSize()` and `ReadSize()` to write and read size to span. These methods employ a compression technique utilizing the two most significant bits to define the byte length of the size descriptor.
 
-If the number is 6 bits or less (less than 64) then 1 byte is used.<br />
-If the number is 14 bits or less (less than 16K) then 2 bytes is used.<br />
-If the number is 22 bits or less (less than 4M) then 3 bytes is used.<br />
-If the number is 30 bits or less (less than 1B) then 4 bytes is used.<br />
+Values requiring 6 bits or fewer (less than 64) occupy 1 byte.<br />
+Values requiring 14 bits or fewer (less than 16,384) occupy 2 bytes.<br />
+Values requiring 22 bits or fewer (less than 4,194,304) occupy 3 bytes.<br />
+Values requiring 30 bits or fewer (less than 1,073,741,824) occupy 4 bytes.<br />
 
-This means that if you use `SizedWrite("hello")` then 1 byte is used for size header and 4 bytes are used for the string. While if you to `SizedWrite(new byte[20_000])` then 3 bytes are used for size header;
+Consequently, invoking `WriteSized("hello")` consumes 1 byte for the size header and 5 bytes for the string content. Conversely, invoking `WriteSized(new byte[20_000])` consumes 3 bytes for the size header.
 
-If you want to know how many bytes the number is, simply do (firstByte>>6)+1. The result is 1-4.
+To calculate the total bytes occupied by the size descriptor, execute `(firstByte >> 6) + 1`, yielding a result between 1 and 4.
 
 # Sized writes
-String, byte\[\], Span<> and ReadOnlySpan<> can be written using `SizedWrite()`. This will put a 1-4 byte size descriptor in front of the actual data, meaning you do not have to know the size when you read it back using `SizedRead*()`;
+Data types such as String, byte\[\], Span<> and ReadOnlySpan<> are supported via `WriteSized()`. This operation prepends a 1-4 byte size descriptor, negating the requirement for predetermined size knowledge when invoking `ReadSized*()`;
 
 # Variable-Length Quantity
-Sized writes give an advantage when processing data, since you only need the first two bits to know length. So on first byte you know how much data you need to read for the full number. It is though capped at 30-bit integers since two bits are used for size description.
+Sized writes offer optimized processing efficiency by localizing length metadata within the first two bits, facilitating immediate determination of total required bytes. This approach is bounded to 30-bit integers due to the 2-bit descriptor allocation.
 
-Another way to store numbers are Variable-Length Quantity. This existists in some variations, but mainly is encoded so that first bit in each byte tells if there is another byte in the sequence. For signed integeres, the second bit of first byte is the signed bit.
+Variable-Length Quantity (VLQ) provides an alternative numerical encoding paradigm. While variations exist, the primary implementation utilizes the most significant bit of each byte as a continuation flag. For signed integers, the second bit of the initial byte functions as the sign indicator.
 
 WriteVLQ() and ReadVLQ\*() methods provide this functionality.
 
@@ -91,11 +97,11 @@ WriteVLQ() and ReadVLQ\*() methods provide this functionality.
 64-bit: 1-10 bytes.
 
 ## String
-Strings are converted to UTF8 before being written to span.
+Strings undergo UTF-8 encoding prior to writing.
 
-For .Net Core allocation-free copying is used to avoid large GC objects. Since UTF8 has variable size the size is first calculated using `Encoding.UTF8.GetByteCount`. This means two passes are made over the string, first calculating then copying to span.
+In .NET Core and newer environments, allocation-free operations mitigate Large Object Heap (LOH) fragmentation. Given the variable length of UTF-8, the requisite size is preemptively determined via `Encoding.UTF8.GetByteCount`, necessitating a two-pass operation (calculation followed by copying).
 
-For .Net 4.x a short-lived byte array is used for buffering UTF8 before writing.
+In legacy .NET Framework (4.x) environments, a short-lived byte array functions as an intermediary UTF-8 buffer.
 
 ## NOTE
-Since these methods are implemented as extension methods they cause a defensive copy of a few bytes upon each call. This is a weakness/feature of C#.
+Implementation via extension methods necessitates a defensive copy of minor byte structures during invocation, an inherent characteristic of the C# compiler architecture.
