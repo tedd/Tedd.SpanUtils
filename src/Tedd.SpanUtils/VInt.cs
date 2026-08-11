@@ -28,13 +28,16 @@
         /// <returns>The length</returns>
         public static int GetSize(ulong value)
         {
-            int octets = 1;
-            while ((value + 1) >> octets * 7 != 0)
-            {
-                ++octets;
-            }
-
-            return octets;
+            if (value < (1UL << 7) - 1) return 1;
+            if (value < (1UL << 14) - 1) return 2;
+            if (value < (1UL << 21) - 1) return 3;
+            if (value < (1UL << 28) - 1) return 4;
+            if (value < (1UL << 35) - 1) return 5;
+            if (value < (1UL << 42) - 1) return 6;
+            if (value < (1UL << 49) - 1) return 7;
+            if (value < (1UL << 56) - 1) return 8;
+            if (value < (1UL << 63) - 1) return 9;
+            return 10;
         }
 
         public override string ToString()
