@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Xunit;
 
@@ -751,6 +752,32 @@ namespace Tedd.SpanUtilsTests.Span
 
             Assert.Equal(expectedLength, writeLength);
             Assert.Equal(bytes, writeSpan.ToArray());
+        }
+
+        [Theory]
+        [InlineData(1, 0x80ul, 0)]
+        [InlineData(2, 0x407ful, 127)]
+        public void TestVIntToString(int length, ulong encodedValue, ulong expectedValue)
+        {
+            var vInt = new VInt(length, encodedValue, expectedValue);
+            var expectedString = $"VInt, value = {expectedValue}, length = {length}, encoded = {encodedValue:X}";
+            Assert.Equal(expectedString, vInt.ToString());
+        }
+
+        [Theory]
+        [InlineData(new byte[0])]
+        [InlineData(new byte[] { 0, 0, 0, 0 })]
+        [InlineData(new byte[] { 0x40 })] // Incomplete encoding for a 2-byte VInt
+        public void TestVIntInvalidData(byte[] bytes)
+        {
+            Assert.Throws<InvalidDataException>(() => bytes.AsSpan().ReadVInt(4));
+        }
+
+        [Theory]
+        [InlineData(new byte[] { 0x40, 0x7f }, 1)] // maxLength too short for encoding
+        public void TestVIntMaxLengthTooShort(byte[] bytes, int maxLength)
+        {
+            Assert.Throws<InvalidDataException>(() => bytes.AsSpan().ReadVInt(maxLength));
         }
         #endregion
     }

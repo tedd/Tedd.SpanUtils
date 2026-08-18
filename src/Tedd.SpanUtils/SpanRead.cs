@@ -37,6 +37,9 @@ namespace Tedd
                 {
                     ulong value = raw & ~mask;
 
+                    if (span.Length < i)
+                        throw new InvalidDataException("Invalid Variable Int");
+
                     for (int j = 0; j < i; ++j)
                     {
                         byte b = span[j];
