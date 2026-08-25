@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 
-namespace Tedd.Benchmark.Tests
+namespace Tedd.SpanUtils.Benchmark.Tests
 {
     [Config(typeof(RunConfig))]
     [AsciiDocExporter]

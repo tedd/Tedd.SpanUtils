@@ -8,7 +8,7 @@ using BenchmarkDotNet.Diagnostics.Windows;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
 
-namespace Tedd.Benchmark
+namespace Tedd.SpanUtils.Benchmark
 {
     public class RunConfig : ManualConfig
     {
