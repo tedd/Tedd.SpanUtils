@@ -16,6 +16,17 @@ namespace Tedd
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureWriteSize(UInt32 value)
         {
+#if NET8_0_OR_GREATER
+            // O(1) time and space complexity using intrinsics instead of O(n) branches.
+            if (value > 0b00111111_11111111_11111111_11111111)
+                throw new ArgumentException("Size too large, use WriteUInt32 or WriteUInt64 instead.", nameof(value));
+
+            int bits = 32 - System.Numerics.BitOperations.LeadingZeroCount(value | 1);
+            if (bits <= 6) return 1;
+            if (bits <= 14) return 2;
+            if (bits <= 22) return 3;
+            return 4;
+#else
             // If small (up to 63) we store length as 1 byte
             if (value <= 0b00111111) return 1;
             // Slightly larger (up to 16K) we store length as 2 bytes
@@ -26,6 +37,7 @@ namespace Tedd
             if (value <= 0b00111111_11111111_11111111_11111111) return 4;
             // Above that is unsupported. This is intended to be a compact representation of unknown size.
             throw new ArgumentException("Size too large, use WriteUInt32 or WriteUInt64 instead.", nameof(value));
+#endif
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -59,6 +71,12 @@ namespace Tedd
             if (value == Int64.MinValue)
                 return 1;
 
+#if NET8_0_OR_GREATER
+            // O(1) time and space complexity using intrinsics instead of O(n) loop
+            ulong uval = (ulong)(value < 0 ? -value : value);
+            int bits = 64 - System.Numerics.BitOperations.LeadingZeroCount(uval | 1);
+            return (byte)((bits + 7) / 7);
+#else
             if (value < 0)
                 value *= -1;
             byte i = 1;
@@ -73,11 +91,17 @@ namespace Tedd
                 value >>= 7;
             }
             return i;
+#endif
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureVLQ(UInt64 value)
         {
+#if NET8_0_OR_GREATER
+            // O(1) time and space complexity using intrinsics instead of O(n) loop
+            int bits = 64 - System.Numerics.BitOperations.LeadingZeroCount(value | 1);
+            return (byte)((bits + 6) / 7);
+#else
             byte i = 1;
             while (value >= 0b10000000)
             {
@@ -85,6 +109,7 @@ namespace Tedd
                 value >>= 7;
             }
             return i;
+#endif
         }
 
     }
