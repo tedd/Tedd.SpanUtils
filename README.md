@@ -8,8 +8,6 @@ There is also an UInt24 type which can be cast to/from UInt32 and used for readi
 
 `MoveWrite()` and `MoveRead*()` moves Span pointer ahead so that the span function as a stream streamwriter and streamreader.
 
-100% code coverage in unit tests.
-
 ## Architectural Paradigms and Epistemological Scope
 
 **Implemented Facts:**
@@ -50,7 +48,19 @@ var b3 = span2.MoveReadInt64();
 
 ```
 
+# SpanStream and MemoryStreamer
+Stream-like memory abstractions provide a functional alternative to manual pointer advancement.
 
+```csharp
+var mem = new byte[1000];
+var stream = new SpanStream(mem);
+
+Int32 a = 1234;
+stream.Write(a);
+stream.Position = 0;
+var b = stream.ReadInt32();
+// a == b
+```
 
 # Move read/write
 Move read/write will slice the current span so that it moves forward in memory area.
