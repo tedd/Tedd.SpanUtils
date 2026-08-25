@@ -1,16 +1,18 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using BenchmarkDotNet.Running;
-using Tedd.Benchmark.Tests;
+using Tedd.SpanUtils.Benchmark.Tests;
 
-namespace Tedd.Benchmark
+namespace Tedd.SpanUtils.Benchmark
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var summary1 = BenchmarkRunner.Run<MeasureWriteSizeBenchmark>();
-            var summary2 = BenchmarkRunner.Run<MeasureVLQBenchmark>();
+            var summary1 = BenchmarkRunner.Run<SpanCopyMethodInt>();
+            //var summary2 = BenchmarkRunner.Run<SpanCopyMethodLong>();
+            //var summary3 = BenchmarkRunner.Run<SpanReadMethodLong>();
+
         }
     }
 }
