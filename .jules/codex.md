@@ -1,3 +1,6 @@
 ## 2026-06-16 - Architectural Articulation and Syntax Synchronization
 **Observation:** The primary documentation (README.md) exhibited epistemological drift. Code examples contained compilation-breaking syntax errors (e.g., passing arguments to argumentless methods and malformed generic instantiations). Furthermore, the documentation lacked explicit boundary definition, potentially allowing users to infer the presence of speculative high-level UI frameworks (e.g., hierarchical data binding, routed events) within what is strictly a low-level memory manipulation library.
 **Strategic Action:** Synchronized documentation by rectifying C# syntactical anomalies. Instituted a strict "Architectural Paradigms and Epistemological Scope" section to explicitly differentiate verified implemented mechanics (low-level Span manipulation) from unauthorized roadmap hypotheses (UI binding and event infrastructures).
+## 2026-08-25 - SpanStream Articulation
+**Observation:** SpanStream and MemoryStreamer were described conceptually but lacked functional examples, causing pedagogical friction.
+**Strategic Action:** Added reproducible code examples for stream-like operations to ensure developers do not independently deduce usage.
