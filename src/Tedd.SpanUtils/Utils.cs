@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -55,6 +55,12 @@ namespace Tedd
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureVLQ(Int64 value)
         {
+#if NET8_0_OR_GREATER
+            // O(1) time and space complexity using intrinsics instead of O(n) loop.
+            if (value == Int64.MinValue) return 1;
+            ulong v = (ulong)(value < 0 ? -value : value);
+            return (byte)(1 + (64 - System.Numerics.BitOperations.LeadingZeroCount(v)) / 7);
+#else
             // Lower bound special case
             if (value == Int64.MinValue)
                 return 1;
@@ -73,11 +79,17 @@ namespace Tedd
                 value >>= 7;
             }
             return i;
+#endif
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureVLQ(UInt64 value)
         {
+#if NET8_0_OR_GREATER
+            // O(1) time and space complexity using intrinsics instead of O(n) loop.
+            if (value == 0) return 1;
+            return (byte)((70 - System.Numerics.BitOperations.LeadingZeroCount(value)) / 7);
+#else
             byte i = 1;
             while (value >= 0b10000000)
             {
@@ -85,6 +97,7 @@ namespace Tedd
                 value >>= 7;
             }
             return i;
+#endif
         }
 
     }
