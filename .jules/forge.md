@@ -1,0 +1,5 @@
+## 2026-08-01 - Dependency Modernization
+
+**Observation:** The dependency versions in the `Tedd.SpanUtils` solution are outdated, specifically `System.Memory`, `System.Runtime.CompilerServices.Unsafe`, `coverlet.collector`, `Microsoft.NET.Test.Sdk`, `Tedd.RandomUtils`, `xunit`, `xunit.runner.console`, `xunit.runner.visualstudio`, `BenchmarkDotNet`, and `Microsoft.CodeAnalysis.Analyzers`. Some test frameworks fail to restore in NET SDK 10 due to older .NET versions (net5.0) which have been deprecated and must be bumped to net8.0 to build correctly without compatibility or security errors.
+
+**Strategic Action:** Upgrade dependencies across all projects (`Tedd.SpanUtils`, `Tedd.SpanUtils.DotNet4Tests`, `Tedd.SpanUtils.Tests`, `Tedd.SpanUtils.Benchmark`, `Tedd.SpanUtils.SourceGenerator`) to their latest stable compatible versions. Upgrade `Tedd.SpanUtils.Benchmark` and `Tedd.SpanUtils.SourceGenerator` target frameworks from deprecated `net5.0` to `net8.0` to ensure smooth restores, builds, and test runs. Run complete build/test cycle, ensure package artifacts build correctly for multi-targeted frameworks, and `dotnet format` executes with zero issues.
