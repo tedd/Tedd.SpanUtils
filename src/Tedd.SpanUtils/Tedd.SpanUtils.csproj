@@ -1,54 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFrameworks>net462;netstandard2.0;netstandard2.1;net8.0;net10.0</TargetFrameworks>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>tedd</Authors>
+    <TargetFrameworks>netstandard2.1;net6.0;net10.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(EnableNet11)' == 'true'">$(TargetFrameworks);net11.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Version>2.0.0</Version>
+    <Authors>Tedd Hansen</Authors>
     <Company>Tedd Hansen</Company>
-    <Description>Extension methods to read/write different data types to Span&lt;byte&gt; (tested, benchmarked, optimized). Plus SpanStream and MemoryStreamer for stream-like behavior on Span&lt;byte&gt; and Memory&lt;byte&gt;.</Description>
-    <PackageTags>Span;ReadOnlySpan;Read;Write;Performance;BitUtils;MemoryStream;SpanStream</PackageTags>
     <Copyright>Tedd Hansen</Copyright>
+    <Description>High-performance binary serialization for Span and Memory: endian-aware primitives, variable-length integers, UTF-8, and bounded stream adapters.</Description>
+    <PackageTags>Span Memory Binary Serialization Endianness UTF8 VLQ</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/tedd/Tedd.SpanUtils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tedd/Tedd.SpanUtils.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>1.1.0-beta.7</Version>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
-    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <AnalysisLevel>latest-all</AnalysisLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReleaseNotes>Version 2: .NET Standard 2.1 and .NET 6 minimums, optimized .NET 10 target, expanded serialization APIs, checked bounds, corrected stream semantics, and archived comparative benchmarks. See README for migration details.</PackageReleaseNotes>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <IsTrimmable Condition="'$(TargetFramework)' != 'netstandard2.1'">true</IsTrimmable>
   </PropertyGroup>
-
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
-      <PackageReference Include="System.Memory" Version="4.5.4" />
-  </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
-      <PackageReference Include="System.Memory" Version="4.5.4" />
-  </ItemGroup>
-  <ItemGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(net4|netcoreapp2|netstandard)'))">
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
-  </ItemGroup>
-
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <DefineConstants>$(DefineConstants);BEFORENETCOREAPP3;NETSTANDARD21</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
-    <None Include="../../LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
-
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net4'))">
-    <DefineConstants>$(DefineConstants);NETFRAMEWORK</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(netcoreapp|netstandard2\.1|net[56789])'))">     
-    <DefineConstants>$(DefineConstants);NETCOREAPP</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^(net4|netcoreapp2|netstandard)'))">
-    <DefineConstants>$(DefineConstants);BEFORENETCOREAPP3</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^netstandard2\.1'))">
-    <DefineConstants>$(DefineConstants);NETSTANDARD21</DefineConstants>
-  </PropertyGroup>
-
 </Project>

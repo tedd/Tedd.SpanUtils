@@ -2,44 +2,60 @@ name: .NET
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [main, master]
   pull_request:
-    branches: [ master, main ]
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  build-test-publish:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            10.0.x
+      - run: dotnet build src/Tedd.SpanUtils.sln -c Release
+      - run: dotnet test src/Tedd.SpanUtils.Tests -c Release --no-build
+      - run: dotnet test src/Tedd.SpanUtils.StandardTests -c Release --no-build
+      - run: dotnet pack src/Tedd.SpanUtils -c Release --no-build -o artifacts/packages
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: artifacts/packages/*
+
+  preview:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: |
-          6.0.x
-          8.0.x
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
-    - name: Setup Nuget
-      uses: Nuget/setup-nuget@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: preview
+      - run: dotnet test src/Tedd.SpanUtils.Tests -c Release -f net11.0 -p:EnableNet11=true
 
-    - name: Restore dependencies
-      working-directory: src
-      run: dotnet restore
-      
-    - name: Build
-      working-directory: src
-      run: dotnet build --no-restore --configuration Release
-      
-    - name: Test
-      working-directory: src
-      run: dotnet test --no-build --verbosity normal --configuration Release
-
-    - name: publish on version change
-      id: publish_nuget
-      uses: tedd/publish-nuget-neo@v1
-      with:
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-        INCLUDE_SYMBOLS: true
-        TAG_COMMIT: true
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [test, preview]
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Publish on version change
+        uses: tedd/publish-nuget-neo@v1
+        with:
+          NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
+          PROJECT_FILE_PATH: src/Tedd.SpanUtils/Tedd.SpanUtils.csproj
+          INCLUDE_SYMBOLS: true
+          TAG_COMMIT: true

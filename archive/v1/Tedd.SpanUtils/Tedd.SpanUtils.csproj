@@ -1,0 +1,49 @@
+<Project>
+  <!-- Must precede Sdk.props: BenchmarkDotNet gives both libraries one ArtifactsPath. -->
+  <PropertyGroup>
+    <ArtifactsProjectName>Tedd.SpanUtils.Archive.V1</ArtifactsProjectName>
+  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net10.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(EnableNet11)' == 'true'">$(TargetFrameworks);net11.0</TargetFrameworks>
+    <AssemblyName>Tedd.SpanUtils.Archive.V1</AssemblyName>
+    <RootNamespace>Tedd</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsPackable>false</IsPackable>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <Version>1.1.0-beta.7</Version>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+  <UsingTask TaskName="PrepareArchiveSource" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceFile ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var source = File.ReadAllText(SourceFile);
+        var decimalReturns = new Regex(@"return a\[0\];");
+        var byteReaders = new Regex(@"(public static unsafe Byte\[\] (?:Move)?ReadBytes\([^\{]+\))\s*\{[^}]*\}");
+        if (decimalReturns.Matches(source).Count != 12 || byteReaders.Matches(source).Count != 4)
+            throw new System.InvalidOperationException("Archived source no longer matches the documented compatibility patch.");
+        source = decimalReturns.Replace(source, "return r;");
+        source = byteReaders.Replace(source, "$1 { throw new NotSupportedException(\"Unbuildable v1 method excluded from benchmarks.\"); }");
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+        File.WriteAllText(OutputFile, source);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="PrepareArchivedCompatibilitySource" BeforeTargets="BeforeCompile">
+    <PrepareArchiveSource SourceFile="$(MSBuildProjectDirectory)/SpanUtils.generated.cs" OutputFile="$(IntermediateOutputPath)SpanUtils.compat.generated.cs" />
+    <ItemGroup>
+      <Compile Remove="SpanUtils.generated.cs" />
+      <Compile Include="$(IntermediateOutputPath)SpanUtils.compat.generated.cs" />
+    </ItemGroup>
+  </Target>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>

@@ -1,91 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+#if NET6_0_OR_GREATER
+using System.Numerics;
+#endif
 
 namespace Tedd
 {
     public static partial class SpanUtils
     {
-        /// <summary>
-        /// Counts how many bytes WriteSize will use for a given value.
-        /// </summary>
-        /// <param name="value"></param>
+        /// <summary>Returns the byte count of the compact 30-bit length prefix.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureWriteSize(UInt32 value)
+        public static byte MeasureWriteSize(uint value)
         {
-            // If small (up to 63) we store length as 1 byte
-            if (value <= 0b00111111) return 1;
-            // Slightly larger (up to 16K) we store length as 2 bytes
-            if (value <= 0b00111111_11111111) return 2;
-            // Even larger (up to 4,2M) we store length as 3 bytes
-            if (value <= 0b00111111_11111111_11111111) return 3;
-            // Largest (up to 1M) we store length as 4 bytes
-            if (value <= 0b00111111_11111111_11111111_11111111) return 4;
-            // Above that is unsupported. This is intended to be a compact representation of unknown size.
-            throw new ArgumentException("Size too large, use WriteUInt32 or WriteUInt64 instead.", nameof(value));
+            if (value <= 0x3F) return 1;
+            if (value <= 0x3FFF) return 2;
+            if (value <= 0x3FFFFF) return 3;
+            if (value <= 0x3FFFFFFF) return 4;
+            throw new ArgumentOutOfRangeException(nameof(value), "Size exceeds the 30-bit format.");
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureVLQ(Int16 value)
+        public static byte MeasureVLQ(short value) => value == short.MinValue ? (byte)1 : MeasureVLQ((long)value);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte MeasureVLQ(ushort value) => MeasureVLQ((ulong)value);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte MeasureVLQ(UInt24 value)
         {
-            // Lower bound special case
-            if (value == Int16.MinValue)
-                return 1;
-            return MeasureVLQ((Int64)value);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureVLQ(UInt16 value) => MeasureVLQ((UInt64)value);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureVLQ(UInt24 value) => MeasureVLQ((UInt64)((UInt32)value & 0xFFFFFF));
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureVLQ(Int32 value)
-        {
-            // Lower bound special case
-            if (value == Int32.MinValue)
-                return 1;
-            return MeasureVLQ((Int64)value);
+            if ((uint)value > 0xFFFFFFU) throw new ArgumentOutOfRangeException(nameof(value));
+            return MeasureVLQ((ulong)value);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureVLQ(UInt32 value) => MeasureVLQ((UInt64)value);
-
+        public static byte MeasureVLQ(int value) => value == int.MinValue ? (byte)1 : MeasureVLQ((long)value);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureVLQ(Int64 value)
-        {
-            // Lower bound special case
-            if (value == Int64.MinValue)
-                return 1;
-
-            if (value < 0)
-                value *= -1;
-            byte i = 1;
-            if (value >= 0b01000000)
-            {
-                i++;
-                value >>= 6;
-            }
-            while (value >= 0b10000000)
-            {
-                i++;
-                value >>= 7;
-            }
-            return i;
-        }
-
+        public static byte MeasureVLQ(uint value) => MeasureVLQ((ulong)value);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte MeasureVLQ(UInt64 value)
+        public static byte MeasureVLQ(long value)
         {
-            byte i = 1;
-            while (value >= 0b10000000)
-            {
-                i++;
-                value >>= 7;
-            }
-            return i;
+            if (value == long.MinValue) return 1;
+            var magnitude = (ulong)(value < 0 ? -value : value);
+#if NET6_0_OR_GREATER
+            return (byte)((65 - BitOperations.LeadingZeroCount(magnitude | 1UL) + 6) / 7);
+#else
+            var length = 1;
+            for (magnitude >>= 6; magnitude != 0; magnitude >>= 7) length++;
+            return (byte)length;
+#endif
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte MeasureVLQ(ulong value)
+        {
+#if NET6_0_OR_GREATER
+            return (byte)((64 - BitOperations.LeadingZeroCount(value | 1UL) + 6) / 7);
+#else
+            var length = 1;
+            while (value >= 0x80) { value >>= 7; length++; }
+            return (byte)length;
+#endif
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 
 namespace Tedd
@@ -6,7 +6,7 @@ namespace Tedd
     public static class UInt24Extensions
     {
         /// <summary>
-        /// Convert UInt32 to UInt24, will perform & 0xFFFFF to truncate Int32.
+        /// Convert UInt32 to UInt24, will perform &amp; 0xFFFFFF to truncate Int32.
         /// </summary>
         /// <param name="value">Value to convert.</param>
         /// <returns></returns>
@@ -14,7 +14,7 @@ namespace Tedd
         public static UInt24 ToUInt24(this UInt32 value) => (UInt24)(value & 0xFFFFFF);
 
         /// <summary>
-        /// Convert Int32 to UInt24, will perform & 0xFFFFF to truncate Int32.
+        /// Convert Int32 to UInt24, will perform &amp; 0xFFFFFF to truncate Int32.
         /// WARNING: Negative values will be lost, and are not restored with .ToInt32().
         /// </summary>
         /// <remarks>Negative values will be lost, and are not restored with .ToInt32().</remarks>

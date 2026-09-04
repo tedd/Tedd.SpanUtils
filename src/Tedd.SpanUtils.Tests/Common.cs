@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xunit;
 
 namespace Tedd.SpanUtilsTests
@@ -10,7 +10,7 @@ namespace Tedd.SpanUtilsTests
         public void TestMeasureOverflow()
         {
             var mem = new byte[1];
-            Assert.Throws<ArgumentException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var span1 = new Span<byte>(mem);
                 _ = SpanUtils.MeasureWriteSize(UInt32.MaxValue);

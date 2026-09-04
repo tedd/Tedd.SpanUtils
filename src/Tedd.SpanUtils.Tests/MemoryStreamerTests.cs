@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Linq;
 using Xunit;
@@ -32,7 +32,7 @@ namespace Tedd.SpanUtilsTests.Span
 
                         span1.Write(answer, offset, bc - offset);
                         var buffer = new byte[bc + offset];
-                        span2.Read(buffer, offset, bc - offset);
+                        Assert.Equal(bc - offset, span2.Read(buffer, offset, bc - offset));
 
                         Assert.Equal(new Span<byte>(answer).Slice(offset, bc - offset).ToArray(), new Memory<byte>(buffer).Slice(offset, bc - offset).ToArray());
                     }
@@ -41,7 +41,7 @@ namespace Tedd.SpanUtilsTests.Span
                 Assert.Throws<ArgumentNullException>(() =>
                 {
                     var s = new MemoryStreamer(mem);
-                    s.Read(null, 0, 1);
+                    Assert.Equal(0, s.Read(null, 0, 1));
                 });
             }
         }
