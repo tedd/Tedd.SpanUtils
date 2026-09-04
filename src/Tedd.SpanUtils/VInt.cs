@@ -1,58 +1,46 @@
+using System;
+using System.Runtime.CompilerServices;
+#if NET6_0_OR_GREATER
+using System.Numerics;
+#endif
+
 namespace Tedd
 {
+    /// <summary>An EBML variable-length integer, including its original wire representation.</summary>
     public readonly struct VInt
     {
+        public const ulong MaxValue = 0x00FFFFFFFFFFFFFEUL;
         public readonly int Length;
         public readonly ulong EncodedValue;
         public readonly ulong Value;
         public readonly int Size;
+        /// <summary>True when every payload bit is one: the EBML unknown-size marker.</summary>
+        public bool IsUnknown => Length > 0 && Value == (1UL << (Length * 7)) - 1;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VInt"/> struct.
-        /// </summary>
-        /// <param name="length">The length.</param>
-        /// <param name="encoded">The encoded.</param>
-        /// <param name="value">The value.</param>
         public VInt(int length, ulong encoded, ulong value)
         {
+            if ((uint)(length - 1) >= 8) throw new ArgumentOutOfRangeException(nameof(length));
+            if (value > (1UL << (length * 7)) - 1) throw new ArgumentOutOfRangeException(nameof(value));
             Length = length;
             EncodedValue = encoded;
             Value = value;
-            Size = GetSize(Value);
+            Size = value == (1UL << (length * 7)) - 1 ? length : GetSize(value);
         }
 
-        /// <summary>
-        /// Returns the length of the VInt encoding for the specified value.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns>The length</returns>
+        /// <summary>Returns the smallest 1–8 byte encoding, reserving all-one payloads for unknown sizes.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetSize(ulong value)
         {
-#if NET8_0_OR_GREATER
-            // O(1) time and space complexity using intrinsics instead of O(n) loop.
-            // NOTE: The original O(n) loop implementation contained an infinite loop bug for large values
-            // (e.g. ulong.MaxValue - 1) due to C# bitshift operators masking the shift count to 63 bits.
-            // When octets * 7 >= 64, it wrapped around, causing `((value + 1) >> octets * 7) != 0` to infinitely be true.
-            // This optimized implementation fixes that bug by utilizing a constant time intrinsic mapping.
-            if (value == ulong.MaxValue) return 10;
-            int bits = 64 - System.Numerics.BitOperations.LeadingZeroCount(value + 1);
-            return (bits + 6) / 7;
+            if (value > MaxValue) throw new ArgumentOutOfRangeException(nameof(value), "EBML data integers have at most 56 payload bits, with the all-one value reserved.");
+#if NET6_0_OR_GREATER
+            return (64 - BitOperations.LeadingZeroCount(value + 1) + 6) / 7;
 #else
-            int octets = 1;
-            while ((value + 1) >> octets * 7 != 0)
-            {
-                ++octets;
-                // Patching the infinite loop bug in legacy targets
-                if (octets >= 10) return 10;
-            }
-
-            return octets;
+            var size = 1;
+            while (((value + 1) >> (size * 7)) != 0) size++;
+            return size;
 #endif
         }
 
-        public override string ToString()
-        {
-            return $"VInt, value = {Value}, length = {Length}, encoded = {EncodedValue:X}";
-        }
+        public override string ToString() => $"VInt, value = {Value}, length = {Length}, encoded = {EncodedValue:X}";
     }
 }

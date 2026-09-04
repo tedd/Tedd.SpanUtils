@@ -1,151 +1,129 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace Tedd.SpanUtils.SourceGenerator
 {
+    /// <summary>Generates cursor wrappers from the same metadata as the span primitives.</summary>
     public static class CodeGenStreams
     {
-
         public static void Generate(string root)
         {
-            //var le = Endianness.Default;
+            foreach (bool memory in new[] { false, true })
             {
-                var sbRO = new StringBuilder();
-                var sbW = new StringBuilder();
-
-                foreach (var le in new Endianness[] { Endianness.Default, Endianness.LE, Endianness.BE })
+                foreach (bool readOnly in new[] { false, true })
                 {
-                    foreach (var ds in CodeGenBodies.DataStructures)
+                    var sb = new StringBuilder();
+                    foreach (var endian in new[] { Endianness.Default, Endianness.LE, Endianness.BE })
                     {
-                        if (!ds.Endian.HasFlag(le))
-                            continue;
-                        GenReadBody(le, ds, sbRO, false, true);
-                        GenReadBody(le, ds, sbW, false, false);
-                        GenWriteBody(le, ds, sbW, false);
+                        foreach (var ds in CodeGenBodies.DataStructures)
+                        {
+                            if (!ds.Endian.HasFlag(endian)) continue;
+                            if (!string.IsNullOrEmpty(ds.Condition)) sb.AppendLine($"#if {ds.Condition}");
+                            GenerateRead(endian, ds, sb, memory, readOnly);
+                            if (!readOnly) GenerateWrite(endian, ds, sb, memory);
+                            if (!string.IsNullOrEmpty(ds.Condition)) sb.AppendLine("#endif");
+                        }
                     }
+                    GenerateVInt(sb, readOnly);
+                    string name = (readOnly ? "ReadOnly" : "") + (memory ? "MemoryStreamer" : "SpanStream");
+                    string declaration = memory ? Helper.CreateClass(false, name, sb.ToString(), "") : Helper.CreateRefStruct(name, sb.ToString(), "");
+                    File.WriteAllText(Path.Combine(root, name + ".generated.cs"), Helper.CreateNamespace("Tedd", declaration, CodeGenBodies.usings));
                 }
-                var strRW = Helper.CreateRefStruct("SpanStream", sbW.ToString(), "");
-                var nsRW = Helper.CreateNamespace("Tedd", strRW, CodeGenBodies.usings);
-                File.WriteAllText(Path.Combine(root, "SpanStream.generated.cs"), nsRW);
-                var strRO = Helper.CreateRefStruct("ReadOnlySpanStream", sbRO.ToString(), "");
-                var nsRO = Helper.CreateNamespace("Tedd", strRO, CodeGenBodies.usings);
-                File.WriteAllText(Path.Combine(root, "ReadOnlySpanStream.generated.cs"), nsRO);
-            }
-            {
-                var sbRO = new StringBuilder();
-                var sbW = new StringBuilder();
-
-                foreach (var le in new Endianness[] { Endianness.Default, Endianness.LE, Endianness.BE })
-                {
-                    foreach (var ds in CodeGenBodies.DataStructures)
-                    {
-                        if (!ds.Endian.HasFlag(le))
-                            continue;
-                        GenReadBody(le, ds, sbRO, true, true);
-                        GenReadBody(le, ds, sbW, true, false);
-                        GenWriteBody(le, ds, sbW, true);
-                    }
-                }
-                var strRW = Helper.CreateClass(false, "MemoryStreamer", sbW.ToString(), "");
-                var nsRW = Helper.CreateNamespace("Tedd", strRW, CodeGenBodies.usings);
-                File.WriteAllText(Path.Combine(root, "MemoryStreamer.generated.cs"), nsRW);
-                var strRO = Helper.CreateClass(false, "ReadOnlyMemoryStreamer", sbRO.ToString(), "");
-                var nsRO = Helper.CreateNamespace("Tedd", strRO, CodeGenBodies.usings);
-                File.WriteAllText(Path.Combine(root, "ReadOnlyMemoryStreamer.generated.cs"), nsRO);
             }
         }
 
-        private static string Sj(List<string> l) => String.Join(", ", l);
-
-        private static void GenReadBody(Endianness le, MethodData ds, StringBuilder sb, bool isMemoryStreamer,
-            bool isReadOnly)
+        private static void GenerateVInt(StringBuilder sb, bool readOnly)
         {
-            if (ds.RW == MethodRW.WriteOnly)
-                return;
+            Helper.Method(sb, false, "VInt", "ReadVInt", "int maxLength = 8", @"
+            var value = SpanUtils.ReadVInt(ReadBuffer, maxLength);
+            _position += value.Length;
+            return value;", "");
+            Helper.Method(sb, false, "bool", "TryReadVInt", "out VInt value, int maxLength = 8", @"
+            if (!SpanUtils.TryReadVInt(ReadBuffer, out value, maxLength)) return false;
+            _position += value.Length;
+            return true;", "");
+            if (readOnly) return;
+            Helper.Method(sb, false, "int", "WriteVInt", "ulong value", @"
+            var length = SpanUtils.WriteVInt(WriteBuffer, value);
+            AdvanceWrite(length);
+            return length;", "");
+            Helper.Method(sb, false, "bool", "TryWriteVInt", "ulong value, out int length", @"
+            if (!SpanUtils.TryWriteVInt(WriteBuffer, value, out length)) return false;
+            AdvanceWrite(length);
+            return true;", "");
+        }
+        private static string Join(List<string> values) => string.Join(", ", values);
 
-            if (isReadOnly && ds.Name == "Span")
-                return;
-
-            var memory = isMemoryStreamer ? "Memory." : "";
-            List<string> pDef = new();
-            List<string> p = new();
-
-            var checkWriteOk = "";
-
-            // Special case for returning span, then we need to read Span only
-            if (ds.Name == "Span")
-            {
-                if (!isMemoryStreamer)
-                    memory = "";
-                else
-                {
-                    memory = "Memory.";
-                    checkWriteOk = @"
-            if (!CanWrite)
-                throw new ReadOnlyException(""Span is read-only, use ReadReadOnlySpan."");";
-                }
-            }
-
-            var name = "Read" + ds.Name + CodeGenBodies.EndiannessToMethodExtension(le);
-
-
-            if (!string.IsNullOrWhiteSpace(ds.ExtraReadParamsDef))
-                pDef.Add(ds.ExtraReadParamsDef);
-            if (!string.IsNullOrWhiteSpace(ds.ExtraReadParams))
-                p.Add(ds.ExtraReadParams);
-            var retType = ds.TypeString;
-
-            if (isMemoryStreamer && ds.Endian == Endianness.Default
-                && ds.TypeString == typeof(byte).Name && ds.Name == typeof(byte).Name)
-            {
-                retType = "override int";
-            }
+        private static void GenerateRead(Endianness endian, MethodData ds, StringBuilder sb, bool memory, bool readOnly)
+        {
+            if (ds.RW == MethodRW.WriteOnly || (readOnly && ds.TypeString == "Span<byte>")) return;
+            GenerateRawTryRead(endian, ds, sb);
+            string name = ds.GetReadName(endian);
+            var definitions = new List<string>();
+            var arguments = new List<string>();
+            if (!string.IsNullOrWhiteSpace(ds.ExtraReadParamsDef)) definitions.Add(ds.ExtraReadParamsDef);
+            if (!string.IsNullOrWhiteSpace(ds.ExtraReadParams)) arguments.Add(ds.ExtraReadParams);
             if (!ds.NoLengthParam)
             {
-                var pC = new List<string>(p);
-                pC.Add("out _");
-                Helper.Method(sb, false, retType, $"{name}", Sj(pDef), $"{name}({Sj(pC)});", "");
-                pDef.Add("out int length");
-                p.Add("out length");
+                // Stream.ReadByte must return int and -1 at EOF; its implementation is handwritten.
+                if (!(memory && name == "ReadByte"))
+                {
+                    var noLengthArgs = new List<string>(arguments) { "out _" };
+                    Helper.Method(sb, false, ds.TypeString, name, Join(definitions), $"{name}({Join(noLengthArgs)});", "");
+                }
+                definitions.Add("out int length");
+                arguments.Add("out length");
             }
+            Helper.Method(sb, false, ds.TypeString, name, Join(definitions), $@"
+            var result = SpanUtils.{name}(ReadBuffer, {Join(arguments)});
+            _position += {ds.Size};
+            return result;", "");
 
-            Helper.Method(sb, false, ds.TypeString, $"{name}", Sj(pDef), @$"{checkWriteOk}
-            var ret = SpanUtils.{name}({memory}Span.Slice(_position), {Sj(p)});
-            Position += {ds.Size};
-            return ret;", "");
-
+            if (!ds.NoLengthParam && string.IsNullOrWhiteSpace(ds.ExtraReadParamsDef))
+            {
+                Helper.Method(sb, false, "bool", "Try" + name, $"out {ds.TypeString} value", $"Try{name}(out value, out _);", "");
+                Helper.Method(sb, false, "bool", "Try" + name, $"out {ds.TypeString} value, out int length", $@"
+            if (!SpanUtils.Try{name}(ReadBuffer, out value, out length)) return false;
+            _position += length;
+            return true;", "");
+            }
         }
-        private static void GenWriteBody(Endianness le, MethodData ds, StringBuilder sb, bool isMemoryStreamer)
+
+        private static void GenerateRawTryRead(Endianness endian, MethodData ds, StringBuilder sb)
         {
-            if (ds.IsAlias || ds.RW == MethodRW.ReadOnly)
-                return;
-
-            var name = $"Write{ds.WriteName}" + CodeGenBodies.EndiannessToMethodExtension(le);
-            var memory = isMemoryStreamer ? "Memory." : "";
-
-            List<string> pDef = new();
-            List<string> p = new();
-
-            pDef.Add($"{ds.TypeString} value");
-            p.Add("value");
-
-
-
+            if (!ds.NoLengthParam) return;
+            string name = ds.GetReadName(endian);
+            Helper.Method(sb, false, "bool", "Try" + name, $"{ds.ExtraReadParamsDef}, out {ds.TypeString} value", $@"
+            if (!SpanUtils.Try{name}(ReadBuffer, {ds.ExtraReadParams}, out value)) return false;
+            _position += {ds.Size};
+            return true;", "");
+        }
+        private static void GenerateWrite(Endianness endian, MethodData ds, StringBuilder sb, bool memory)
+        {
+            if (ds.IsAlias || ds.RW == MethodRW.ReadOnly) return;
+            string name = ds.GetWriteName(endian);
+            string inputModifier = !memory && (ds.TypeString == "Span<byte>" || ds.TypeString == "ReadOnlySpan<byte>") ? "scoped " : "";
+            string modifier = memory && name == "Write" && ds.TypeString == "ReadOnlySpan<byte>" ? "override " : "";
             sb.Append($@"
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void {name}({Sj(pDef)}) => {name}({Sj(p)}, out _);
+        public {modifier}void {name}({inputModifier}{ds.TypeString} value) => {name}(value, out _);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void {name}({inputModifier}{ds.TypeString} value, out int length)
+        {{
+            SpanUtils.{name}(WriteBuffer, value, out length);
+            AdvanceWrite(length);
+        }}
 ");
-            pDef.Add("out int length");
-            p.Add("out length");
-
-            sb.Append($@"
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void {name}({Sj(pDef)}) {{
-            SpanUtils.{name}({memory}Span.Slice(_position), {Sj(p)});
-            Position += {ds.Size};
-        }}");
+            {
+                Helper.Method(sb, false, "bool", "Try" + name, $"{inputModifier}{ds.TypeString} value", $"Try{name}(value, out _);", "");
+                Helper.Method(sb, false, "bool", "Try" + name, $"{inputModifier}{ds.TypeString} value, out int length", $@"
+            if (!SpanUtils.Try{name}(WriteBuffer, value, out length)) return false;
+            AdvanceWrite(length);
+            return true;", "");
+            }
         }
     }
 }

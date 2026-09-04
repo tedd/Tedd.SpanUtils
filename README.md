@@ -1,101 +1,200 @@
 # Tedd.SpanUtils
-Utilities for reading/writing to span.
 
-Available on NuGet: https://www.nuget.org/packages/Tedd.SpanUtils
+Binary serialization over caller-owned `Span<byte>`, `ReadOnlySpan<byte>`, and `Memory<byte>`. Read and write primitives, length-prefixed UTF-8 and byte sequences, variable-length integers, and fixed-capacity streams without an intermediate buffer.
 
-Span<byte> extension methods to read or write SByte, Byte, Int16, UInt16, Int32, UInt32, Int64, UInt64, String, byte\[\], span<byte>.
-There is also an UInt24 type which can be cast to/from UInt32 and used for reading/writing 3-byte integers.
+## Installation and supported targets
 
-`MoveWrite()` and `MoveRead*()` moves Span pointer ahead so that the span function as a stream streamwriter and streamreader.
-
-100% code coverage in unit tests.
-
-## Architectural Paradigms and Epistemological Scope
-
-**Implemented Facts:**
-Tedd.SpanUtils operates exclusively as a low-level .NET library designed for memory-safe `Span<byte>` and `Memory<byte>` manipulation. Its core operational capabilities are executed via deterministic pointer advancement methods (e.g., `MoveRead*` and `MoveWrite*`) and stream-like memory abstractions (`SpanStream` and `MemoryStreamer`).
-
-**Roadmap Hypotheses:**
-To mitigate speculative assumptions, it must be explicitly delineated that the framework does *not* currently possess high-level UI architecture. Features such as hierarchical data binding, routed event infrastructure, and retro-computing DOS-era controls operating with modern binding contexts are purely hypothetical constructs planned for future architectural iterations. Fabricating these operational capabilities within the current iteration constitutes a structural defect.
-
-# Example
-```csharp
-var mem = new byte[1000];
-var span = new Span<byte>(mem);
-
-Int32 a = 1234;
-span.Write(a);
-var b = span.ReadInt32();
-// a == b
-
-
-// Move* methods moves Span-pointer as they read or write.
-Int16 a1 = 10;
-Int32 a2 = 20;
-Int64 a3 = 30;
-span.MoveWrite(a1);
-span.MoveWrite(a2);
-span.MoveWrite(a3);
-
-// To start reading from start we need a new reference for reader pointing to start of memory area.
-var span2 = new Span<byte>(mem);
-
-var b1 = span2.MoveReadInt16();
-var b2 = span2.MoveReadInt32();
-var b3 = span2.MoveReadInt64();
-
-// a1 == b1
-// a2 == b2
-// a3 == b3
-
+```sh
+dotnet add package Tedd.SpanUtils --version 2.0.0
 ```
 
+| Target | Included in the standard package | Implementation |
+| --- | --- | --- |
+| .NET Standard 2.1 | Yes | Portable span operations and scalar bulk conversion |
+| .NET 6 | Yes | Hardware bit counting, `Half`, allocation-free decimal encoding |
+| .NET 10 | Yes | Vectorized bulk endian conversion, `Int128`/`UInt128`, direct endian-aware GUID APIs |
+| .NET 11 preview | Opt-in source build | Same intrinsic-backed implementation, compiled and benchmarked against the preview JIT |
 
+.NET Framework, .NET Standard 2.0, and .NET versions below 6 are no longer targeted. Applications on .NET 7–9 can consume the .NET 6 asset. The library has no runtime NuGet dependencies.
 
-# Move read/write
-Move read/write will slice the current span so that it moves forward in memory area.
-## Example
+## Quick start
+
+Import the `Tedd` namespace. Fixed-width writes infer the type from the value; reads name the type explicitly. Use `LE` or `BE` for a portable byte order.
+
 ```csharp
-var mem = new byte[10];
-var span = new Span<byte>(mem);
-// span now points to position 0 of mem. Span is 10 bytes long.
-var i = span.MoveReadInt32();
-// Since Int32 is 4 bytes span was moved ahead 4 bytes.
-// span now points to position 4 of mem and is 6 bytes long.
+using System;
+using Tedd;
+
+Span<byte> buffer = stackalloc byte[128];
+var writer = new SpanStream(buffer, length: 0);
+writer.WriteBE(42);
+writer.WriteSized("Hello, world!");
+
+var reader = new ReadOnlySpanStream(writer.WrittenSpan);
+int number = reader.ReadInt32BE();
+string message = reader.ReadSizedString();
 ```
 
-# WriteSize() / ReadSize()
-`WriteSize()` and `ReadSize()` to write and read size to span. These use a simple compression technique where the 2 first bits are used to describe how many bytes are used for size.
+Buffers are fixed in size. The caller controls allocation, lifetime, and ownership. Span streams are stack-only `ref struct` values; memory streams are `System.IO.Stream` subclasses.
 
-If the number is 6 bits or less (less than 64) then 1 byte is used.<br />
-If the number is 14 bits or less (less than 16K) then 2 bytes is used.<br />
-If the number is 22 bits or less (less than 4M) then 3 bytes is used.<br />
-If the number is 30 bits or less (less than 1B) then 4 bytes is used.<br />
+## Span operations
 
-This means that if you use `SizedWrite("hello")` then 1 byte is used for size header and 4 bytes are used for the string. While if you to `SizedWrite(new byte[20_000])` then 3 bytes are used for size header;
+Ordinary operations start at offset zero and leave the supplied span unchanged:
 
-If you want to know how many bytes the number is, simply do (firstByte>>6)+1. The result is 1-4.
+```csharp
+Span<byte> bytes = stackalloc byte[8];
+bytes.WriteBE(0x0102030405060708L);
+long value = bytes.ReadInt64BE();
 
-# Sized writes
-String, byte\[\], Span<> and ReadOnlySpan<> can be written using `SizedWrite()`. This will put a 1-4 byte size descriptor in front of the actual data, meaning you do not have to know the size when you read it back using `SizedRead*()`;
+if (bytes.TryReadInt64BE(out long decoded))
+{
+    // A complete value was available.
+}
+```
 
-# Variable-Length Quantity
-Sized writes give an advantage when processing data, since you only need the first two bits to know length. So on first byte you know how much data you need to read for the full number. It is though capped at 30-bit integers since two bits are used for size description.
+`Move` operations advance a span by reference after successful processing:
 
-Another way to store numbers are Variable-Length Quantity. This existists in some variations, but mainly is encoded so that first bit in each byte tells if there is another byte in the sequence. For signed integeres, the second bit of first byte is the signed bit.
+```csharp
+Span<byte> storage = stackalloc byte[32];
+Span<byte> output = storage;
+output.MoveWriteLE(123);
+output.MoveWriteVLQ(300UL);
 
-WriteVLQ() and ReadVLQ\*() methods provide this functionality.
+ReadOnlySpan<byte> input = storage.Slice(0, storage.Length - output.Length);
+int first = input.MoveReadInt32LE();
+ulong second = input.MoveReadVLQUInt64();
+```
 
-16-bit: 1-3 bytes.
-32-bit: 1-5 bytes.
-64-bit: 1-10 bytes.
+The static equivalents are available on `SpanUtils`, for example `SpanUtils.ReadInt32BE(bytes)` and `SpanUtils.MoveWriteLE(ref output, 123)`. Overloads with `out int length` report the complete number of bytes consumed or written.
 
-## String
-Strings are converted to UTF8 before being written to span.
+### Supported values
 
-For .Net Core allocation-free copying is used to avoid large GC objects. Since UTF8 has variable size the size is first calculated using `Encoding.UTF8.GetByteCount`. This means two passes are made over the string, first calculating then copying to span.
+| Value | Operations and encoding |
+| --- | --- |
+| `byte`, `sbyte`, `bool`, `char` | Fixed-width read/write; `char` is one UTF-16 code unit |
+| 16-, 32-, and 64-bit signed/unsigned integers | Native, LE, and BE read/write |
+| `UInt24` and signed 24-bit integers | Three-byte values; signed operations are named `ReadInt24` / `WriteInt24` |
+| `float`, `double`, `decimal` | Native, LE, and BE read/write |
+| `Half` | Two-byte floating point on .NET 6+ |
+| `Int128`, `UInt128` | Sixteen-byte integers in the .NET 10/11 assets |
+| `Guid` | Default/LE matches `Guid.ToByteArray()`; BE uses RFC 4122 byte order |
+| Byte arrays and spans | Raw and length-prefixed operations |
+| Strings | Raw UTF-8 (`ReadString(byteLength)` / `WriteString`) and length-prefixed UTF-8 |
+| VLQ | Signed and unsigned 16/32/64-bit integers, plus unsigned 24-bit |
+| EBML VInt | One to eight bytes, including detection of unknown-size markers |
 
-For .Net 4.x a short-lived byte array is used for buffering UTF8 before writing.
+Fixed-width values expose `TryRead*`, `TryWrite*`, `TryMoveRead*`, and `TryMoveWrite*` variants. A failed `Try` operation returns `false` without advancing the cursor or changing the destination. Variable-length `Try` methods also reject truncated and overflowing encodings.
 
-## NOTE
-Since these methods are implemented as extension methods they cause a defensive copy of a few bytes upon each call. This is a weakness/feature of C#.
+### Byte order and decimal layout
+
+Methods without an endian suffix use native machine byte order for ordinary primitives. The three-byte integer format is little endian by default, preserving the original format. Use explicit suffixes for files and network protocols.
+
+`decimal` without a suffix retains the CLR's native memory layout. Portable `decimal` LE/BE methods encode four 32-bit words in `decimal.GetBits` order: low, middle, high, flags. Each word uses the requested byte order. Readers validate flags and scale. Portable decimal writes allocate an `int[4]` only in the .NET Standard 2.1 asset; .NET 6+ uses stack storage.
+
+### Length-prefixed data and zero-copy reads
+
+`WriteSized` prefixes the payload with its byte length. `ReadSizedString` returns a new string; `ReadSizedBytes` returns a new array. Use `ReadSizedSpan` or `ReadSizedReadOnlySpan` to obtain a view into the existing buffer:
+
+```csharp
+Span<byte> packet = stackalloc byte[64];
+packet.WriteSized(new byte[] { 10, 20, 30 });
+ReadOnlySpan<byte> payload = ((ReadOnlySpan<byte>)packet).ReadSizedReadOnlySpan();
+```
+
+The top two bits of the first byte specify prefix width; the remaining bits encode the length in big endian order:
+
+| Payload length | Prefix size |
+| --- | --- |
+| 0–63 | 1 byte |
+| 64–16,383 | 2 bytes |
+| 16,384–4,194,303 | 3 bytes |
+| 4,194,304–1,073,741,823 | 4 bytes |
+
+`MeasureWriteSize` calculates prefix size. String lengths count UTF-8 bytes, not characters. UTF-8 uses the framework's replacement fallback for malformed text. Writing a string does not allocate an intermediate byte array. Returned spans alias their source and share its lifetime.
+
+### Variable-length integers
+
+`WriteVLQ` and `ReadVLQ*` preserve the library's existing wire format: low-order groups first, with the high bit marking continuation. Signed values use six magnitude bits and a sign bit in the first byte; a single `0x40` represents the minimum value of the destination signed type. This signed format is distinct from ZigZag and signed LEB128.
+
+`MeasureVLQ` returns encoded width. Readers reject truncation and values outside the requested integer range.
+
+`WriteVInt` / `ReadVInt` implement EBML variable-length integers with a leading width marker. `VInt.GetSize` reserves all-one payloads for unknown sizes and rejects values above `VInt.MaxValue`. `VInt.IsUnknown` identifies an unknown-size marker read from a buffer.
+
+## Stream adapters
+
+| Adapter | Storage | Writable | Inherits `Stream` |
+| --- | --- | --- | --- |
+| `SpanStream` | `Span<byte>` | Yes | No |
+| `ReadOnlySpanStream` | `ReadOnlySpan<byte>` | No | No |
+| `MemoryStreamer` | `Memory<byte>` | Yes | Yes |
+| `ReadOnlyMemoryStreamer` | `ReadOnlyMemory<byte>` | No | Yes |
+
+A one-argument constructor treats the entire buffer as readable content. Pass `length: 0` to a writable adapter to start an empty writer. `Length` is the readable content size; `Capacity` / `MaxLength` is the fixed backing-buffer size. `WrittenSpan` or `WrittenMemory` exposes the logical content.
+
+Memory adapters also provide `ReadMemory` and `ReadSizedMemory`: zero-copy `Memory<byte>` or `ReadOnlyMemory<byte>` views suitable for asynchronous code. `WriteMemory`, `WriteSizedMemory`, and their `Try` counterparts accept memory without an intermediate array. All four adapters expose `Try` operations and `Remaining`. Reads stop at `Length`. Standard `Read` returns the available byte count; `ReadExactly` requires the complete request. Typed reads require a complete value. Position changes and seeking do not grow the logical length; successful writes do. Gaps created by seeking past the end are zeroed when a subsequent write extends the content. `SetLength` clears newly exposed bytes and clamps the position when shrinking.
+
+`MemoryStreamer.ReadByte()` and its read-only counterpart follow `Stream`: an `int` result, or `-1` at EOF. Span/memory I/O overrides avoid the base class's temporary-array path. Disposing a memory adapter closes the adapter without disposing caller-owned memory. `Clear()` erases logical content and resets position and length; `Clear(all: true)` erases the entire capacity.
+
+## Performance and benchmarks
+
+The implementation uses checked `MemoryMarshal` loads, `BinaryPrimitives`, direct cursor advancement, and zero-copy payload views. Bulk endian conversion supports in-place and overlapping buffers:
+
+```csharp
+int[] source = { 0x01020304, 0x05060708 };
+int[] destination = new int[source.Length];
+SpanUtils.ReverseEndianness(source, destination);
+```
+
+.NET 10/11 delegate bulk conversion to the runtime's vectorized implementation. The .NET Standard 2.1 and .NET 6 assets use a scalar fallback with equivalent overlap semantics. Small, inlinable span operations also let the .NET 11 JIT apply its [improved range-check elimination](https://github.com/dotnet/core/blob/main/release-notes/11.0/preview/preview5/runtime.md#redundant-span-and-null-checks). Preview results are measurements of the tested runtime, not guarantees for the final .NET 11 release.
+
+The [benchmark report](https://github.com/tedd/Tedd.SpanUtils/blob/main/docs/benchmarks/README.md) includes runtime/hardware details, time and allocation measurements, limitations, and reproduction commands. The [archived implementation](https://github.com/tedd/Tedd.SpanUtils/blob/main/archive/v1/README.md) is built under a separate assembly alias and compared on identical workloads. Benchmark setup verifies output equivalence before timing. Historical ad hoc benchmark subjects are preserved in the archive.
+
+```sh
+dotnet run --project src/Tedd.SpanUtils.Benchmark -c Release -f net10.0 -- --validate
+dotnet run --project src/Tedd.SpanUtils.Benchmark -c Release -f net10.0 -- --short --filter '*'
+dotnet run --project src/Tedd.SpanUtils.Benchmark -c Release -f net11.0 -p:EnableNet11=true -- --short --filter '*'
+```
+
+Omit `--short` for longer measurements. Run one benchmark process at a time on an otherwise idle machine.
+
+## Migrating from 1.x
+
+Version 2 changes the following contracts:
+
+- The minimum targets are .NET Standard 2.1 and .NET 6. The default build requires the .NET 10 SDK; preview builds require the .NET 11 SDK.
+- Fixed-width operations check buffer bounds. Code relying on out-of-bounds access is invalid; short buffers now throw or produce a failed `Try` result.
+- Explicit decimal LE/BE methods use the documented portable word layout. Old explicit-endian decimal data requires conversion. Explicit-endian `char` methods now honor byte order.
+- Signed minimum VLQ values advance moving spans correctly. Overflowing or truncated variable-length values are rejected.
+- VInt values must fit the EBML 1–8 byte format. Previously unbounded size calculations are rejected.
+- `SpanStream.Length` is a read-only property; use `SetLength`. Seeking and position assignment no longer grow logical length. Reads honor logical length, and `Clear(all: true)` resets it.
+- Read-only adapters reject mutation with `NotSupportedException`. Memory adapters enforce disposal and use the standard `Stream.ReadByte()` return type and EOF behavior.
+- Invalid `UInt24` casts above `0xFFFFFF` are rejected by writers. Use `ToUInt24()` when deliberate truncation is required.
+
+## Build and test
+
+```sh
+dotnet build src/Tedd.SpanUtils.sln -c Release
+dotnet test src/Tedd.SpanUtils.Tests -c Release
+dotnet test src/Tedd.SpanUtils.StandardTests -c Release
+dotnet pack src/Tedd.SpanUtils -c Release -o artifacts/packages
+```
+
+Install the .NET 6 runtime to execute the minimum-runtime tests. The standard compatibility suite explicitly references the .NET Standard 2.1 asset and verifies which assembly it loads. CI tests .NET 6, .NET 10, the standard asset, and .NET 11 preview.
+
+```sh
+dotnet test src/Tedd.SpanUtils.Tests -c Release -f net11.0 -p:EnableNet11=true
+```
+
+### Regenerate APIs
+
+Generated files are checked in. Edit the templates in `src/Tedd.SpanUtils.SourceGenerator`, then run from the repository root:
+
+```sh
+dotnet run --project src/Tedd.SpanUtils.SourceGenerator -c Release
+```
+
+The generator emits matching static, extension, moving-span, and stream APIs. Archived projects are reference material and are not shipped in the NuGet package.
+
+## License
+
+[GNU Lesser General Public License, version 3](LICENSE).

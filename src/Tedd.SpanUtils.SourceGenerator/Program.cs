@@ -1,23 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using Microsoft.CodeAnalysis.Text;
+using System.Linq;
 
 namespace Tedd.SpanUtils.SourceGenerator
 {
-    class Program
+    internal static class Program
     {
         public static int Main(string[] args)
         {
-            var root = @"..\..\..\..\Tedd.SpanUtils";
-
+            var root = args.FirstOrDefault(a => !a.StartsWith("--", StringComparison.Ordinal));
+            if (root == null)
+            {
+                var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
+                while (directory != null && !Directory.Exists(Path.Combine(directory.FullName, "src", "Tedd.SpanUtils")))
+                    directory = directory.Parent;
+                if (directory == null)
+                    throw new DirectoryNotFoundException("Pass the library source directory or run within the repository.");
+                root = Path.Combine(directory.FullName, "src", "Tedd.SpanUtils");
+            }
             CodeGenBodies.Initialize();
-            CodeGenSpanUtilsSpanReadOnlySpan.GenerateSpanMethods("SpanUtils", root);
-            CodeGenStreams.Generate(root);
+            if (!args.Contains("--streams"))
+                CodeGenSpanUtilsSpanReadOnlySpan.GenerateSpanMethods("SpanUtils", root);
+            if (!args.Contains("--core"))
+                CodeGenStreams.Generate(root);
             return 0;
         }
     }
 }
-

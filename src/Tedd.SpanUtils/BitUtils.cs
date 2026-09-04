@@ -1,73 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tedd
 {
     internal static class BitUtils
     {
-#if !BEFORENETCOREAPP3
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int32 LeadingZeroCount(ref this UInt64 value) => System.Runtime.Intrinsics.X86.Lzcnt.IsSupported ? (Int32)System.Runtime.Intrinsics.X86.Lzcnt.X64.LeadingZeroCount((UInt64)value) : LzCntSoftwareFallback((UInt64)value);
-#else
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Int32 LeadingZeroCount(ref this UInt64 value) => LzCntSoftwareFallback((UInt64)value);
-#endif
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int LzCntSoftwareFallback(UInt64 value)
+        public static int LeadingZeroCount(this ref ulong value)
         {
-            // Unguarded fallback contract is 0->63
-            if (value == 0)
-                return 64;
-
-            var n = Log2SoftwareFallback((UInt32)(value >> 32));
-            if ((value >> 32) > 0)
-                n += 32;
-            else
-                n = Log2SoftwareFallback((UInt32)value);
-
-            return 63 - n;
+#if NET6_0_OR_GREATER
+            // Selects the appropriate intrinsic on both x86 and ARM.
+            return System.Numerics.BitOperations.LeadingZeroCount(value);
+#else
+            return LzCntSoftwareFallback(value);
+#endif
         }
-#if !BEFORENETCOREAPP3
-        // https://github.com/dotnet/roslyn/pull/24621
-        private static ReadOnlySpan<byte> Log2DeBruijn => new byte[32]
-#else
-        private static byte[] Log2DeBruijn =
-#endif
+
+        internal static int LzCntSoftwareFallback(ulong value)
         {
-            00, 09, 01, 10, 13, 21, 02, 29,
-            11, 14, 16, 18, 22, 25, 03, 30,
-            08, 12, 20, 28, 15, 17, 24, 07,
-            19, 27, 23, 06, 26, 05, 04, 31
-        };
+            if (value == 0) return 64;
+            uint high = (uint)(value >> 32);
+            return high != 0 ? 31 - Log2SoftwareFallback(high) : 63 - Log2SoftwareFallback((uint)value);
+        }
+
         internal static int Log2SoftwareFallback(uint value)
         {
-            // No AggressiveInlining due to large method size
-            // Has conventional contract 0->0 (Log(0) is undefined)
-
-            // Fill trailing zeros with ones, eg 00010010 becomes 00011111
-            value |= value >> 01;
-            value |= value >> 02;
-            value |= value >> 04;
-            value |= value >> 08;
-            value |= value >> 16;
-
-#if !BEFORENETCOREAPP3
-            // uint.MaxValue >> 27 is always in range [0 - 31] so we use Unsafe.AddByteOffset to avoid bounds check
-            return Unsafe.AddByteOffset(
-                // Using deBruijn sequence, k=2, n=5 (2^5=32) : 0b_0000_0111_1100_0100_1010_1100_1101_1101u
-                ref MemoryMarshal.GetReference(Log2DeBruijn),
-                // uint|long -> IntPtr cast on 32-bit platforms does expensive overflow checks not needed here
-                (IntPtr)(int)((value * 0x07C4ACDDu) >> 27));
-#else
-            return Log2DeBruijn[(value * 0x07C4ACDDu) >> 27];
-#endif
+            int bits = 0;
+            if (value >= 1U << 16) { value >>= 16; bits += 16; }
+            if (value >= 1U << 8) { value >>= 8; bits += 8; }
+            if (value >= 1U << 4) { value >>= 4; bits += 4; }
+            if (value >= 1U << 2) { value >>= 2; bits += 2; }
+            if (value >= 1U << 1) bits++;
+            return bits;
         }
-
     }
 }

@@ -1,0 +1,4 @@
+# Preserve the archived source bytes used by the SHA256 provenance manifest.
+archive/v1/**/*.cs -text
+# Historical formatting is part of that unmodified snapshot.
+archive/v1/** -whitespace

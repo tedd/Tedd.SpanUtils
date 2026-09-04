@@ -1,14 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TargetFrameworks>net6.0;net10.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(EnableNet11)' == 'true'">$(TargetFrameworks);net11.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <!-- The archived reference is outside the main solution; inherit its Release configuration. -->
+    <ShouldUnsetParentConfigurationAndPlatform>false</ShouldUnsetParentConfigurationAndPlatform>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
-    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.12.1" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" Condition="'$(TargetFramework)' == 'net6.0'" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" Condition="'$(TargetFramework)' == 'net10.0'" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.16.0-preview.1" Condition="'$(TargetFramework)' == 'net11.0'" />
+    <ProjectReference Include="../Tedd.SpanUtils/Tedd.SpanUtils.csproj" />
+    <ProjectReference Include="../../archive/v1/Tedd.SpanUtils/Tedd.SpanUtils.csproj" Aliases="archive" />
   </ItemGroup>
-
 </Project>
