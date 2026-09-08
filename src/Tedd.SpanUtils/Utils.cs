@@ -9,14 +9,19 @@ namespace Tedd
     public static partial class SpanUtils
     {
         /// <summary>Returns the byte count of the compact 30-bit length prefix.</summary>
+        /// <remarks>Time complexity: O(1) Space complexity: O(1).</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte MeasureWriteSize(uint value)
         {
+            if (value > 0x3FFFFFFF) throw new ArgumentOutOfRangeException(nameof(value), "Size exceeds the 30-bit format.");
+#if NET6_0_OR_GREATER
+            return (byte)(((33 - BitOperations.LeadingZeroCount(value | 1)) >> 3) + 1);
+#else
             if (value <= 0x3F) return 1;
             if (value <= 0x3FFF) return 2;
             if (value <= 0x3FFFFF) return 3;
-            if (value <= 0x3FFFFFFF) return 4;
-            throw new ArgumentOutOfRangeException(nameof(value), "Size exceeds the 30-bit format.");
+            return 4;
+#endif
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

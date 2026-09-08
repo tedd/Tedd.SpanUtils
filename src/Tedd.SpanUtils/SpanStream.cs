@@ -33,7 +33,8 @@ namespace Tedd
 
         public int Position
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)] get => _position;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _position;
             set
             {
                 if ((uint)value > (uint)Span.Length) throw new ArgumentOutOfRangeException(nameof(value));
@@ -49,7 +50,8 @@ namespace Tedd
 
         private Span<byte> WriteBuffer
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)] get => Span.Slice(_position);
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Span.Slice(_position);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

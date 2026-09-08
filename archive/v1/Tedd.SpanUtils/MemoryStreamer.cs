@@ -12,7 +12,7 @@ namespace Tedd
     /// </summary>
     public partial class MemoryStreamer : Stream
     {
- 
+
         private Memory<byte> Memory;
         private int _position { get; set; }
         private int _length;
@@ -22,7 +22,7 @@ namespace Tedd
             Memory = memory;
             _length = memory.Length;
         }
-      
+
         public int MaxLength => Memory.Length;
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace Tedd
 
         #endregion
 
-        
+
         /// <summary>
         /// Counts how many bytes WriteSize will use for a given value.
         /// </summary>
@@ -193,7 +193,7 @@ namespace Tedd
         /// <param name="value"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public byte MeasureWriteSize(UInt32 value) => value.MeasureWriteSize();
-        
+
 
     }
 }

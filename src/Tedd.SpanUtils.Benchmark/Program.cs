@@ -14,6 +14,7 @@ internal static class Program
         if (args.Contains("--validate"))
         {
             new SerializationBenchmarks().Setup();
+            new MeasureWriteSizeBenchmarks().Setup();
             new Utf8Benchmarks().Setup();
             new CursorBenchmarks().Setup();
             foreach (var length in new[] { 64, 4096 }) new BulkEndianBenchmarks { Length = length }.Setup();

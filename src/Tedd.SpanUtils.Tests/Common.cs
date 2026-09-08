@@ -33,8 +33,8 @@ namespace Tedd.SpanUtilsTests
             Assert.Equal((UInt32)u32_24, bu32);
             Assert.Equal((Int32)i32_24, bi32);
 
-            Assert.Equal((UInt32)((u32<<8)>>8), (UInt32)u32_24);
-            Assert.Equal((Int32)((i32<<8)>>8), (Int32)i32_24);
+            Assert.Equal((UInt32)((u32 << 8) >> 8), (UInt32)u32_24);
+            Assert.Equal((Int32)((i32 << 8) >> 8), (Int32)i32_24);
         }
 
     }
