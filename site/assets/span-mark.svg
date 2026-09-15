@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Tedd.SpanUtils">
+  <rect width="64" height="64" rx="12" fill="#10262c"/>
+  <path d="M24 16H16v32h8M40 16h8v32h-8" fill="none" stroke="#65d2c6" stroke-width="5" stroke-linecap="square"/>
+  <path d="M27 24h10M27 32h10M27 40h10" stroke="#fff" stroke-width="4" stroke-linecap="square"/>
+</svg>

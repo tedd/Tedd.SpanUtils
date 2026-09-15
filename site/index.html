@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7faf9">
+  <meta name="description" content="Tedd.SpanUtils provides bounded, endian-aware binary serialization over caller-owned Span, ReadOnlySpan, and Memory buffers for .NET.">
+  <meta property="og:title" content="Tedd.SpanUtils — Binary I/O over caller-owned memory">
+  <meta property="og:description" content="Endian-aware primitives, variable-length integers, UTF-8 data, and fixed-capacity streams for .NET.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tedd.no/Tedd.SpanUtils/">
+  <meta name="twitter:card" content="summary">
+  <title>Tedd.SpanUtils — Binary I/O over caller-owned memory</title>
+  <link rel="canonical" href="https://tedd.no/Tedd.SpanUtils/">
+  <link rel="icon" href="assets/span-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js')</script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Tedd.SpanUtils home">
+      <img src="assets/span-mark.svg" width="34" height="34" alt="">
+      <span>TEDD<span class="brand-slash">/</span>SPANUTILS</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#capabilities">Capabilities</a>
+      <a href="#api">API</a>
+      <a href="#performance">Performance</a>
+      <a href="#targets">Targets</a>
+      <a href="https://github.com/tedd/Tedd.SpanUtils">Source</a>
+      <a class="nav-cta" href="#install">Install</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> .NET binary serialization library</p>
+        <h1>Binary I/O over<br><em>caller-owned memory.</em></h1>
+        <p class="lede">Read and write primitives, UTF-8 data, variable-length integers, and bounded streams directly over <code>Span&lt;byte&gt;</code>, <code>ReadOnlySpan&lt;byte&gt;</code>, and <code>Memory&lt;byte&gt;</code>.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#install">Install version 2.0.0 <span aria-hidden="true">↓</span></a>
+          <a class="button secondary" href="https://github.com/tedd/Tedd.SpanUtils">View source <span aria-hidden="true">↗</span></a>
+        </div>
+        <ul class="hero-checks" aria-label="Library characteristics">
+          <li>Bounded operations</li>
+          <li>Explicit byte order</li>
+          <li>No runtime dependencies</li>
+        </ul>
+      </div>
+
+      <div class="hero-code" aria-label="Tedd.SpanUtils usage example">
+        <div class="code-bar">
+          <span></span><span></span><span></span>
+          <b>Packet.cs</b>
+          <i>C#</i>
+        </div>
+        <pre><code><span class="kw">using</span> <span class="type">Tedd</span>;
+
+<span class="type">Span</span>&lt;<span class="type">byte</span>&gt; buffer =
+    <span class="kw">stackalloc</span> <span class="type">byte</span>[<span class="num">128</span>];
+
+<span class="kw">var</span> writer = <span class="kw">new</span> <span class="type">SpanStream</span>(
+    buffer, length: <span class="num">0</span>);
+
+writer.<span class="method">WriteBE</span>(<span class="num">42</span>);
+writer.<span class="method">WriteSized</span>(<span class="str">"Hello, world!"</span>);
+
+<span class="kw">var</span> reader = <span class="kw">new</span> <span class="type">ReadOnlySpanStream</span>(
+    writer.WrittenSpan);
+
+<span class="type">int</span> number = reader.<span class="method">ReadInt32BE</span>();
+<span class="type">string</span> text = reader.<span class="method">ReadSizedString</span>();</code></pre>
+        <div class="code-result">
+          <span>18 B written</span>
+          <strong><i aria-hidden="true"></i> caller retains storage ownership</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof-strip" aria-label="Library summary">
+      <p><strong>2.0.0</strong><span>Current package version</span></p>
+      <p><strong>.NET Standard 2.1</strong><span>Portable baseline</span></p>
+      <p><strong>.NET 6 + 10</strong><span>Runtime-specific assets</span></p>
+      <p><strong>LGPL-3.0</strong><span>Open-source library</span></p>
+    </section>
+
+    <section class="capabilities section-shell" id="capabilities">
+      <div class="section-intro reveal">
+        <div>
+          <p class="eyebrow">Purpose-built binary primitives</p>
+          <h2>Control the representation and the storage.</h2>
+        </div>
+        <p>The API separates buffer ownership from binary representation. Operations validate capacity, preserve cursor state on failed <code>Try</code> calls, and expose explicit little-endian and big-endian forms for portable formats.</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card featured reveal">
+          <span class="feature-index">01</span>
+          <div class="feature-symbol" aria-hidden="true">↔</div>
+          <p class="card-kicker">Wire-format control</p>
+          <h3>Endian-aware primitives</h3>
+          <p>Read and write integral, floating-point, decimal, GUID, character, and 24-bit values in native, little-endian, or big-endian order.</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-index">02</span>
+          <div class="feature-symbol" aria-hidden="true">≋</div>
+          <h3>Variable-width data</h3>
+          <p>Encode signed and unsigned VLQ values, EBML VInts, length-prefixed byte sequences, and length-prefixed UTF-8 strings.</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-index">03</span>
+          <div class="feature-symbol" aria-hidden="true">⌁</div>
+          <h3>Zero-copy views</h3>
+          <p>Return spans or memory segments over existing payloads when a copied array or decoded string is unnecessary.</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-index">04</span>
+          <div class="feature-symbol" aria-hidden="true">→</div>
+          <h3>Moving cursors</h3>
+          <p>Advance spans by reference after successful operations, or use static methods and extension methods without an adapter object.</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-index">05</span>
+          <div class="feature-symbol" aria-hidden="true">▤</div>
+          <h3>Bounded stream adapters</h3>
+          <p>Use stack-only span streams or <code>System.IO.Stream</code>-compatible memory adapters with explicit length and capacity semantics.</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-index">06</span>
+          <div class="feature-symbol" aria-hidden="true">◫</div>
+          <h3>Bulk conversion</h3>
+          <p>Reverse endianness across typed spans, including in-place and overlapping source and destination regions.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="cursor-section section-shell" id="semantics">
+      <div class="cursor-copy reveal">
+        <p class="eyebrow">Explicit cursor semantics</p>
+        <h2>Advance only after success.</h2>
+        <p><code>Move</code> operations consume a span by reference. Their <code>Try</code> variants do not advance the cursor or modify the destination when the complete value is unavailable.</p>
+        <ul class="assurance-list">
+          <li><strong>Fixed capacity</strong><span>Writes cannot extend the supplied storage.</span></li>
+          <li><strong>Logical length</strong><span>Stream reads stop at written content, not buffer capacity.</span></li>
+          <li><strong>Validated formats</strong><span>Readers reject truncated and overflowing variable-width encodings.</span></li>
+          <li><strong>Caller ownership</strong><span>Disposal never disposes the backing memory.</span></li>
+        </ul>
+      </div>
+
+      <div class="cursor-panel reveal" aria-label="Moving span cursor example">
+        <div class="panel-heading"><span>CURSOR EXAMPLE</span><b>Position is encoded in the span</b></div>
+        <pre><code><span class="type">Span</span>&lt;<span class="type">byte</span>&gt; storage = <span class="kw">stackalloc</span> <span class="type">byte</span>[<span class="num">32</span>];
+<span class="type">Span</span>&lt;<span class="type">byte</span>&gt; output = storage;
+
+output.<span class="method">MoveWriteLE</span>(<span class="num">123</span>);
+output.<span class="method">MoveWriteVLQ</span>(<span class="num">300UL</span>);
+
+<span class="type">ReadOnlySpan</span>&lt;<span class="type">byte</span>&gt; input =
+    storage[..(storage.Length - output.Length)];
+
+<span class="type">int</span> first = input.<span class="method">MoveReadInt32LE</span>();
+<span class="type">ulong</span> second = input.<span class="method">MoveReadVLQUInt64</span>();</code></pre>
+        <div class="buffer-map" aria-label="Example buffer layout">
+          <span class="used">7B</span><span class="used">00</span><span class="used">00</span><span class="used">00</span><span class="vlq">AC</span><span class="vlq">02</span><span class="free">··</span><span class="free">··</span>
+        </div>
+        <div class="buffer-legend"><span><i class="fixed"></i> Int32 LE</span><span><i class="variable"></i> VLQ</span><span><i class="available"></i> Remaining capacity</span></div>
+      </div>
+    </section>
+
+    <section class="api section-shell" id="api">
+      <div class="section-intro reveal">
+        <div>
+          <p class="eyebrow">API surface</p>
+          <h2>Select the access pattern that matches the caller.</h2>
+        </div>
+        <p>The same binary representations are available through direct extension methods, moving-span methods, and stateful adapters. The choice affects cursor management, not the wire format.</p>
+      </div>
+
+      <div class="api-table-wrap reveal">
+        <table>
+          <thead>
+            <tr><th>Access pattern</th><th>Storage</th><th>Cursor model</th><th>Primary use</th></tr>
+          </thead>
+          <tbody>
+            <tr><th><code>Span&lt;byte&gt;</code> extensions</th><td>Caller-owned span</td><td>Offset zero</td><td>Single-value reads and writes</td></tr>
+            <tr><th><code>MoveRead*</code> / <code>MoveWrite*</code></th><td>Caller-owned span</td><td>Span advanced by reference</td><td>Sequential packet parsing</td></tr>
+            <tr><th><code>SpanStream</code></th><td><code>Span&lt;byte&gt;</code></td><td>Stack-only position and length</td><td>Synchronous bounded serialization</td></tr>
+            <tr><th><code>ReadOnlySpanStream</code></th><td><code>ReadOnlySpan&lt;byte&gt;</code></td><td>Stack-only read position</td><td>Read-only parsing</td></tr>
+            <tr><th><code>MemoryStreamer</code></th><td><code>Memory&lt;byte&gt;</code></td><td><code>Stream</code>-compatible position</td><td>Framework stream integration</td></tr>
+            <tr><th><code>ReadOnlyMemoryStreamer</code></th><td><code>ReadOnlyMemory&lt;byte&gt;</code></td><td><code>Stream</code>-compatible position</td><td>Read-only memory integration</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="value-groups reveal" aria-label="Supported value groups">
+        <div><strong>SCALARS</strong><span>8–128-bit integers, Boolean, character, floating point, decimal, GUID, and 24-bit integers</span></div>
+        <div><strong>SEQUENCES</strong><span>Raw and length-prefixed bytes, spans, memory regions, and UTF-8 strings</span></div>
+        <div><strong>VARIABLE</strong><span>Signed and unsigned VLQ values and one-to-eight-byte EBML VInts</span></div>
+        <div><strong>FAILURE MODEL</strong><span>Throwing operations and non-mutating <code>Try</code> variants</span></div>
+      </div>
+    </section>
+
+    <section class="performance section-shell" id="performance">
+      <div class="performance-heading reveal">
+        <p class="eyebrow">Measured performance</p>
+        <h2>Published data,<br>qualified conclusions.</h2>
+        <p>Repository benchmarks compare version 2 with the archived version 1 source under identical per-runtime workloads. The results below are observed means from ShortRun measurements, not universal performance guarantees.</p>
+        <a class="text-link" href="https://github.com/tedd/Tedd.SpanUtils/blob/main/docs/benchmarks/RESULTS.md">Read the complete methodology and results <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="performance-data reveal">
+        <article>
+          <p class="metric">3.1<span>×</span></p>
+          <h3>Int64 big-endian roundtrip</h3>
+          <p>Approximate improvement observed on both .NET 10 and .NET 11 preview.</p>
+        </article>
+        <article>
+          <p class="metric">13–23<span>×</span></p>
+          <h3>Bulk endian reversal</h3>
+          <p>New batch API compared with the scalar sequence available in the archived version.</p>
+        </article>
+        <article>
+          <p class="metric">0<span> B/op</span></p>
+          <h3>Measured non-string workloads</h3>
+          <p>UTF-8 decoding allocated its returned string; reusable buffers were allocated during setup.</p>
+        </article>
+        <div class="measurement-note">
+          <strong>Measurement context</strong>
+          <span>AMD Ryzen 9 5950X · Windows 11 25H2 · .NET 10.0.11 and .NET 11 preview 7 · 4 September 2026</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="targets section-shell" id="targets">
+      <div class="section-intro reveal">
+        <div>
+          <p class="eyebrow">Compatibility</p>
+          <h2>Portable baseline, optimized runtime assets.</h2>
+        </div>
+        <p>Applications select the nearest compatible target automatically. .NET 7–9 applications consume the .NET 6 asset. The .NET 11 target is available through an opt-in source build.</p>
+      </div>
+
+      <div class="target-grid">
+        <article class="target-card reveal"><span>PORTABLE</span><h3>.NET Standard 2.1</h3><p>Portable span operations and scalar bulk conversion.</p><b>Included</b></article>
+        <article class="target-card reveal"><span>RUNTIME</span><h3>.NET 6</h3><p>Hardware bit counting, <code>Half</code>, and allocation-free decimal encoding.</p><b>Included</b></article>
+        <article class="target-card featured reveal"><span>OPTIMIZED</span><h3>.NET 10</h3><p>Vectorized bulk conversion, 128-bit integers, and direct endian-aware GUID APIs.</p><b>Included</b></article>
+        <article class="target-card reveal"><span>PREVIEW</span><h3>.NET 11</h3><p>The intrinsic-backed implementation compiled against the preview runtime.</p><b>Source opt-in</b></article>
+      </div>
+    </section>
+
+    <section class="install section-shell" id="install">
+      <div class="install-card reveal">
+        <div class="install-copy">
+          <p class="eyebrow">NuGet package</p>
+          <h2>Add bounded binary I/O to the current project.</h2>
+          <p>Install the package, import the <code>Tedd</code> namespace, and supply the storage appropriate to the operation.</p>
+          <div class="install-links">
+            <a href="https://www.nuget.org/packages/Tedd.SpanUtils/2.0.0">Package details <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/tedd/Tedd.SpanUtils/blob/main/README.md">Complete documentation <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="command-shell">
+          <div class="command-label"><span>PACKAGE MANAGER</span><b>.NET CLI</b></div>
+          <div class="command-row">
+            <code>dotnet add package Tedd.SpanUtils --version 2.0.0</code>
+            <button type="button" data-copy="dotnet add package Tedd.SpanUtils --version 2.0.0" aria-label="Copy installation command">Copy</button>
+          </div>
+          <p class="copy-status" role="status" aria-live="polite"></p>
+          <dl>
+            <div><dt>Runtime dependencies</dt><dd>None</dd></div>
+            <div><dt>License</dt><dd>LGPL-3.0</dd></div>
+            <div><dt>Namespace</dt><dd><code>Tedd</code></dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand footer-brand" href="#top"><img src="assets/span-mark.svg" width="28" height="28" alt=""><span>TEDD<span class="brand-slash">/</span>SPANUTILS</span></a>
+    <p>Binary serialization for caller-owned .NET memory.</p>
+    <div>
+      <a href="https://github.com/tedd/Tedd.SpanUtils">GitHub</a>
+      <a href="https://www.nuget.org/packages/Tedd.SpanUtils">NuGet</a>
+      <a href="https://github.com/tedd/Tedd.SpanUtils/blob/main/LICENSE">License</a>
+    </div>
+  </footer>
+</body>
+</html>
