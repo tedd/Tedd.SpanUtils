@@ -8,7 +8,7 @@ namespace Tedd.Tests
     public class VIntTests
     {
         [Theory]
-        [InlineData(0)]
+        [InlineData(1)]
         [InlineData(4)]
         public void ReadVInt_EmptySpan_ThrowsInvalidDataException(int maxLength)
         {
