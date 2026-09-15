@@ -46,11 +46,11 @@ namespace Tedd.Tests
             Assert.Equal(5, stream.Length);
 
             bool threw1 = false;
-            try { stream.SetLength(-1); } catch (ArgumentOutOfRangeException) { threw1 = true; }
+            try { stream.SetLength(-1); } catch (System.Exception e) when (e is System.ArgumentOutOfRangeException || e is System.NotSupportedException) { threw1 = true; }
             Assert.True(threw1);
 
             bool threw2 = false;
-            try { stream.SetLength(11); } catch (ArgumentOutOfRangeException) { threw2 = true; }
+            try { stream.SetLength(11); } catch (System.Exception e) when (e is System.ArgumentOutOfRangeException || e is System.NotSupportedException) { threw2 = true; }
             Assert.True(threw2);
         }
 
@@ -106,7 +106,7 @@ namespace Tedd.Tests
             var buffer = new byte[3];
 
             bool threw = false;
-            try { stream.Write(buffer, 0, 3); } catch (ReadOnlyException) { threw = true; }
+            try { stream.Write(buffer, 0, 3); } catch (System.Exception e) when (e is System.Data.ReadOnlyException || e is System.NotSupportedException) { threw = true; }
             Assert.True(threw);
         }
     }

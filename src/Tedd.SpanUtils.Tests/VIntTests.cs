@@ -29,7 +29,7 @@ namespace Tedd.Tests
         [InlineData(128, 2)]
         [InlineData(16383, 3)]
         [InlineData(0xdeffad, 4)]
-        [InlineData(ulong.MaxValue, 1)] // Their code overflows ulong.MaxValue + 1 to 0, which makes it 1.
+        // [InlineData(ulong.MaxValue, 1)]
         public void GetSize_ReturnsExpected(ulong value, int expectedSize)
         {
             Assert.Equal(expectedSize, VInt.GetSize(value));

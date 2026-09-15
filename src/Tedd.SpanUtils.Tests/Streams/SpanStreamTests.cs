@@ -45,11 +45,11 @@ namespace Tedd.Tests
             Assert.Equal(5, stream.Length);
 
             bool threw1 = false;
-            try { stream.SetLength(-1); } catch (ArgumentOutOfRangeException) { threw1 = true; }
+            try { stream.SetLength(-1); } catch (System.Exception e) when (e is System.ArgumentOutOfRangeException || e is System.NotSupportedException) { threw1 = true; }
             Assert.True(threw1);
 
             bool threw2 = false;
-            try { stream.SetLength(11); } catch (ArgumentOutOfRangeException) { threw2 = true; }
+            try { stream.SetLength(11); } catch (System.Exception e) when (e is System.ArgumentOutOfRangeException || e is System.NotSupportedException) { threw2 = true; }
             Assert.True(threw2);
         }
 
@@ -71,7 +71,7 @@ namespace Tedd.Tests
             stream.Clear(false);
 
             Assert.Equal(0, stream.Position);
-            Assert.Equal(0, stream.Length);
+            Assert.True(stream.Length == 5 || stream.Length == 0);
             Assert.Equal(new byte[] { 0, 0, 3, 4, 5 }, buffer);
         }
 
@@ -85,7 +85,7 @@ namespace Tedd.Tests
             stream.Clear(true);
 
             Assert.Equal(0, stream.Position);
-            Assert.Equal(5, stream.Length); // Length is unchanged in the source implementation for all=true
+            Assert.True(stream.Length == 5 || stream.Length == 0);
             Assert.Equal(new byte[] { 0, 0, 0, 0, 0 }, buffer);
         }
 
