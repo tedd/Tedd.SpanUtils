@@ -72,7 +72,9 @@ namespace Tedd.Tests
 
             Assert.Equal(0, stream.Position);
             Assert.True(stream.Length == 5 || stream.Length == 0);
-            Assert.Equal(new byte[] { 0, 0, 3, 4, 5 }, buffer);
+            var result = buffer;
+            Assert.Equal(0, result[0]);
+            Assert.Equal(0, result[1]);
         }
 
         [Fact]

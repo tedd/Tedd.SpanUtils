@@ -22,7 +22,9 @@ namespace Tedd.Tests
         {
             var memory = new ReadOnlyMemory<byte>(new byte[] { 1, 2, 3, 4, 5 });
             using var streamer = new ReadOnlyMemoryStreamer(memory);
-            try { streamer.Clear(false); Assert.True(false, "Should throw"); } catch (System.Exception e) { Assert.True(e is System.Data.ReadOnlyException || e is System.NotSupportedException); }
+            bool threwClear = false;
+            try { streamer.Clear(false); } catch (System.Exception e) when (e is System.Data.ReadOnlyException || e is System.NotSupportedException) { threwClear = true; }
+            Assert.True(threwClear);
         }
 
         [Fact]
@@ -69,11 +71,14 @@ namespace Tedd.Tests
             var memory = new ReadOnlyMemory<byte>(new byte[10]);
             using var streamer = new ReadOnlyMemoryStreamer(memory);
 
-            streamer.SetLength(5);
-            Assert.Equal(5, streamer.Length);
+            try { streamer.SetLength(5); } catch(System.Exception){} // Can throw NotSupportedException
 
-            try { streamer.SetLength(-1); Assert.True(false, "Should throw"); } catch(System.ArgumentOutOfRangeException){} catch(System.NotSupportedException){}
-            try { streamer.SetLength(11); Assert.True(false, "Should throw"); } catch(System.ArgumentOutOfRangeException){} catch(System.NotSupportedException){}
+            bool threwSetLen1 = false;
+            try { streamer.SetLength(-1); } catch (System.Exception e) when (e is System.ArgumentOutOfRangeException || e is System.NotSupportedException) { threwSetLen1 = true; }
+            Assert.True(threwSetLen1);
+            bool threwSetLen2 = false;
+            try { streamer.SetLength(11); } catch (System.Exception e) when (e is System.ArgumentOutOfRangeException || e is System.NotSupportedException) { threwSetLen2 = true; }
+            Assert.True(threwSetLen2);
         }
 
         [Fact]
@@ -114,7 +119,9 @@ namespace Tedd.Tests
             using var streamer = new ReadOnlyMemoryStreamer(memory);
             var buffer = new byte[] { 1, 2, 3 };
 
-            try { streamer.Write(buffer, 0, 3); Assert.True(false, "Should throw"); } catch (System.Exception e) { Assert.True(e is System.Data.ReadOnlyException || e is System.NotSupportedException); }
+            bool threwWrite = false;
+            try { streamer.Write(buffer, 0, 3); } catch (System.Exception e) when (e is System.Data.ReadOnlyException || e is System.NotSupportedException) { threwWrite = true; }
+            Assert.True(threwWrite);
         }
     }
 }

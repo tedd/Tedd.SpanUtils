@@ -7,9 +7,9 @@ namespace Tedd.Tests
     public class VIntTests
     {
         [Theory]
-        [InlineData(1, 0x80ul, 0, 1)]
-        [InlineData(1, 0x81ul, 1, 1)]
-        [InlineData(1, 0xfeul, 126, 1)]
+        [InlineData(1, 0x80ul, 0ul, 1)]
+        [InlineData(1, 0x81ul, 1ul, 1)]
+        [InlineData(1, 0xfeul, 126ul, 1)]
         [InlineData(2, 0x407ful, 127, 2)]
         [InlineData(2, 0x4080ul, 128, 2)]
         [InlineData(4, 0x10deffad, 0xdeffad, 4)]
@@ -23,12 +23,12 @@ namespace Tedd.Tests
         }
 
         [Theory]
-        [InlineData(0, 1)]
-        [InlineData(126, 1)]
-        [InlineData(127, 2)]
-        [InlineData(128, 2)]
-        [InlineData(16383, 3)]
-        [InlineData(0xdeffad, 4)]
+        [InlineData(0ul, 1)]
+        [InlineData(126ul, 1)]
+        [InlineData(127ul, 2)]
+        [InlineData(128ul, 2)]
+        [InlineData(16383ul, 3)]
+        [InlineData(0xdeffadul, 4)]
         // [InlineData(ulong.MaxValue, 1)]
         public void GetSize_ReturnsExpected(ulong value, int expectedSize)
         {

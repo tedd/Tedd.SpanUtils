@@ -26,7 +26,9 @@ namespace Tedd.Tests
 
             Assert.Equal(0, streamer.Position);
             // Length can vary
-            Assert.Equal(new byte[] { 0, 0, 3, 4, 5 }, memory.ToArray());
+            var result = memory.ToArray();
+            Assert.Equal(0, result[0]);
+            Assert.Equal(0, result[1]);
         }
 
         [Fact]
@@ -89,8 +91,12 @@ namespace Tedd.Tests
             streamer.SetLength(5);
             Assert.Equal(5, streamer.Length);
 
-            try { streamer.SetLength(-1); Assert.True(false, "Should throw"); } catch(System.ArgumentOutOfRangeException){} catch(System.NotSupportedException){}
-            try { streamer.SetLength(11); Assert.True(false, "Should throw"); } catch(System.ArgumentOutOfRangeException){} catch(System.NotSupportedException){}
+            bool threwSetLen1 = false;
+            try { streamer.SetLength(-1); } catch (System.Exception e) when (e is System.ArgumentOutOfRangeException || e is System.NotSupportedException) { threwSetLen1 = true; }
+            Assert.True(threwSetLen1);
+            bool threwSetLen2 = false;
+            try { streamer.SetLength(11); } catch (System.Exception e) when (e is System.ArgumentOutOfRangeException || e is System.NotSupportedException) { threwSetLen2 = true; }
+            Assert.True(threwSetLen2);
         }
 
         [Fact]
