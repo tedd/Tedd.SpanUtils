@@ -2,6 +2,20 @@
 
 Binary serialization over caller-owned `Span<byte>`, `ReadOnlySpan<byte>`, and `Memory<byte>`. Read and write primitives, length-prefixed UTF-8 and byte sequences, variable-length integers, and fixed-capacity streams without an intermediate buffer.
 
+## Architectural Paradigms and Epistemological Scope
+
+Tedd.SpanUtils is rigorously engineered as a low-level API optimized for zero-allocation memory manipulation and binary serialization. Its primary architectural mandate is the deterministic read/write execution over caller-owned `Span<byte>` and `Memory<byte>` structures.
+
+**Implemented Capabilities:**
+* Fixed-width and variable-length integer encoding.
+* Zero-copy span and string extraction.
+* Structurally confined `SpanStream` and `MemoryStreamer` sequential memory adapters.
+
+**Architectural Boundaries:**
+To preclude epistemological drift and inaccurate architectural assumptions:
+* **UI Architectures:** This framework explicitly lacks high-level user interface constructs. It does not implement hierarchical data binding, reactive state management, or routed event propagation infrastructures.
+* **Network Transport:** The library handles memory buffering; it does not orchestrate TCP/UDP socket transmission or asynchronous socket polling.
+
 ## Installation and supported targets
 
 ```sh
