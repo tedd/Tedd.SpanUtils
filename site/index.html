@@ -4,32 +4,30 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f7faf9">
-  <meta name="description" content="Tedd.SpanUtils provides bounded, endian-aware binary serialization over caller-owned Span, ReadOnlySpan, and Memory buffers for .NET.">
-  <meta property="og:title" content="Tedd.SpanUtils — Binary I/O over caller-owned memory">
-  <meta property="og:description" content="Endian-aware primitives, variable-length integers, UTF-8 data, and fixed-capacity streams for .NET.">
+  <meta name="description" content="Tedd.SpanUtils is a .NET library for reading and writing binary data in spans and memory. Build network packets, parse file records, and encode telemetry with explicit byte order and advancing cursors.">
+  <meta property="og:title" content="Tedd.SpanUtils — A .NET library for binary data">
+  <meta property="og:description" content="Read and write binary packets, file records, and telemetry in C#. Examples, cursor semantics, and measured throughput in MB/s.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tedd.no/Tedd.SpanUtils/">
   <meta name="twitter:card" content="summary">
-  <title>Tedd.SpanUtils — Binary I/O over caller-owned memory</title>
+  <title>Tedd.SpanUtils — A .NET library for binary data</title>
   <link rel="canonical" href="https://tedd.no/Tedd.SpanUtils/">
   <link rel="icon" href="assets/span-mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
-  <script>document.documentElement.classList.add('js')</script>
   <script src="app.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Tedd.SpanUtils home">
       <img src="assets/span-mark.svg" width="34" height="34" alt="">
       <span>TEDD<span class="brand-slash">/</span>SPANUTILS</span>
     </a>
     <nav aria-label="Primary navigation">
-      <a href="#capabilities">Capabilities</a>
-      <a href="#api">API</a>
-      <a href="#performance">Performance</a>
-      <a href="#targets">Targets</a>
+      <a href="#use-cases">Use cases</a>
+      <a href="#cursors">Cursors</a>
+      <a href="#examples">Examples</a>
+      <a href="#performance">MB/s</a>
       <a href="https://github.com/tedd/Tedd.SpanUtils">Source</a>
       <a class="nav-cta" href="#install">Install</a>
     </nav>
@@ -39,255 +37,254 @@
     <section class="hero" id="top">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-copy">
-        <p class="eyebrow"><span></span> .NET binary serialization library</p>
-        <h1>Binary I/O over<br><em>caller-owned memory.</em></h1>
-        <p class="lede">Read and write primitives, UTF-8 data, variable-length integers, and bounded streams directly over <code>Span&lt;byte&gt;</code>, <code>ReadOnlySpan&lt;byte&gt;</code>, and <code>Memory&lt;byte&gt;</code>.</p>
+        <p class="eyebrow"><span></span> Tedd.SpanUtils · C# / .NET</p>
+        <h1>A .NET library<br>for <em>binary data.</em></h1>
+        <p class="lede">Convert numbers, strings, and byte sequences to and from a binary representation. Use it to build network packets, parse file records, or serialize telemetry into a buffer you provide.</p>
+        <p class="hero-detail">The library operates on <code>Span&lt;byte&gt;</code>, <code>ReadOnlySpan&lt;byte&gt;</code>, and <code>Memory&lt;byte&gt;</code>. You define the fields and their order; Tedd.SpanUtils reads and writes each field.</p>
         <div class="hero-actions">
-          <a class="button primary" href="#install">Install version 2.0.0 <span aria-hidden="true">↓</span></a>
-          <a class="button secondary" href="https://github.com/tedd/Tedd.SpanUtils">View source <span aria-hidden="true">↗</span></a>
+          <a class="button primary" href="#install">Install the NuGet package <span aria-hidden="true">↓</span></a>
+          <a class="button secondary" href="#examples">Read the examples</a>
         </div>
         <ul class="hero-checks" aria-label="Library characteristics">
-          <li>Bounded operations</li>
-          <li>Explicit byte order</li>
-          <li>No runtime dependencies</li>
+          <li>Little endian and big endian</li>
+          <li>Checked buffer bounds</li>
+          <li>No runtime NuGet dependencies</li>
         </ul>
       </div>
 
-      <div class="hero-code" aria-label="Tedd.SpanUtils usage example">
-        <div class="code-bar">
-          <span></span><span></span><span></span>
-          <b>Packet.cs</b>
-          <i>C#</i>
-        </div>
-        <pre><code><span class="kw">using</span> <span class="type">Tedd</span>;
+      <figure class="hero-code">
+        <div class="code-bar"><span></span><span></span><span></span><b>NetworkPacket.cs</b><i>C#</i></div>
+        <pre><code data-example="network">using System;
+using Tedd;
 
-<span class="type">Span</span>&lt;<span class="type">byte</span>&gt; buffer =
-    <span class="kw">stackalloc</span> <span class="type">byte</span>[<span class="num">128</span>];
+Span&lt;byte&gt; buffer = stackalloc byte[128];
+var writer = new SpanStream(buffer, length: 0);
 
-<span class="kw">var</span> writer = <span class="kw">new</span> <span class="type">SpanStream</span>(
-    buffer, length: <span class="num">0</span>);
+writer.WriteBE((ushort)1);     // Message type: 2 bytes
+writer.WriteBE(42);            // Sequence: 4 bytes
+writer.WriteSized("sensor-17"); // UTF-8 + length prefix
 
-writer.<span class="method">WriteBE</span>(<span class="num">42</span>);
-writer.<span class="method">WriteSized</span>(<span class="str">"Hello, world!"</span>);
-
-<span class="kw">var</span> reader = <span class="kw">new</span> <span class="type">ReadOnlySpanStream</span>(
-    writer.WrittenSpan);
-
-<span class="type">int</span> number = reader.<span class="method">ReadInt32BE</span>();
-<span class="type">string</span> text = reader.<span class="method">ReadSizedString</span>();</code></pre>
-        <div class="code-result">
-          <span>18 B written</span>
-          <strong><i aria-hidden="true"></i> caller retains storage ownership</strong>
-        </div>
-      </div>
+// Only the 16 written bytes belong to the packet.
+var reader = new ReadOnlySpanStream(writer.WrittenSpan);
+ushort type = reader.ReadUInt16BE(); // 1
+int sequence = reader.ReadInt32BE(); // 42
+string name = reader.ReadSizedString(); // "sensor-17"</code></pre>
+        <figcaption class="code-result"><span>128 B capacity · 16 B packet</span><strong>Each call advances Position</strong></figcaption>
+      </figure>
     </section>
 
-    <section class="proof-strip" aria-label="Library summary">
-      <p><strong>2.0.0</strong><span>Current package version</span></p>
-      <p><strong>.NET Standard 2.1</strong><span>Portable baseline</span></p>
-      <p><strong>.NET 6 + 10</strong><span>Runtime-specific assets</span></p>
+    <section class="proof-strip" aria-label="Package summary">
+      <p><strong>NuGet · 2.0.0</strong><span>Reference from your .NET application</span></p>
+      <p><strong>Span + Memory</strong><span>Stack, array, or pooled storage</span></p>
+      <p><strong>LE + BE</strong><span>Explicit byte order for binary formats</span></p>
       <p><strong>LGPL-3.0</strong><span>Open-source library</span></p>
     </section>
 
-    <section class="capabilities section-shell" id="capabilities">
-      <div class="section-intro reveal">
-        <div>
-          <p class="eyebrow">Purpose-built binary primitives</p>
-          <h2>Control the representation and the storage.</h2>
-        </div>
-        <p>The API separates buffer ownership from binary representation. Operations validate capacity, preserve cursor state on failed <code>Try</code> calls, and expose explicit little-endian and big-endian forms for portable formats.</p>
+    <section class="use-cases section-shell" id="use-cases">
+      <div class="section-intro">
+        <div><p class="eyebrow">What is it for?</p><h2>Binary fields in your .NET application.</h2></div>
+        <p>Use Tedd.SpanUtils when your application needs a specific byte layout. Choose the buffer size and lifetime, then encode or decode the fields in the order required by the format.</p>
       </div>
+      <div class="use-case-grid">
+        <article class="feature-card featured">
+          <span class="feature-index">01</span><p class="card-label">Networking</p>
+          <h3>Build and parse packets</h3>
+          <p>Write a message identifier, a sequence number, and a payload into a send buffer. Parse the received buffer in the same order. Use <code>BE</code> when the protocol specifies network byte order.</p>
+          <a class="text-link" href="#top">Packet example <span aria-hidden="true">↑</span></a>
+        </article>
+        <article class="feature-card">
+          <span class="feature-index">02</span><p class="card-label">Files and records</p>
+          <h3>Read structured binary records</h3>
+          <p>Decode file headers, fixed-width measurements, and length-prefixed text from bytes already read into memory. Use <code>LE</code> or <code>BE</code> according to the file specification.</p>
+          <a class="text-link" href="#record-example">Record example <span aria-hidden="true">↓</span></a>
+        </article>
+        <article class="feature-card">
+          <span class="feature-index">03</span><p class="card-label">Telemetry and messages</p>
+          <h3>Encode compact values</h3>
+          <p>Store counters and identifiers with variable-length integers. Small unsigned values use fewer bytes; successive <code>Move</code> calls write the next value immediately after the previous one.</p>
+          <a class="text-link" href="#cursors">Cursor example <span aria-hidden="true">↓</span></a>
+        </article>
+      </div>
+      <p class="section-note">The library handles binary representation in memory. Your application supplies the schema and performs socket, file, or other external I/O.</p>
+    </section>
 
-      <div class="feature-grid">
-        <article class="feature-card featured reveal">
-          <span class="feature-index">01</span>
-          <div class="feature-symbol" aria-hidden="true">↔</div>
-          <p class="card-kicker">Wire-format control</p>
-          <h3>Endian-aware primitives</h3>
-          <p>Read and write integral, floating-point, decimal, GUID, character, and 24-bit values in native, little-endian, or big-endian order.</p>
-        </article>
-        <article class="feature-card reveal">
-          <span class="feature-index">02</span>
-          <div class="feature-symbol" aria-hidden="true">≋</div>
-          <h3>Variable-width data</h3>
-          <p>Encode signed and unsigned VLQ values, EBML VInts, length-prefixed byte sequences, and length-prefixed UTF-8 strings.</p>
-        </article>
-        <article class="feature-card reveal">
-          <span class="feature-index">03</span>
-          <div class="feature-symbol" aria-hidden="true">⌁</div>
-          <h3>Zero-copy views</h3>
-          <p>Return spans or memory segments over existing payloads when a copied array or decoded string is unnecessary.</p>
-        </article>
-        <article class="feature-card reveal">
-          <span class="feature-index">04</span>
-          <div class="feature-symbol" aria-hidden="true">→</div>
-          <h3>Moving cursors</h3>
-          <p>Advance spans by reference after successful operations, or use static methods and extension methods without an adapter object.</p>
-        </article>
-        <article class="feature-card reveal">
-          <span class="feature-index">05</span>
-          <div class="feature-symbol" aria-hidden="true">▤</div>
-          <h3>Bounded stream adapters</h3>
-          <p>Use stack-only span streams or <code>System.IO.Stream</code>-compatible memory adapters with explicit length and capacity semantics.</p>
-        </article>
-        <article class="feature-card reveal">
-          <span class="feature-index">06</span>
-          <div class="feature-symbol" aria-hidden="true">◫</div>
-          <h3>Bulk conversion</h3>
-          <p>Reverse endianness across typed spans, including in-place and overlapping source and destination regions.</p>
-        </article>
+    <section class="cursor-section section-shell" id="cursors">
+      <div class="cursor-copy">
+        <p class="eyebrow">How the cursor moves</p>
+        <h2>The next field starts where the last one ends.</h2>
+        <p>A span describes a contiguous region of memory. A <code>Move</code> method replaces the span variable with the remaining slice: <code>span = span.Slice(bytesConsumed)</code>. Its start advances and its length decreases. Only the view changes; the bytes are not shifted in memory.</p>
+        <p>In this example, <code>123</code> occupies four little-endian bytes and unsigned VLQ <code>300</code> occupies two bytes. The output cursor advances by six bytes in total.</p>
+        <ol class="cursor-steps">
+          <li><span>0</span><div><strong>Start at offset 0</strong><p><code>output.Length == 32</code></p></div></li>
+          <li><span>4</span><div><strong>Write an Int32 · advance 4 bytes</strong><p><code>output.Length == 28</code></p></div></li>
+          <li><span>6</span><div><strong>Write a VLQ · advance 2 bytes</strong><p><code>output.Length == 26</code></p></div></li>
+        </ol>
+        <p><code>storage</code> still covers all 32 bytes. <code>output</code> now covers bytes 6–31. Reading the six written bytes advances a separate input cursor from offset 0 to 4, then to 6.</p>
+      </div>
+      <div class="cursor-panel">
+        <div class="panel-heading"><span>MOVING SPAN</span><b>Offset 0 → 4 → 6</b></div>
+        <pre><code data-example="moving">using System;
+using Tedd;
+
+Span&lt;byte&gt; storage = stackalloc byte[32];
+Span&lt;byte&gt; output = storage;
+
+output.MoveWriteLE(123);       // 28 bytes remain
+output.MoveWriteVLQ(300UL);    // 26 bytes remain
+
+int written = storage.Length - output.Length; // 6
+ReadOnlySpan&lt;byte&gt; input = storage[..written];
+
+int first = input.MoveReadInt32LE();    // 123; 2 remain
+ulong second = input.MoveReadVLQUInt64(); // 300; 0 remain
+
+// input.IsEmpty == true; storage.Length == 32</code></pre>
+        <div class="buffer-map" aria-label="Buffer bytes: 7B 00 00 00 for Int32 123, AC 02 for VLQ 300, followed by unwritten capacity">
+          <span class="used"><small>0</small>7B</span><span class="used"><small>1</small>00</span><span class="used"><small>2</small>00</span><span class="used"><small>3</small>00</span><span class="vlq"><small>4</small>AC</span><span class="vlq"><small>5</small>02</span><span class="free"><small>6</small>··</span><span class="free"><small>…31</small>··</span>
+        </div>
+        <div class="buffer-legend"><span><i class="fixed"></i> Int32 LE · 4 B</span><span><i class="variable"></i> VLQ · 2 B</span><span><i class="available"></i> Unwritten · 26 B</span></div>
       </div>
     </section>
 
-    <section class="cursor-section section-shell" id="semantics">
-      <div class="cursor-copy reveal">
-        <p class="eyebrow">Explicit cursor semantics</p>
-        <h2>Advance only after success.</h2>
-        <p><code>Move</code> operations consume a span by reference. Their <code>Try</code> variants do not advance the cursor or modify the destination when the complete value is unavailable.</p>
-        <ul class="assurance-list">
-          <li><strong>Fixed capacity</strong><span>Writes cannot extend the supplied storage.</span></li>
-          <li><strong>Logical length</strong><span>Stream reads stop at written content, not buffer capacity.</span></li>
-          <li><strong>Validated formats</strong><span>Readers reject truncated and overflowing variable-width encodings.</span></li>
-          <li><strong>Caller ownership</strong><span>Disposal never disposes the backing memory.</span></li>
-        </ul>
+    <section class="examples section-shell" id="examples">
+      <div class="section-intro">
+        <div><p class="eyebrow">Choose a cursor model</p><h2>Direct offsets, moving spans, or stream positions.</h2></div>
+        <p>All examples use the <code>Tedd</code> namespace. Writers infer the fixed-width type from the argument; readers name it explicitly. <code>LE</code> means little endian; <code>BE</code> means big endian.</p>
       </div>
 
-      <div class="cursor-panel reveal" aria-label="Moving span cursor example">
-        <div class="panel-heading"><span>CURSOR EXAMPLE</span><b>Position is encoded in the span</b></div>
-        <pre><code><span class="type">Span</span>&lt;<span class="type">byte</span>&gt; storage = <span class="kw">stackalloc</span> <span class="type">byte</span>[<span class="num">32</span>];
-<span class="type">Span</span>&lt;<span class="type">byte</span>&gt; output = storage;
+      <article class="example-row" id="offset-example">
+        <div class="example-copy"><p class="eyebrow">01 / Fixed offsets</p><h3>Read or patch a field at a known offset.</h3><p>Ordinary methods operate at the beginning of the supplied span and leave that span unchanged. Slice the buffer to select a field. Repeating a read on the same span reads the same field.</p><p>Use this model for file headers, packet flags, and fixed record layouts.</p></div>
+        <div class="example-code"><div class="code-bar"><b>FixedOffsets.cs</b><i>C#</i></div><pre><code data-example="offsets">using System;
+using Tedd;
 
-output.<span class="method">MoveWriteLE</span>(<span class="num">123</span>);
-output.<span class="method">MoveWriteVLQ</span>(<span class="num">300UL</span>);
+Span&lt;byte&gt; header = stackalloc byte[8];
+header.WriteBE(123);           // Bytes 0–3
+header[4..].WriteBE(456);      // Bytes 4–7
 
-<span class="type">ReadOnlySpan</span>&lt;<span class="type">byte</span>&gt; input =
-    storage[..(storage.Length - output.Length)];
+int first = header.ReadInt32BE();     // 123
+int again = header.ReadInt32BE();     // 123
+int second = header[4..].ReadInt32BE(); // 456
 
-<span class="type">int</span> first = input.<span class="method">MoveReadInt32LE</span>();
-<span class="type">ulong</span> second = input.<span class="method">MoveReadVLQUInt64</span>();</code></pre>
-        <div class="buffer-map" aria-label="Example buffer layout">
-          <span class="used">7B</span><span class="used">00</span><span class="used">00</span><span class="used">00</span><span class="vlq">AC</span><span class="vlq">02</span><span class="free">··</span><span class="free">··</span>
-        </div>
-        <div class="buffer-legend"><span><i class="fixed"></i> Int32 LE</span><span><i class="variable"></i> VLQ</span><span><i class="available"></i> Remaining capacity</span></div>
-      </div>
-    </section>
+// header.Length is still 8; no cursor advances.</code></pre></div>
+      </article>
 
-    <section class="api section-shell" id="api">
-      <div class="section-intro reveal">
-        <div>
-          <p class="eyebrow">API surface</p>
-          <h2>Select the access pattern that matches the caller.</h2>
-        </div>
-        <p>The same binary representations are available through direct extension methods, moving-span methods, and stateful adapters. The choice affects cursor management, not the wire format.</p>
-      </div>
+      <article class="example-row" id="record-example">
+        <div class="example-copy"><p class="eyebrow">02 / Stream position</p><h3>Serialize a measurement record.</h3><p><code>SpanStream</code> retains the full buffer and stores the current byte offset in <code>Position</code>. Each successful operation increments that position by its encoded length.</p><p><code>length: 0</code> starts an empty writer. <code>Length</code> tracks the written content; <code>Capacity</code> remains the buffer size. Setting <code>Position = 0</code> rewinds the cursor without clearing content.</p></div>
+        <div class="example-code"><div class="code-bar"><b>MeasurementRecord.cs</b><i>C#</i></div><pre><code data-example="record">using System;
+using Tedd;
 
-      <div class="api-table-wrap reveal">
-        <table>
-          <thead>
-            <tr><th>Access pattern</th><th>Storage</th><th>Cursor model</th><th>Primary use</th></tr>
-          </thead>
-          <tbody>
-            <tr><th><code>Span&lt;byte&gt;</code> extensions</th><td>Caller-owned span</td><td>Offset zero</td><td>Single-value reads and writes</td></tr>
-            <tr><th><code>MoveRead*</code> / <code>MoveWrite*</code></th><td>Caller-owned span</td><td>Span advanced by reference</td><td>Sequential packet parsing</td></tr>
-            <tr><th><code>SpanStream</code></th><td><code>Span&lt;byte&gt;</code></td><td>Stack-only position and length</td><td>Synchronous bounded serialization</td></tr>
-            <tr><th><code>ReadOnlySpanStream</code></th><td><code>ReadOnlySpan&lt;byte&gt;</code></td><td>Stack-only read position</td><td>Read-only parsing</td></tr>
-            <tr><th><code>MemoryStreamer</code></th><td><code>Memory&lt;byte&gt;</code></td><td><code>Stream</code>-compatible position</td><td>Framework stream integration</td></tr>
-            <tr><th><code>ReadOnlyMemoryStreamer</code></th><td><code>ReadOnlyMemory&lt;byte&gt;</code></td><td><code>Stream</code>-compatible position</td><td>Read-only memory integration</td></tr>
-          </tbody>
-        </table>
-      </div>
+Span&lt;byte&gt; record = stackalloc byte[12];
+var stream = new SpanStream(record, length: 0);
 
-      <div class="value-groups reveal" aria-label="Supported value groups">
-        <div><strong>SCALARS</strong><span>8–128-bit integers, Boolean, character, floating point, decimal, GUID, and 24-bit integers</span></div>
-        <div><strong>SEQUENCES</strong><span>Raw and length-prefixed bytes, spans, memory regions, and UTF-8 strings</span></div>
-        <div><strong>VARIABLE</strong><span>Signed and unsigned VLQ values and one-to-eight-byte EBML VInts</span></div>
-        <div><strong>FAILURE MODEL</strong><span>Throwing operations and non-mutating <code>Try</code> variants</span></div>
-      </div>
+stream.WriteLE(42L);      // Int64: Position = 8
+stream.WriteLE(21.5f);    // Single: Position = 12
+                         // Length = 12, Capacity = 12
+stream.Position = 0;
+long id = stream.ReadInt64LE();       // 42; Position = 8
+float value = stream.ReadSingleLE(); // 21.5; Position = 12
+
+// stream.WrittenSpan is the record to pass to file I/O.</code></pre></div>
+      </article>
+
+      <article class="example-row" id="try-example">
+        <div class="example-copy"><p class="eyebrow">03 / Incomplete input</p><h3>Keep the cursor when a field is truncated.</h3><p>Use <code>TryMoveRead*</code> when input may end within a field. A failed call returns <code>false</code> and leaves the input cursor unchanged. Failed <code>Try</code> writes also leave the destination bytes unchanged.</p><p>Each operation is independent. To parse a whole record speculatively, copy the input span to a local cursor and assign it back only after every field succeeds.</p></div>
+        <div class="example-code"><div class="code-bar"><b>IncompleteField.cs</b><i>C#</i></div><pre><code data-example="try-read">using System;
+using Tedd;
+
+ReadOnlySpan&lt;byte&gt; input = new byte[] { 0x00, 0x00 };
+
+bool complete = input.TryMoveReadInt32BE(out int value);
+
+// complete == false: Int32 requires 4 bytes.
+// input.Length is still 2; its start has not moved.
+// Obtain more input before retrying the field.</code></pre></div>
+      </article>
+
+      <article class="example-row" id="payload-example">
+        <div class="example-copy"><p class="eyebrow">04 / Payload views</p><h3>Read a byte payload without copying it.</h3><p><code>WriteSized</code> writes a length prefix followed by the payload. <code>ReadSizedReadOnlySpan</code> returns a view of those payload bytes in the existing buffer; it does not allocate an array.</p><p>The view shares the buffer's lifetime and observes its changes. Use <code>ReadSizedBytes</code> when a separate array is required. <code>ReadSizedString</code> decodes UTF-8 and allocates the returned string.</p></div>
+        <div class="example-code"><div class="code-bar"><b>PayloadView.cs</b><i>C#</i></div><pre><code data-example="payload">using System;
+using Tedd;
+
+Span&lt;byte&gt; packet = stackalloc byte[64];
+var writer = new SpanStream(packet, length: 0);
+writer.WriteSized(new byte[] { 10, 20, 30 });
+
+var reader = new ReadOnlySpanStream(writer.WrittenSpan);
+ReadOnlySpan&lt;byte&gt; payload = reader.ReadSizedReadOnlySpan();
+
+// payload contains 10, 20, 30; reader.Position == 4.
+// The prefix occupies 1 byte; the payload occupies 3.
+packet[1] = 99;
+// payload[0] is now 99: it views the same storage.</code></pre></div>
+      </article>
+
+      <article class="example-row" id="memory-example">
+        <div class="example-copy"><p class="eyebrow">05 / Stream integration</p><h3>Supply memory to a Stream-based API.</h3><p><code>MemoryStreamer</code> wraps <code>Memory&lt;byte&gt;</code> and inherits <code>System.IO.Stream</code>. Use it when another API accepts a <code>Stream</code>, or when the backing storage must remain accessible across asynchronous operations.</p><p>It has fixed capacity, advances <code>Position</code>, and exposes content as <code>WrittenMemory</code>. The caller owns the backing buffer; disposing the adapter does not dispose that storage.</p></div>
+        <div class="example-code"><div class="code-bar"><b>MemoryAdapter.cs</b><i>C#</i></div><pre><code data-example="memory">using System;
+using System.IO;
+using Tedd;
+
+byte[] buffer = new byte[64];
+using var adapter = new MemoryStreamer(buffer, length: 0);
+Stream stream = adapter;
+stream.Write(new byte[] { 10, 20, 30 });
+
+ReadOnlyMemory&lt;byte&gt; content = adapter.WrittenMemory;
+// content.Length == 3; adapter.Position == 3.
+// buffer remains owned by the caller.</code></pre></div>
+      </article>
+
+      <p class="section-note"><strong>Format details:</strong> methods without <code>LE</code> or <code>BE</code> generally use native byte order; three-byte integers default to little endian. Signed VLQ uses this library's sign/magnitude convention. Use <code>WriteVInt</code> and <code>ReadVInt</code> for EBML integers. Consult the <a href="https://github.com/tedd/Tedd.SpanUtils/blob/main/README.md#variable-length-integers">encoding documentation</a> before implementing interoperability with another format.</p>
     </section>
 
     <section class="performance section-shell" id="performance">
-      <div class="performance-heading reveal">
-        <p class="eyebrow">Measured performance</p>
-        <h2>Published data,<br>qualified conclusions.</h2>
-        <p>Repository benchmarks compare version 2 with the archived version 1 source under identical per-runtime workloads. The results below are observed means from ShortRun measurements, not universal performance guarantees.</p>
-        <a class="text-link" href="https://github.com/tedd/Tedd.SpanUtils/blob/main/docs/benchmarks/RESULTS.md">Read the complete methodology and results <span aria-hidden="true">↗</span></a>
+      <div class="section-intro">
+        <div><p class="eyebrow">Method throughput</p><h2>Binary data processed in MB/s.</h2></div>
+        <p>Absolute throughput for Tedd.SpanUtils 2.0.0, calculated from the recorded per-operation mean. Rows identify the public methods, the work performed, and the bytes counted.</p>
       </div>
-      <div class="performance-data reveal">
-        <article>
-          <p class="metric">3.1<span>×</span></p>
-          <h3>Int64 big-endian roundtrip</h3>
-          <p>Approximate improvement observed on both .NET 10 and .NET 11 preview.</p>
-        </article>
-        <article>
-          <p class="metric">13–23<span>×</span></p>
-          <h3>Bulk endian reversal</h3>
-          <p>New batch API compared with the scalar sequence available in the archived version.</p>
-        </article>
-        <article>
-          <p class="metric">0<span> B/op</span></p>
-          <h3>Measured non-string workloads</h3>
-          <p>UTF-8 decoding allocated its returned string; reusable buffers were allocated during setup.</p>
-        </article>
-        <div class="measurement-note">
-          <strong>Measurement context</strong>
-          <span>AMD Ryzen 9 5950X · Windows 11 25H2 · .NET 10.0.11 and .NET 11 preview 7 · 4 September 2026</span>
-        </div>
+      <div class="throughput-wrap" role="region" aria-label="Method throughput table" tabindex="0">
+        <table class="throughput-table">
+          <caption>MB/s · 1 MB = 1,000,000 bytes · rounded to the nearest whole MB/s</caption>
+          <thead><tr><th scope="col">Method / workload</th><th scope="col">Bytes counted</th><th scope="col">.NET 10.0.11<br><span>MB/s</span></th><th scope="col">.NET 11 preview 7<br><span>MB/s</span></th></tr></thead>
+          <tbody>
+            <tr data-benchmark="SerializationBenchmarks:CurrentInt32LE" data-bytes="4"><th scope="row"><code>WriteLE(int)</code> + <code>ReadInt32LE</code><small>One Int32 write and read</small></th><td>4</td><td data-runtime="net10">3,908</td><td data-runtime="net11">3,509</td></tr>
+            <tr data-benchmark="SerializationBenchmarks:CurrentInt64BE" data-bytes="8"><th scope="row"><code>WriteBE(long)</code> + <code>ReadInt64BE</code><small>One Int64 write and read</small></th><td>8</td><td data-runtime="net10">5,981</td><td data-runtime="net11">5,533</td></tr>
+            <tr data-benchmark="SerializationBenchmarks:CurrentVLQ" data-bytes="4.75"><th scope="row"><code>WriteVLQ(ulong)</code> + <code>ReadVLQUInt64</code><small>Mixed unsigned values; 1–10 encoded bytes</small></th><td>4.75 average</td><td data-runtime="net10">541</td><td data-runtime="net11">631</td></tr>
+            <tr data-benchmark="Utf8Benchmarks:CurrentWrite" data-bytes="246"><th scope="row"><code>WriteSized(string)</code><small>244 UTF-8 bytes + 2-byte prefix</small></th><td>246</td><td data-runtime="net10">2,722</td><td data-runtime="net11">2,911</td></tr>
+            <tr data-benchmark="Utf8Benchmarks:CurrentRead" data-bytes="246"><th scope="row"><code>ReadSizedString</code><small>Decodes the same string; allocates 424 B</small></th><td>246</td><td data-runtime="net10">1,502</td><td data-runtime="net11">1,584</td></tr>
+            <tr data-benchmark="CursorBenchmarks:CurrentMovingSpan" data-bytes="8"><th scope="row"><code>MoveWrite(long)</code> + <code>MoveReadInt64</code><small>Sequential Int64 write and read</small></th><td>8</td><td data-runtime="net10">7,964</td><td data-runtime="net11">7,233</td></tr>
+            <tr data-benchmark="CursorBenchmarks:CurrentSpanStream" data-bytes="8"><th scope="row"><code>SpanStream.Write(long)</code> + <code>ReadInt64</code><small>Sequential Int64 write and read</small></th><td>8</td><td data-runtime="net10">5,367</td><td data-runtime="net11">3,752</td></tr>
+            <tr data-benchmark="CursorBenchmarks:CurrentMemoryCopy" data-bytes="1024"><th scope="row"><code>MemoryStreamer.Write</code> + <code>Read</code><small>1 KiB buffer written, then read</small></th><td>1,024</td><td data-runtime="net10">32,027</td><td data-runtime="net11">18,607</td></tr>
+            <tr data-benchmark="BulkEndianBenchmarks:CurrentBulkReverse" data-length="64" data-bytes="256"><th scope="row"><code>ReverseEndianness</code> · 64 Int32 values<small>One block conversion</small></th><td>256</td><td data-runtime="net10">33,871</td><td data-runtime="net11">49,023</td></tr>
+            <tr data-benchmark="BulkEndianBenchmarks:CurrentBulkReverse" data-length="4096" data-bytes="16384"><th scope="row"><code>ReverseEndianness</code> · 4,096 Int32 values<small>One block conversion</small></th><td>16,384</td><td data-runtime="net10">59,863</td><td data-runtime="net11">69,127</td></tr>
+          </tbody>
+        </table>
       </div>
+      <div class="throughput-notes">
+        <div><h3>Calculation and byte accounting</h3><p><code>MB/s = bytes × 1,000 / mean time (ns)</code>. A write/read pair counts its encoded data once over the combined time. Bulk rows count one block, not total memory traffic. Integer timings are already normalized per value by BenchmarkDotNet.</p><p>VLQ widths are 1, 1, 2, 3, 5, 7, 9, and 10 bytes for the equally weighted inputs. UTF-8 rows include the length prefix.</p></div>
+        <div><h3>Measurement conditions</h3><p>Measured 4 September 2026 on an AMD Ryzen 9 5950X with Windows 11 25H2. .NET 10.0.11 used BenchmarkDotNet 0.15.8; .NET 11.0.0-preview.7.26381.103 used 0.16.0-preview.1. Each case used one launch, three warmups, and three measured iterations.</p><p>These are in-memory microbenchmarks with reused buffers and broad ShortRun confidence intervals. They do not measure socket or disk throughput. Runtime, hardware, and input distribution affect results.</p></div>
+      </div>
+      <div class="report-links"><span>Source measurements:</span><a href="https://github.com/tedd/Tedd.SpanUtils/tree/main/docs/benchmarks/net10/results">.NET 10 reports ↗</a><a href="https://github.com/tedd/Tedd.SpanUtils/tree/main/docs/benchmarks/net11/results">.NET 11 reports ↗</a><a href="https://github.com/tedd/Tedd.SpanUtils/blob/main/docs/benchmarks/README.md#workloads">Workloads and reproduction ↗</a></div>
     </section>
 
     <section class="targets section-shell" id="targets">
-      <div class="section-intro reveal">
-        <div>
-          <p class="eyebrow">Compatibility</p>
-          <h2>Portable baseline, optimized runtime assets.</h2>
-        </div>
-        <p>Applications select the nearest compatible target automatically. .NET 7–9 applications consume the .NET 6 asset. The .NET 11 target is available through an opt-in source build.</p>
-      </div>
-
+      <div class="section-intro"><div><p class="eyebrow">Supported .NET targets</p><h2>One package, three runtime assets.</h2></div><p>The package includes .NET Standard 2.1, .NET 6, and .NET 10 assets. NuGet selects the compatible asset; .NET 7–9 applications use the .NET 6 asset.</p></div>
       <div class="target-grid">
-        <article class="target-card reveal"><span>PORTABLE</span><h3>.NET Standard 2.1</h3><p>Portable span operations and scalar bulk conversion.</p><b>Included</b></article>
-        <article class="target-card reveal"><span>RUNTIME</span><h3>.NET 6</h3><p>Hardware bit counting, <code>Half</code>, and allocation-free decimal encoding.</p><b>Included</b></article>
-        <article class="target-card featured reveal"><span>OPTIMIZED</span><h3>.NET 10</h3><p>Vectorized bulk conversion, 128-bit integers, and direct endian-aware GUID APIs.</p><b>Included</b></article>
-        <article class="target-card reveal"><span>PREVIEW</span><h3>.NET 11</h3><p>The intrinsic-backed implementation compiled against the preview runtime.</p><b>Source opt-in</b></article>
+        <article class="target-card"><span>PORTABLE</span><h3>.NET Standard 2.1</h3><p>Span operations with scalar bulk endian conversion.</p><b>Included in the package</b></article>
+        <article class="target-card"><span>RUNTIME</span><h3>.NET 6</h3><p><code>Half</code>, hardware bit counting, and allocation-free decimal encoding.</p><b>Included in the package</b></article>
+        <article class="target-card featured"><span>RUNTIME</span><h3>.NET 10</h3><p>Vectorized bulk conversion, <code>Int128</code>/<code>UInt128</code>, and endian-aware GUID APIs.</p><b>Included in the package</b></article>
+        <article class="target-card"><span>SOURCE BUILD</span><h3>.NET 11</h3><p>Opt-in target using <code>EnableNet11=true</code>. The table above records preview 7 measurements.</p><b>Requires a matching SDK</b></article>
       </div>
     </section>
 
     <section class="install section-shell" id="install">
-      <div class="install-card reveal">
-        <div class="install-copy">
-          <p class="eyebrow">NuGet package</p>
-          <h2>Add bounded binary I/O to the current project.</h2>
-          <p>Install the package, import the <code>Tedd</code> namespace, and supply the storage appropriate to the operation.</p>
-          <div class="install-links">
-            <a href="https://www.nuget.org/packages/Tedd.SpanUtils/2.0.0">Package details <span aria-hidden="true">↗</span></a>
-            <a href="https://github.com/tedd/Tedd.SpanUtils/blob/main/README.md">Complete documentation <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-        <div class="command-shell">
-          <div class="command-label"><span>PACKAGE MANAGER</span><b>.NET CLI</b></div>
-          <div class="command-row">
-            <code>dotnet add package Tedd.SpanUtils --version 2.0.0</code>
-            <button type="button" data-copy="dotnet add package Tedd.SpanUtils --version 2.0.0" aria-label="Copy installation command">Copy</button>
-          </div>
-          <p class="copy-status" role="status" aria-live="polite"></p>
-          <dl>
-            <div><dt>Runtime dependencies</dt><dd>None</dd></div>
-            <div><dt>License</dt><dd>LGPL-3.0</dd></div>
-            <div><dt>Namespace</dt><dd><code>Tedd</code></dd></div>
-          </dl>
-        </div>
+      <div class="install-card">
+        <div class="install-copy"><p class="eyebrow">Install and use</p><h2>Reference the library from your .NET project.</h2><p>Run the command in your project directory, then add <code>using Tedd;</code>. Allocate a span, array, or memory buffer and select the access pattern shown above.</p><div class="install-links"><a href="https://www.nuget.org/packages/Tedd.SpanUtils/2.0.0">NuGet package ↗</a><a href="https://github.com/tedd/Tedd.SpanUtils/blob/main/README.md">Complete API guide ↗</a></div></div>
+        <div class="command-shell"><div class="command-label"><span>PACKAGE MANAGER</span><b>.NET CLI</b></div><div class="command-row"><code>dotnet add package Tedd.SpanUtils --version 2.0.0</code><button type="button" data-copy="dotnet add package Tedd.SpanUtils --version 2.0.0" aria-label="Copy installation command">Copy</button></div><p class="copy-status" role="status" aria-live="polite"></p><dl><div><dt>Runtime dependencies</dt><dd>None</dd></div><div><dt>License</dt><dd>LGPL-3.0</dd></div><div><dt>Namespace</dt><dd><code>Tedd</code></dd></div></dl><p class="ownership-note">Buffers have fixed capacity. Keep the backing storage valid for the entire operation and for any returned views. Span streams are <code>ref struct</code> values; memory adapters inherit <code>Stream</code>.</p></div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <a class="brand footer-brand" href="#top"><img src="assets/span-mark.svg" width="28" height="28" alt=""><span>TEDD<span class="brand-slash">/</span>SPANUTILS</span></a>
-    <p>Binary serialization for caller-owned .NET memory.</p>
-    <div>
-      <a href="https://github.com/tedd/Tedd.SpanUtils">GitHub</a>
-      <a href="https://www.nuget.org/packages/Tedd.SpanUtils">NuGet</a>
-      <a href="https://github.com/tedd/Tedd.SpanUtils/blob/main/LICENSE">License</a>
-    </div>
-  </footer>
+  <footer><a class="brand footer-brand" href="#top"><img src="assets/span-mark.svg" width="28" height="28" alt=""><span>TEDD<span class="brand-slash">/</span>SPANUTILS</span></a><p>A .NET library for binary serialization in memory.</p><div><a href="https://github.com/tedd/Tedd.SpanUtils">GitHub</a><a href="https://www.nuget.org/packages/Tedd.SpanUtils">NuGet</a><a href="https://github.com/tedd/Tedd.SpanUtils/blob/main/LICENSE">License</a></div></footer>
 </body>
 </html>

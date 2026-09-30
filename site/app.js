@@ -1,18 +1,30 @@
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Highlight plain-text examples without changing their copyable C# source.
+const tokenPattern = /\/\/[^\n]*|"(?:\\.|[^"\\])*"|\b(?:using|var|new|stackalloc|bool|byte|int|long|float|ushort|ulong|string|false|true)\b|\b(?:System|Tedd|Span|ReadOnlySpan|ReadOnlyMemory|SpanStream|ReadOnlySpanStream|MemoryStreamer|Stream)\b|\b\d+(?:\.\d+)?(?:UL|L|f)?\b/g;
 
-if (reducedMotion || !("IntersectionObserver" in window)) {
-  document.querySelectorAll(".reveal").forEach((element) => element.classList.add("visible"));
-} else {
-  const observer = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      entry.target.classList.add("visible");
-      observer.unobserve(entry.target);
-    }
-  }, { threshold: 0.12 });
+document.querySelectorAll("code[data-example]").forEach((code) => {
+  const source = code.textContent;
+  const fragment = document.createDocumentFragment();
+  let offset = 0;
+  for (const token of source.matchAll(tokenPattern)) {
+    fragment.append(document.createTextNode(source.slice(offset, token.index)));
+    const span = document.createElement("span");
+    span.className = token[0].startsWith("//") ? "code-comment"
+      : token[0].startsWith('"') ? "str"
+      : /^\d/.test(token[0]) ? "num"
+      : /^(System|Tedd|Span|ReadOnlySpan|ReadOnlyMemory|SpanStream|ReadOnlySpanStream|MemoryStreamer|Stream)$/.test(token[0]) ? "type" : "kw";
+    span.textContent = token[0];
+    fragment.append(span);
+    offset = token.index + token[0].length;
+  }
+  fragment.append(document.createTextNode(source.slice(offset)));
+  code.replaceChildren(fragment);
+});
 
-  document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
-}
+// Make horizontally scrollable source reachable using the keyboard.
+document.querySelectorAll("pre").forEach((pre) => {
+  pre.tabIndex = 0;
+  pre.setAttribute("aria-label", "C# example; scroll horizontally if needed");
+});
 
 const copyButton = document.querySelector("[data-copy]");
 const copyStatus = document.querySelector(".copy-status");

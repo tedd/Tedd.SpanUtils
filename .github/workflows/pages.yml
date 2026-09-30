@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - site/**
+      - scripts/verify-pages.mjs
+      - docs/benchmarks/**
       - .github/workflows/pages.yml
   workflow_dispatch:
 
@@ -28,6 +30,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
+      - name: Verify content and throughput
+        run: node scripts/verify-pages.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
