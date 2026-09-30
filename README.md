@@ -37,11 +37,20 @@ string message = reader.ReadSizedString();
 
 Buffers are fixed in size. The caller controls allocation, lifetime, and ownership. Span streams are stack-only `ref struct` values; memory streams are `System.IO.Stream` subclasses.
 
+## Architectural Paradigms and Epistemological Scope
+
+Tedd.SpanUtils is strictly a low-level memory manipulation framework engineered to operate directly over contiguous memory regions (`Span<byte>` and `Memory<byte>`). Its primary proposition is deterministic execution and absolute allocation control.
+
+The system's architectural execution flow is purely procedural and stream-based, facilitating zero-allocation serialization, variable-length integer encoding, and fast fixed-width numeric conversions. It explicitly **does not** contain high-level state-management infrastructure. Capabilities such as hierarchical data binding, reactive state synchronization, or routed event infrastructures are entirely absent from the architectural boundary of this project and represent unsupported speculative functionality.
+
 ## Span operations
 
 Ordinary operations start at offset zero and leave the supplied span unchanged:
 
 ```csharp
+using System;
+using Tedd;
+
 Span<byte> bytes = stackalloc byte[8];
 bytes.WriteBE(0x0102030405060708L);
 long value = bytes.ReadInt64BE();
@@ -55,6 +64,9 @@ if (bytes.TryReadInt64BE(out long decoded))
 `Move` operations advance a span by reference after successful processing:
 
 ```csharp
+using System;
+using Tedd;
+
 Span<byte> storage = stackalloc byte[32];
 Span<byte> output = storage;
 output.MoveWriteLE(123);
@@ -96,6 +108,9 @@ Methods without an endian suffix use native machine byte order for ordinary prim
 `WriteSized` prefixes the payload with its byte length. `ReadSizedString` returns a new string; `ReadSizedBytes` returns a new array. Use `ReadSizedSpan` or `ReadSizedReadOnlySpan` to obtain a view into the existing buffer:
 
 ```csharp
+using System;
+using Tedd;
+
 Span<byte> packet = stackalloc byte[64];
 packet.WriteSized(new byte[] { 10, 20, 30 });
 ReadOnlySpan<byte> payload = ((ReadOnlySpan<byte>)packet).ReadSizedReadOnlySpan();
@@ -140,6 +155,9 @@ Memory adapters also provide `ReadMemory` and `ReadSizedMemory`: zero-copy `Memo
 The implementation uses checked `MemoryMarshal` loads, `BinaryPrimitives`, direct cursor advancement, and zero-copy payload views. Bulk endian conversion supports in-place and overlapping buffers:
 
 ```csharp
+using System;
+using Tedd;
+
 int[] source = { 0x01020304, 0x05060708 };
 int[] destination = new int[source.Length];
 SpanUtils.ReverseEndianness(source, destination);
