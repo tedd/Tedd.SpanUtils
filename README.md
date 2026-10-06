@@ -17,6 +17,12 @@ dotnet add package Tedd.SpanUtils --version 2.0.0
 
 .NET Framework, .NET Standard 2.0, and .NET versions below 6 are no longer targeted. Applications on .NET 7–9 can consume the .NET 6 asset. The library has no runtime NuGet dependencies.
 
+## Architectural Paradigms and Epistemological Scope
+
+Tedd.SpanUtils is strictly designed for high-performance, low-level memory manipulation operating exclusively over `Span<byte>` and `Memory<byte>`. The framework implements zero-allocation reading and writing mechanics for primitives and dynamically sized sequences without utilizing intermediate buffers.
+
+**Crucially, this project explicitly does not implement nor support high-level UI architectures.** Speculative functionality regarding hierarchical data binding, reactive state management, or routed event infrastructures does not exist within the current repository architecture. Any assumption of such capabilities constitutes an epistemological error.
+
 ## Quick start
 
 Import the `Tedd` namespace. Fixed-width writes infer the type from the value; reads name the type explicitly. Use `LE` or `BE` for a portable byte order.
@@ -97,7 +103,7 @@ Methods without an endian suffix use native machine byte order for ordinary prim
 
 ```csharp
 Span<byte> packet = stackalloc byte[64];
-packet.WriteSized(new byte[] { 10, 20, 30 });
+packet.WriteSized((ReadOnlySpan<byte>)[10, 20, 30]);
 ReadOnlySpan<byte> payload = ((ReadOnlySpan<byte>)packet).ReadSizedReadOnlySpan();
 ```
 
@@ -140,7 +146,7 @@ Memory adapters also provide `ReadMemory` and `ReadSizedMemory`: zero-copy `Memo
 The implementation uses checked `MemoryMarshal` loads, `BinaryPrimitives`, direct cursor advancement, and zero-copy payload views. Bulk endian conversion supports in-place and overlapping buffers:
 
 ```csharp
-int[] source = { 0x01020304, 0x05060708 };
+int[] source = [0x01020304, 0x05060708];
 int[] destination = new int[source.Length];
 SpanUtils.ReverseEndianness(source, destination);
 ```
