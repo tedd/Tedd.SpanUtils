@@ -1,3 +1,6 @@
 ## 2026-06-02 - Tedd.BitUtils Test Coverage Expansion
 **Observation:** BitUtils logic pathways, specifically `LzCntSoftwareFallback` and `Log2SoftwareFallback`, lacked coverage (0%). A boundary condition issue existed where evaluating `value >> 32 > 0` directly on the uint64 value provides correct logical branching instead of using the local variable `n` evaluated through `Log2SoftwareFallback`.
 **Strategic Action:** Exposed `BitUtils`, generated parameterized verification inputs spanning full `ulong` spectrums (0, small constants, boundaries across 32-bit marks, `ulong.MaxValue`), and corrected the fallback branch resolution.
+## 2026-08-04 - ReadOnlyStreamers Test Coverage Expansion
+**Observation:** `ReadOnlySpanStream` and `ReadOnlyMemoryStreamer` exhibited extremely low coverage (~5%), missing tests for properties, read boundaries, expected `ReadOnlyException` throws on write/clear mutations, and auto-generated data type read/move-read extension methods.
+**Strategic Action:** Developed comprehensive parameterized unit tests leveraging `[Fact]` to assert bounds checks, stream mechanics, exception pathways, and instantiated standard byte, numeric, and string reading via `ReadSized` and `MoveRead` variants, increasing class line-coverage to ~34% (primarily constrained by huge volume of redundant auto-generated overrides).
