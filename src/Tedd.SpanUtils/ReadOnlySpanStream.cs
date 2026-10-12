@@ -32,7 +32,8 @@ namespace Tedd
 
         public int Position
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)] get => _position;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _position;
             set
             {
                 if ((uint)value > (uint)Span.Length) throw new ArgumentOutOfRangeException(nameof(value));

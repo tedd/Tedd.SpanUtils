@@ -282,7 +282,7 @@ namespace Tedd.SpanUtilsTests.Span
                 }
 
                 // Ensure span is not zero
-                    Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
+                Assert.NotEqual(0, span2.ToArray().Select(b => (int)b).Sum());
                 for (var i = 0; i < writeRepeatCount; i++)
                 {
                     var r = span2.MoveReadGuid();
@@ -503,17 +503,17 @@ namespace Tedd.SpanUtilsTests.Span
                     switch (sr)
                     {
                         case 0:
-                            n = (UInt32) rnd.Next(0, 0b00111111);
+                            n = (UInt32)rnd.Next(0, 0b00111111);
                             break;
                         case 1:
-                            n = (UInt32) rnd.Next(0b01000000, 0b00111111_11111111);
+                            n = (UInt32)rnd.Next(0b01000000, 0b00111111_11111111);
                             break;
                         case 2:
-                            n = (UInt32) rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111);
+                            n = (UInt32)rnd.Next(0b01000000_00000000, 0b00111111_11111111_11111111);
                             break;
                         //case 3:
                         default:
-                            n = (UInt32) rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111);
+                            n = (UInt32)rnd.Next(0b01000000_00000000_00000000, 0b00111111_11111111_11111111_11111111);
                             break;
                     }
 
@@ -720,7 +720,7 @@ namespace Tedd.SpanUtilsTests.Span
             for (var c = 0; c < count; c++)
             {
                 var memSize = rnd.Next(1, 10_000);
-                var mem = new byte[memSize * SpanUtils.MeasureVLQ(UInt32.MaxValue)+1];
+                var mem = new byte[memSize * SpanUtils.MeasureVLQ(UInt32.MaxValue) + 1];
                 var span1 = new Span<byte>(mem);
                 var span2 = new Span<byte>(mem);
 

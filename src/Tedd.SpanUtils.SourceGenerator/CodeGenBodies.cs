@@ -28,8 +28,13 @@ namespace Tedd.SpanUtils.SourceGenerator
         {
             DataStructures.Add(new MethodData
             {
-                Name = name, TypeString = type, Size = size, WriteName = writeName, Endian = endian,
-                Condition = condition, RW = rw,
+                Name = name,
+                TypeString = type,
+                Size = size,
+                WriteName = writeName,
+                Endian = endian,
+                Condition = condition,
+                RW = rw,
                 ReadBody = rw == MethodRW.WriteOnly ? null : Body(readBody ?? "Read" + name),
                 WriteBody = rw == MethodRW.ReadOnly ? null : Body(writeBody ?? "Write" + name)
             });

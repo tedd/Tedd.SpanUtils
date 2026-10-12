@@ -16,21 +16,21 @@ namespace Tedd.SpanUtils.SourceGenerator
                 Method(extensions, "void", "Move", "this ref " + type + " span, int length", "SpanUtils.Move(ref span, length);");
             }
             foreach (var endian in new[] { Endianness.Default, Endianness.LE, Endianness.BE })
-            foreach (var item in CodeGenBodies.DataStructures)
-            {
-                if (!item.Endian.HasFlag(endian)) continue;
-                if (item.Condition != null) { methods.AppendLine("#if " + item.Condition); extensions.AppendLine("#if " + item.Condition); }
-                foreach (var move in new[] { false, true })
+                foreach (var item in CodeGenBodies.DataStructures)
                 {
-                    if (item.RW != MethodRW.WriteOnly)
-                        foreach (var spanType in new[] { "Span<byte>", "ReadOnlySpan<byte>" })
-                            if (spanType != "ReadOnlySpan<byte>" || item.TypeString != "Span<byte>")
-                                Read(methods, extensions, item, endian, move, spanType);
-                    if (item.RW != MethodRW.ReadOnly && !item.IsAlias)
-                        Write(methods, extensions, item, endian, move);
+                    if (!item.Endian.HasFlag(endian)) continue;
+                    if (item.Condition != null) { methods.AppendLine("#if " + item.Condition); extensions.AppendLine("#if " + item.Condition); }
+                    foreach (var move in new[] { false, true })
+                    {
+                        if (item.RW != MethodRW.WriteOnly)
+                            foreach (var spanType in new[] { "Span<byte>", "ReadOnlySpan<byte>" })
+                                if (spanType != "ReadOnlySpan<byte>" || item.TypeString != "Span<byte>")
+                                    Read(methods, extensions, item, endian, move, spanType);
+                        if (item.RW != MethodRW.ReadOnly && !item.IsAlias)
+                            Write(methods, extensions, item, endian, move);
+                    }
+                    if (item.Condition != null) { methods.AppendLine("#endif"); extensions.AppendLine("#endif"); }
                 }
-                if (item.Condition != null) { methods.AppendLine("#endif"); extensions.AppendLine("#endif"); }
-            }
             File.WriteAllText(Path.Combine(directory, "SpanUtils.generated.cs"), Helper.CreateNamespace("Tedd", Helper.CreateClass(true, className, methods.ToString(), ""), CodeGenBodies.usings));
             File.WriteAllText(Path.Combine(directory, "ExtensionMethods.generated.cs"), Helper.CreateNamespace("Tedd", Helper.CreateClass(true, className + "ExtensionMethods", extensions.ToString(), ""), CodeGenBodies.usings));
         }
