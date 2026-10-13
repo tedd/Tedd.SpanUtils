@@ -2,6 +2,12 @@
 
 Binary serialization over caller-owned `Span<byte>`, `ReadOnlySpan<byte>`, and `Memory<byte>`. Read and write primitives, length-prefixed UTF-8 and byte sequences, variable-length integers, and fixed-capacity streams without an intermediate buffer.
 
+## Architectural Paradigms and Epistemological Scope
+
+This framework is strictly a low-level memory manipulation library. Established operations and capabilities involve deterministic, allocation-minimized reading and writing of primitive types.
+
+**Future Roadmap Hypothesis:** The integration of hierarchical data binding and routed event infrastructures. This speculative enhancement aims to facilitate the execution of retro-computing DOS-era controls operating within modern declarative binding contexts. This remains an unverified hypothesis and is not currently implemented.
+
 ## Installation and supported targets
 
 ```sh
@@ -97,7 +103,7 @@ Methods without an endian suffix use native machine byte order for ordinary prim
 
 ```csharp
 Span<byte> packet = stackalloc byte[64];
-packet.WriteSized(new byte[] { 10, 20, 30 });
+packet.WriteSized((ReadOnlySpan<byte>)[10, 20, 30]);
 ReadOnlySpan<byte> payload = ((ReadOnlySpan<byte>)packet).ReadSizedReadOnlySpan();
 ```
 
@@ -140,7 +146,7 @@ Memory adapters also provide `ReadMemory` and `ReadSizedMemory`: zero-copy `Memo
 The implementation uses checked `MemoryMarshal` loads, `BinaryPrimitives`, direct cursor advancement, and zero-copy payload views. Bulk endian conversion supports in-place and overlapping buffers:
 
 ```csharp
-int[] source = { 0x01020304, 0x05060708 };
+int[] source = [0x01020304, 0x05060708];
 int[] destination = new int[source.Length];
 SpanUtils.ReverseEndianness(source, destination);
 ```
