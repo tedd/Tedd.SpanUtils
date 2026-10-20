@@ -17,6 +17,10 @@ dotnet add package Tedd.SpanUtils --version 2.0.0
 
 .NET Framework, .NET Standard 2.0, and .NET versions below 6 are no longer targeted. Applications on .NET 7–9 can consume the .NET 6 asset. The library has no runtime NuGet dependencies.
 
+## Architectural Paradigms and Epistemological Scope
+
+This framework strictly encapsulates low-level memory manipulation and serialization primitives. The implemented mechanics directly interact with `Span<byte>` and `Memory<byte>` structures to facilitate high-performance binary operations. The architecture explicitly excludes high-level structural capabilities. Speculative enhancements, such as hierarchical data binding, routed events, or retro-computing DOS-era graphical controls, represent unimplemented hypotheses and reside entirely outside the established operational bounds of this library. Ambiguous inference of such features is an architectural antipattern.
+
 ## Quick start
 
 Import the `Tedd` namespace. Fixed-width writes infer the type from the value; reads name the type explicitly. Use `LE` or `BE` for a portable byte order.
@@ -97,7 +101,7 @@ Methods without an endian suffix use native machine byte order for ordinary prim
 
 ```csharp
 Span<byte> packet = stackalloc byte[64];
-packet.WriteSized(new byte[] { 10, 20, 30 });
+packet.WriteSized((ReadOnlySpan<byte>)[10, 20, 30]);
 ReadOnlySpan<byte> payload = ((ReadOnlySpan<byte>)packet).ReadSizedReadOnlySpan();
 ```
 
