@@ -817,5 +817,65 @@ namespace Tedd.SpanUtilsTests.Span
             }
         }
         #endregion
+
+        #region VInt
+        [Theory]
+        [InlineData(new byte[] { 0xfe }, 1, 126)]
+        [InlineData(new byte[] { 0x40, 0x7f }, 2, 127)]
+        [InlineData(new byte[] { 0x40, 0x80 }, 2, 128)]
+        [InlineData(new byte[] { 0x10, 0xDE, 0xFF, 0xAD }, 4, 0xdeffad)]
+        [InlineData(new byte[] { 0x80 }, 1, 0)]
+        [InlineData(new byte[] { 0x01, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE }, 8, VInt.MaxValue)]
+        public void TestMoveWriteVInt(byte[] expectedBytes, int expectedLength, ulong expectedValue)
+        {
+            var mem = new byte[expectedLength];
+            var span = new Span<byte>(mem);
+
+            var writtenLength = span.MoveWriteVInt(expectedValue);
+
+            Assert.Equal(expectedLength, writtenLength);
+            Assert.Equal(0, span.Length);
+            Assert.Equal(expectedBytes, mem);
+        }
+
+        [Theory]
+        [InlineData(new byte[] { 0xfe }, 1, 126)]
+        [InlineData(new byte[] { 0x40, 0x7f }, 2, 127)]
+        [InlineData(new byte[] { 0x40, 0x80 }, 2, 128)]
+        [InlineData(new byte[] { 0x10, 0xDE, 0xFF, 0xAD }, 4, 0xdeffad)]
+        [InlineData(new byte[] { 0x80 }, 1, 0)]
+        [InlineData(new byte[] { 0x01, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE }, 8, VInt.MaxValue)]
+        public void TestTryMoveWriteVInt_Success(byte[] expectedBytes, int expectedLength, ulong expectedValue)
+        {
+            var mem = new byte[expectedLength];
+            var span = new Span<byte>(mem);
+
+            var success = span.TryMoveWriteVInt(expectedValue, out var writtenLength);
+
+            Assert.True(success);
+            Assert.Equal(expectedLength, writtenLength);
+            Assert.Equal(0, span.Length);
+            Assert.Equal(expectedBytes, mem);
+        }
+
+        [Theory]
+        [InlineData(1, 126)]
+        [InlineData(2, 127)]
+        [InlineData(2, 128)]
+        [InlineData(4, 0xdeffad)]
+        [InlineData(1, 0)]
+        [InlineData(8, VInt.MaxValue)]
+        public void TestTryMoveWriteVInt_Failure(int expectedLength, ulong expectedValue)
+        {
+            var mem = new byte[expectedLength - 1]; // one byte too small
+            var span = new Span<byte>(mem);
+
+            var success = span.TryMoveWriteVInt(expectedValue, out var writtenLength);
+
+            Assert.False(success);
+            Assert.Equal(0, writtenLength);
+            Assert.Equal(expectedLength - 1, span.Length);
+        }
+        #endregion
     }
 }
