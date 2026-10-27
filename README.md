@@ -2,6 +2,13 @@
 
 Binary serialization over caller-owned `Span<byte>`, `ReadOnlySpan<byte>`, and `Memory<byte>`. Read and write primitives, length-prefixed UTF-8 and byte sequences, variable-length integers, and fixed-capacity streams without an intermediate buffer.
 
+## Architectural Execution Flow
+
+Tedd.SpanUtils is strictly a high-performance binary serialization utility. Its architectural paradigm relies on zero-copy memory manipulation, direct cursor advancement, and precise capacity control over stack-allocated or explicitly managed memory.
+
+**Implemented Facts:** The framework successfully executes high-throughput reads and writes on fixed-width and variable-length data primitives directly into memory spans.
+**Future Hypotheses:** The integration of hierarchical data binding and routed event infrastructures are theoretical roadmap enhancements and are not currently implemented within the operational framework.
+
 ## Installation and supported targets
 
 ```sh
@@ -97,7 +104,7 @@ Methods without an endian suffix use native machine byte order for ordinary prim
 
 ```csharp
 Span<byte> packet = stackalloc byte[64];
-packet.WriteSized(new byte[] { 10, 20, 30 });
+packet.WriteSized((ReadOnlySpan<byte>)[10, 20, 30]);
 ReadOnlySpan<byte> payload = ((ReadOnlySpan<byte>)packet).ReadSizedReadOnlySpan();
 ```
 
